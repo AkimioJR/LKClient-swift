@@ -13,11 +13,11 @@ public enum GenderType: UInt8, Codable, Hashable, Sendable {
     case female = 2
 }
 
-struct LevelInfo: Codable, Hashable, Sendable {
+public struct LevelInfo: Codable, Hashable, Sendable {
     static let `default` = LevelInfo(experience: 0, level: .commoner)
 
-    var experience: UInt
-    var level: Level
+    public var experience: UInt
+    public var level: Level
     // var name: String
 
     // var nextExperience: UInt?
@@ -30,15 +30,15 @@ struct LevelInfo: Codable, Hashable, Sendable {
     }
 }
 
-struct Medal: Codable, Hashable, Sendable {
-    var medalId: UInt
-    var name: String
-    var desc: String
-    var medalsType: UInt
+public struct Medal: Codable, Hashable, Sendable {
+    public var medalId: UInt
+    public var name: String
+    public var desc: String
+    public var medalsType: UInt
 
-    @LKBool var equip: Bool?  // 是否装备？
-    var expiration: Date?  // 过期时间，可能为"0000-00-00 00:00:00"
-    var imgURL: String?
+    @LKBool public var equip: Bool?  // 是否装备？
+    public var expiration: Date?  // 过期时间，可能为"0000-00-00 00:00:00"
+    public var imgURL: String?
 
     enum CodingKeys: String, CodingKey {
         case medalId = "medal_id"
@@ -51,9 +51,9 @@ struct Medal: Codable, Hashable, Sendable {
     }
 }
 
-struct UserBalance: Codable, Hashable, Sendable {
-    var coin: UInt
-    var balance: UInt
+public struct UserBalance: Codable, Hashable, Sendable {
+    public var coin: UInt
+    public var balance: UInt
 
     enum CodingKeys: String, CodingKey {
         case coin = "coin"
@@ -63,8 +63,8 @@ struct UserBalance: Codable, Hashable, Sendable {
 
 /// 基础用户信息
 /// 搜索接口、集合创作者、集合记录返回的用户列表使用这个结构体
-struct UserInfo: Codable, Sendable {
-    static let `default` = UserInfo(
+public struct UserInfo: Codable, Sendable {
+    static public let `default` = UserInfo(
         userId: 0,
         nickName: "",
         avatarURL: "",
@@ -83,23 +83,23 @@ struct UserInfo: Codable, Sendable {
         medals: [],
     )
 
-    var userId: UInt
-    var nickName: String
-    var avatarURL: String
-    @LKBool var passer: Bool
-    var gender: GenderType
-    var sign: String
-    @LKBool var status: Bool
-    var bannerURL: String
-    var banEndDate: Date
-    var levelInfo: LevelInfo
+    public var userId: UInt
+    public var nickName: String
+    public var avatarURL: String
+    @LKBool public var passer: Bool
+    public var gender: GenderType
+    public var sign: String
+    @LKBool public var status: Bool
+    public var bannerURL: String
+    public var banEndDate: Date
+    public var levelInfo: LevelInfo
 
-    var followingCount: UInt
-    var commentCount: UInt
-    var favoriteCount: UInt
-    var articleCount: UInt
-    var followerCount: UInt
-    var medals: [Medal]
+    public var followingCount: UInt
+    public var commentCount: UInt
+    public var favoriteCount: UInt
+    public var articleCount: UInt
+    public var followerCount: UInt
+    public var medals: [Medal]
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"
@@ -123,7 +123,7 @@ struct UserInfo: Codable, Sendable {
 }
 
 public struct UserProfileDetail: Codable, Hashable, Sendable {
-    static let `default` = UserProfileDetail(
+    static public let `default` = UserProfileDetail(
         userId: 0,
         nickName: "",
         avatarURL: "",
@@ -139,33 +139,33 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
         levelInfo: .default,
     )
 
-    var userId: UInt
-    var nickName: String
-    var avatarURL: String  // Avatar image URL
-    @LKBool var passer: Bool
-    var gender: GenderType
-    var sign: String
-    @LKBool var status: Bool
-    var bannerURL: String  // Banner image URL
-    var banEndDate: Date  // Date when ban ends
-    var medals: [Medal]?  // 搜索结果中获取到的 UserProfileDetail 没有该字段
-    var followingCount: UInt  // Number of users this user is following
-    var articleCount: UInt
-    var followerCount: UInt  // 粉丝数
-    var levelInfo: LevelInfo
+    public var userId: UInt
+    public var nickName: String
+    public var avatarURL: String  // Avatar image URL
+    @LKBool public var passer: Bool
+    public var gender: GenderType
+    public var sign: String
+    @LKBool public var status: Bool
+    public var bannerURL: String  // Banner image URL
+    public var banEndDate: Date  // Date when ban ends
+    public var medals: [Medal]?  // 搜索结果中获取到的 UserProfileDetail 没有该字段
+    public var followingCount: UInt  // Number of users this user is following
+    public var articleCount: UInt
+    public var followerCount: UInt  // 粉丝数
+    public var levelInfo: LevelInfo
 
     // 文章详情获取到的 UserProfileDetail 没有以下字段
-    var favoriteCount: UInt?
+    public var favoriteCount: UInt?
     // var allLevels: [LevelInfo]?
 
     // 仅能看到自己的信息
-    var commentCount: UInt?
-    var balance: UserBalance?
-    var securityKey: String?  // 仅在登录用户时返回
+    public var commentCount: UInt?
+    public var balance: UserBalance?
+    public var securityKey: String?  // 仅在登录用户时返回
 
     // 仅他人信息
-    @LKBool var alreadyFollow: Bool?  // 是否关注
-    @LKBool var alreadyBlock: Bool?  // 是否拉黑
+    @LKBool public var alreadyFollow: Bool?  // 是否关注
+    @LKBool public var alreadyBlock: Bool?  // 是否拉黑
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"
@@ -266,20 +266,20 @@ struct FollowRequest: Codable, Sendable {
 }
 
 public struct UserArticle: Codable, Sendable {
-    struct ArticleInfo: Codable {
-        var articleId: UInt
-        var bannerURL: String
-        var commentCount: UInt
-        var groupId: GroupId
-        var hitCount: UInt
-        var createTime: Date
-        var title: String
-        var userId: UInt
-        var coverURL: String
-        var coverType: CoverType
-        var seriesId: UInt
-        var coinCount: UInt
-        @LKBool var empty: Bool?
+    public struct ArticleInfo: Codable, Sendable {
+        public var articleId: UInt
+        public var bannerURL: String
+        public var commentCount: UInt
+        public var groupId: GroupId
+        public var hitCount: UInt
+        public var createTime: Date
+        public var title: String
+        public var userId: UInt
+        public var coverURL: String
+        public var coverType: CoverType
+        public var seriesId: UInt
+        public var coinCount: UInt
+        @LKBool public var empty: Bool?
 
         enum CodingKeys: String, CodingKey {
             case articleId = "aid"
@@ -298,8 +298,8 @@ public struct UserArticle: Codable, Sendable {
         }
     }
 
-    var list: [ArticleInfo]
-    var pageInfo: PageInfo
+    public var list: [ArticleInfo]
+    public var pageInfo: PageInfo
 
     enum CodingKeys: String, CodingKey {
         case list = "list"

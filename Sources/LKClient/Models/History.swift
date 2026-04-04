@@ -20,20 +20,20 @@ struct HistoryRequest: Codable, Sendable {
     }
 }
 
-struct ArticleRecordInfo: Codable, Sendable {
-    var articleId: UInt
-    var title: String
-    var bannerURL: String
-    var userId: UInt
-    var hitCount: UInt
-    var commentCount: UInt
-    var createTime: Date
-    var updateTime: Date
-    var coverURL: String
-    var coverType: CoverType
-    var groupId: GroupId
-    var parentGroupId: ParentGroupId
-    var seriesId: UInt
+public struct ArticleRecordInfo: Codable, Sendable {
+    public var articleId: UInt
+    public var title: String
+    public var bannerURL: String
+    public var userId: UInt
+    public var hitCount: UInt
+    public var commentCount: UInt
+    public var createTime: Date
+    public var updateTime: Date
+    public var coverURL: String
+    public var coverType: CoverType
+    public var groupId: GroupId
+    public var parentGroupId: ParentGroupId
+    public var seriesId: UInt
 
     enum CodingKeys: String, CodingKey {
         case articleId = "aid"
@@ -52,18 +52,18 @@ struct ArticleRecordInfo: Codable, Sendable {
     }
 }
 
-struct SeriesRecordInfo: Codable, Sendable {
-    var seriesId: UInt
-    var name: String
-    var author: String
-    var bannerURL: String
-    var coverURL: String
-    var coverType: CoverType
-    var rateCount: UInt
-    var updateTime: Date
-    var groupId: GroupId
-    var parentGroupId: ParentGroupId
-    var editors: [UserInfo]
+public struct SeriesRecordInfo: Codable, Sendable {
+    public var seriesId: UInt
+    public var name: String
+    public var author: String
+    public var bannerURL: String
+    public var coverURL: String
+    public var coverType: CoverType
+    public var rateCount: UInt
+    public var updateTime: Date
+    public var groupId: GroupId
+    public var parentGroupId: ParentGroupId
+    public var editors: [UserInfo]
 
     enum CodingKeys: String, CodingKey {
         case seriesId = "sid"

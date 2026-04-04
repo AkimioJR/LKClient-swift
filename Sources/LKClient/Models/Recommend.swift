@@ -7,16 +7,16 @@
 import Foundation
 
 public struct RecommendGroup: Codable, Sendable {
-    var type: GroupType
-    var itemType: ItemType
-    var rows: UInt
-    var columns: UInt
-    var more: String
-    var moreType: MoreType
-    var moreParams: UInt
-    var items: [Item]
+    public var type: GroupType
+    public var itemType: ItemType
+    public var rows: UInt
+    public var columns: UInt
+    public var more: String
+    public var moreType: MoreType
+    public var moreParams: UInt
+    public var items: [Item]
 
-    enum GroupType: UInt8, Codable, CustomStringConvertible {
+    public enum GroupType: UInt8, Codable, CustomStringConvertible, Sendable {
         case banner = 1  // 推荐置顶横幅
         case hot = 2  // 热门
         case news = 3  // 资讯
@@ -25,7 +25,7 @@ public struct RecommendGroup: Codable, Sendable {
         case other = 8  // 其他
         case lightnovel = 9  // 轻小说
 
-        var description: String {
+        public var description: String {
             switch self {
             case .banner:
                 return "推荐置顶横幅"
@@ -45,12 +45,12 @@ public struct RecommendGroup: Codable, Sendable {
         }
     }
 
-    enum ItemType: UInt8, Codable, Sendable {
+    public enum ItemType: UInt8, Codable, Sendable {
         case banner = 1  // 置顶横幅
         case normal = 2  // 普通内容
     }
 
-    enum MoreType: UInt8, Codable, Sendable {
+    public enum MoreType: UInt8, Codable, Sendable {
         case noMore = 0  // 没有更多内容
         case parentGroup = 1  // moreParams 是 parentGroupId
     }
@@ -91,16 +91,16 @@ public struct RecommendGroup: Codable, Sendable {
 
     public struct Item: Codable, Identifiable, Sendable {
         public var id: UInt
-        var type: UInt
-        var title: String
-        var actionType: ClassType
-        var actionParams: UInt
-        var pictureUrl: String
-        var commentCount: UInt
-        var hitCount: UInt
+        public var type: UInt
+        public var title: String
+        public var actionType: ClassType
+        public var actionParams: UInt
+        public var pictureUrl: String
+        public var commentCount: UInt
+        public var hitCount: UInt
 
         // 当 actionType 为 .acticle 或者 .series 时有这些数据
-        var groupId: GroupId?
+        public var groupId: GroupId?
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -200,25 +200,25 @@ struct GetRecommendRequest: Codable, Sendable {
 }
 
 public struct FollowingArticle: Codable, Hashable, Sendable {
-    var acticleId: UInt
-    var seriesId: UInt
-    var title: String
-    var bannerURL: String
-    var userId: UInt
-    var hitCount: UInt
-    var commentCount: UInt
-    var createTime: Date
-    var updateTime: Date
-    var shareCount: UInt
-    var favoriteCount: UInt
-    var coinCount: UInt
-    var likeCount: UInt
-    var coverURL: String
-    var coverType: CoverType
-    var groupId: GroupId
+    public var acticleId: UInt
+    public var seriesId: UInt
+    public var title: String
+    public var bannerURL: String
+    public var userId: UInt
+    public var hitCount: UInt
+    public var commentCount: UInt
+    public var createTime: Date
+    public var updateTime: Date
+    public var shareCount: UInt
+    public var favoriteCount: UInt
+    public var coinCount: UInt
+    public var likeCount: UInt
+    public var coverURL: String
+    public var coverType: CoverType
+    public var groupId: GroupId
     //var parentGroupId: ParentGroupId
-    var author: UserProfileDetail
-    var seriesName: String?
+    public var author: UserProfileDetail
+    public var seriesName: String?
 
     enum CodingKeys: String, CodingKey {
         case acticleId = "aid"

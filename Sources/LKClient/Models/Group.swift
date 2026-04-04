@@ -8,25 +8,25 @@
 import Foundation
 
 public struct ParentGroupItem: Codable, Sendable {
-    var id: ParentGroupId
+    public var id: ParentGroupId
     //var logo: String
-    var coverType: CoverType
-    var items: [Item]
-    var updateTime: Date
+    public var coverType: CoverType
+    public var items: [Item]
+    public var updateTime: Date
 
-    struct Item: Codable, Sendable {
-        var articleId: UInt
-        var title: String
-        var coverURL: String
-        var bannerURL: String
-        var seriesId: UInt
-        var seriesName: String?  // 非集合文章值为nil
-        var hitCount: UInt
-        var commentCount: UInt
-        var rank: UInt
-        var likeCount: UInt
-        var coinCount: UInt
-        var shareCount: UInt
+    public struct Item: Codable, Sendable {
+        public var articleId: UInt
+        public var title: String
+        public var coverURL: String
+        public var bannerURL: String
+        public var seriesId: UInt
+        public var seriesName: String?  // 非集合文章值为nil
+        public var hitCount: UInt
+        public var commentCount: UInt
+        public var rank: UInt
+        public var likeCount: UInt
+        public var coinCount: UInt
+        public var shareCount: UInt
 
         enum CodingKeys: String, CodingKey {
             case articleId = "aid"

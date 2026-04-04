@@ -8,8 +8,7 @@
 import Foundation
 
 public struct SeriesInfo: Codable, Sendable {
-
-    struct ArticleInfo: Codable, Sendable {
+    public struct ArticleInfo: Codable, Sendable {
         static let `default` = ArticleInfo(
             order: 0,
             articleId: 0,
@@ -23,16 +22,16 @@ public struct SeriesInfo: Codable, Sendable {
             updateTime: Date(timeIntervalSince1970: 0)
         )
 
-        var order: UInt
-        var articleId: UInt
-        var title: String
-        var bannerURL: String
-        var coverURL: String
+        public var order: UInt
+        public var articleId: UInt
+        public var title: String
+        public var bannerURL: String
+        public var coverURL: String
         // var hitCount: UInt
         // var commentCount: UInt
-        var coverType: CoverType
-        var createTime: Date
-        var updateTime: Date
+        public var coverType: CoverType
+        public var createTime: Date
+        public var updateTime: Date
 
         enum CodingKeys: String, CodingKey {
             case order = "order"
@@ -48,15 +47,15 @@ public struct SeriesInfo: Codable, Sendable {
         }
     }
 
-    struct UserRead: Codable, Sendable {
-        var lastArticleId: UInt
+    public struct UserRead: Codable, Sendable {
+        public var lastArticleId: UInt
 
         enum CodingKeys: String, CodingKey {
             case lastArticleId = "last_aid"
         }
     }
 
-    static let `default` = SeriesInfo(
+    static public let `default` = SeriesInfo(
         seriesId: 0,
         seriesName: "",
         groupId: .all,
@@ -75,29 +74,29 @@ public struct SeriesInfo: Codable, Sendable {
         articles: [],
     )
 
-    var seriesId: UInt
-    var seriesName: String
-    var groupId: GroupId
-    var author: String  // 作者（并非发布集合的作者）
-    var intro: String  // 简介
-    var bannerURL: String
-    var rate: UInt  // 0～5
-    var coverURL: String
-    var coverType: CoverType
-    var rateCount: UInt  // 评分人数
-    var updateTime: Date
-    var hitCount: UInt
-    var likeCount: UInt
-    var editors: [UserInfo]
-    var score: Float64  // 0～10
+    public var seriesId: UInt
+    public var seriesName: String
+    public var groupId: GroupId
+    public var author: String  // 作者（并非发布集合的作者）
+    public var intro: String  // 简介
+    public var bannerURL: String
+    public var rate: UInt  // 0～5
+    public var coverURL: String
+    public var coverType: CoverType
+    public var rateCount: UInt  // 评分人数
+    public var updateTime: Date
+    public var hitCount: UInt
+    public var likeCount: UInt
+    public var editors: [UserInfo]
+    public var score: Float64  // 0～10
     // var characters: [Any] // 未知数据结构
-    var articles: [ArticleInfo]
+    public var articles: [ArticleInfo]
 
     // 用户对集合的个人信息
-    @LKBool var alreadyFavavorite: Bool?  // 是否已收藏
-    @LKBool var alreadyRate: Bool?  // 是否已经评分
-    @LKBool var alreadyLike: Bool?  // 是否已点赞
-    var userRead: UserRead?  // 用户阅读进度
+    @LKBool public var alreadyFavavorite: Bool?  // 是否已收藏
+    @LKBool public var alreadyRate: Bool?  // 是否已经评分
+    @LKBool public var alreadyLike: Bool?  // 是否已点赞
+    public var userRead: UserRead?  // 用户阅读进度
 
     enum CodingKeys: String, CodingKey {
         case seriesId = "sid"

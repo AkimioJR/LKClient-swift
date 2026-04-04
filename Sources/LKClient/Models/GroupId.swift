@@ -23,7 +23,7 @@ public enum ParentGroupId: UInt8, Codable, Comparable, Sendable {
         return lhs.rawValue < rhs.rawValue
     }
 
-    var name: String {
+    public var name: String {
         switch self {
         case .all: return "全部"
         case .news: return "资讯"
@@ -38,7 +38,7 @@ public enum ParentGroupId: UInt8, Codable, Comparable, Sendable {
         }
     }
 
-    var groupIds: [GroupId] {
+    public var groupIds: [GroupId] {
         switch self {
         case .all:
             return [.all]
@@ -66,7 +66,7 @@ public enum ParentGroupId: UInt8, Codable, Comparable, Sendable {
         }
     }
 
-    var logo: Image {
+    public var logo: Image {
         return Image("parent-group-id/\(self.rawValue)")
     }
 }
@@ -126,7 +126,7 @@ public enum GroupId: UInt16, Codable, Comparable, Sendable {
         return lhs.rawValue < rhs.rawValue
     }
 
-    var name: String {
+    public var name: String {
         switch self {
         case .all: return "全部"
 
@@ -182,7 +182,7 @@ public enum GroupId: UInt16, Codable, Comparable, Sendable {
         }
     }
 
-    var parentGroupId: ParentGroupId {
+    public var parentGroupId: ParentGroupId {
         switch self {
         case .all: return .all
 

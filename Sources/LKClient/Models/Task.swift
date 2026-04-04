@@ -42,7 +42,7 @@ public enum TaskType: UInt8, CaseIterable, Codable, Sendable {
     //     }
     // }
 
-    var coinCount: UInt {
+    public var coinCount: UInt {
         switch self {
         case .readArticle, .collectArticle, .checkin:
             return 5
@@ -53,7 +53,7 @@ public enum TaskType: UInt8, CaseIterable, Codable, Sendable {
         }
     }
 
-    var experience: UInt {
+    public var experience: UInt {
         switch self {
         case .readArticle, .collectArticle, .likeArticle, .shareArticle, .completeAllTasks,
             .checkin:
@@ -63,7 +63,7 @@ public enum TaskType: UInt8, CaseIterable, Codable, Sendable {
         }
     }
 
-    var image: Image? {
+    public var image: Image? {
         switch self {
         case .readArticle:
             return Image("task/read")
@@ -87,12 +87,12 @@ extension TaskType: CustomStringConvertible {
     }
 }
 
-enum TaskState: UInt8, CaseIterable, Codable, Sendable {
+public enum TaskState: UInt8, CaseIterable, Codable, Sendable {
     case uncomplete = 0  // 未完成
     case waitingForReward = 1  // 等待领取奖励
     case rewarded = 2  // 已经领取奖励
 
-    var description: String {
+    public var description: String {
         switch self {
         case .uncomplete:
             return "未完成"

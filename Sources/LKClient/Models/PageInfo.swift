@@ -6,15 +6,15 @@
 //
 
 public struct PageInfo: Codable, Sendable {
-    var count: UInt
-    var size: UInt
-    var currentPage: UInt
-    var previousPage: UInt
-    var nextPage: UInt
-    @LKBool var hasPreviousPage: Bool
-    @LKBool var hasNextPage: Bool
-    var model: UInt
-    var supportModels: [UInt]
+    public var count: UInt
+    public var size: UInt
+    public var currentPage: UInt
+    public var previousPage: UInt
+    public var nextPage: UInt
+    @LKBool public var hasPreviousPage: Bool
+    @LKBool public var hasNextPage: Bool
+    public var model: UInt
+    public var supportModels: [UInt]
 
     enum CodingKeys: String, CodingKey {
         case count = "count"

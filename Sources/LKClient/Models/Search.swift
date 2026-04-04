@@ -57,24 +57,24 @@ struct GetSearchRequest: Codable, Sendable {
 }
 
 public struct UserSearchResult: Codable, Sendable {
-    struct SearchData: Codable {
-        var userId: UInt
-        var nickName: String
-        var avatarURL: String
-        @LKBool var passer: Bool
-        var gender: GenderType
-        var sign: String
-        @LKBool var status: Bool
-        var bannerURL: String
-        var banEndDate: Date
-        var followingCount: UInt
-        var commentCount: UInt
-        var favoriteCount: UInt
-        var articleCount: UInt
-        var followerCount: UInt
-        var medals: [Medal]
-        var levelInfo: LevelInfo
-        var highlightedNickname: String
+    public struct SearchData: Codable, Sendable {
+        public var userId: UInt
+        public var nickName: String
+        public var avatarURL: String
+        @LKBool public var passer: Bool
+        public var gender: GenderType
+        public var sign: String
+        @LKBool public var status: Bool
+        public var bannerURL: String
+        public var banEndDate: Date
+        public var followingCount: UInt
+        public var commentCount: UInt
+        public var favoriteCount: UInt
+        public var articleCount: UInt
+        public var followerCount: UInt
+        public var medals: [Medal]
+        public var levelInfo: LevelInfo
+        public var highlightedNickname: String
 
         enum CodingKeys: String, CodingKey {
             case userId = "uid"
@@ -97,8 +97,8 @@ public struct UserSearchResult: Codable, Sendable {
         }
     }
 
-    var list: [SearchData]
-    var pageInfo: PageInfo
+    public var list: [SearchData]
+    public var pageInfo: PageInfo
 
     enum CodingKeys: String, CodingKey {
         case list = "list"
@@ -189,25 +189,25 @@ public struct SeriesSearchResult: Codable, Sendable {
 }
 
 public struct ArticleSearchResult: Codable, Sendable {
-    struct SearchData: Codable, Sendable {
-        var articleId: UInt
-        var author: FlexibleParam
-        var avatarURL: String
-        var bannerURL: String
-        var commentCount: UInt
-        var coverURL: String
-        var coverType: CoverType
+    public struct SearchData: Codable, Sendable {
+        public var articleId: UInt
+        public var author: FlexibleParam
+        public var avatarURL: String
+        public var bannerURL: String
+        public var commentCount: UInt
+        public var coverURL: String
+        public var coverType: CoverType
 
-        var groupId: GroupId
-        var hightlightTitle: String
-        var hitCount: UInt
-        var seriesId: UInt
-        var createTime: Date
-        var title: String
-        var userId: UInt
+        public var groupId: GroupId
+        public var hightlightTitle: String
+        public var hitCount: UInt
+        public var seriesId: UInt
+        public var createTime: Date
+        public var title: String
+        public var userId: UInt
 
         // 仅资讯（News）有这个结果
-        @LKBool var empty: Bool?
+        @LKBool public var empty: Bool?
 
         enum CodingKeys: String, CodingKey {
             case articleId = "aid"
@@ -228,8 +228,8 @@ public struct ArticleSearchResult: Codable, Sendable {
         }
     }
 
-    var list: [SearchData]
-    var pageInfo: PageInfo
+    public var list: [SearchData]
+    public var pageInfo: PageInfo
 
     enum CodingKeys: String, CodingKey {
         case list = "list"
@@ -238,8 +238,8 @@ public struct ArticleSearchResult: Codable, Sendable {
 }
 
 public struct HotSearchTag: Codable, Sendable {
-    var id: UInt
-    var word: String
+    public var id: UInt
+    public var word: String
 
     enum CodingKeys: String, CodingKey {
         case id = "id"

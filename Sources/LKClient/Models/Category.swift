@@ -8,23 +8,23 @@
 import Foundation
 
 public struct ArticleInfo: Codable, Sendable {
-    var articleId: UInt
-    var title: String
-    var coverURL: String
-    var bannerURL: String
-    var seriesId: UInt
-    var seriesName: String?  // 非集合文章值为nil
-    var hitCount: UInt
-    var commentCount: UInt
-    var userId: UInt
-    var author: FlexibleParam?  // 某些文章可能没有 author（如系列文章）
-    var avatarURL: String?  // 某些文章可能没有 avatar
-    var createTime: Date  // 文章创建时间
-    var updateTime: Date  // 最后更新时间
-    var groupId: GroupId?  // 某些文章可能没有 groupId（如系列文章）
+    public var articleId: UInt
+    public var title: String
+    public var coverURL: String
+    public var bannerURL: String
+    public var seriesId: UInt
+    public var seriesName: String?  // 非集合文章值为nil
+    public var hitCount: UInt
+    public var commentCount: UInt
+    public var userId: UInt
+    public var author: FlexibleParam?  // 某些文章可能没有 author（如系列文章）
+    public var avatarURL: String?  // 某些文章可能没有 avatar
+    public var createTime: Date  // 文章创建时间
+    public var updateTime: Date  // 最后更新时间
+    public var groupId: GroupId?  // 某些文章可能没有 groupId（如系列文章）
 
-    var coverType: CoverType?  // 某些文章可能没有 coverType
-    @LKBool var isTop: Bool?  // 是否是置顶
+    public var coverType: CoverType?  // 某些文章可能没有 coverType
+    @LKBool public var isTop: Bool?  // 是否是置顶
 
     enum CodingKeys: String, CodingKey, Sendable {
         case articleId = "aid"
@@ -47,8 +47,8 @@ public struct ArticleInfo: Codable, Sendable {
 }
 
 public struct CategoryArticlesInfo: Codable, Sendable {
-    var list: [ArticleInfo]
-    var pageInfo: PageInfo
+    public var list: [ArticleInfo]
+    public var pageInfo: PageInfo
 
     enum CodingKeys: String, CodingKey {
         case list = "list"

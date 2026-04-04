@@ -8,16 +8,16 @@
 import Foundation
 
 public struct ReplyDetail: Codable, Sendable {
-    var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
-    var replyId: UInt  // 话题下面的第几个回复
-    var articleId: UInt  // 文章ID
-    var parentReplyId: UInt  // 这条评论是回复那一条评论的，0代表回复主评论
-    var repliedUserId: UInt  // 被回复的用户ID
-    var userId: UInt  // 回复者的用户ID
-    var likeCount: UInt
-    var time: Date
-    var content: String
-    var userInfo: UserProfileDetail
+    public var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
+    public var replyId: UInt  // 话题下面的第几个回复
+    public var articleId: UInt  // 文章ID
+    public var parentReplyId: UInt  // 这条评论是回复那一条评论的，0代表回复主评论
+    public var repliedUserId: UInt  // 被回复的用户ID
+    public var userId: UInt  // 回复者的用户ID
+    public var likeCount: UInt
+    public var time: Date
+    public var content: String
+    public var userInfo: UserProfileDetail
 
     enum CodingKeys: String, CodingKey {
         case topicId = "tid"
@@ -34,17 +34,17 @@ public struct ReplyDetail: Codable, Sendable {
 }
 
 public struct TopicDetail: Codable, Sendable {
-    var topicId: UInt
-    var articleId: UInt
-    var userId: UInt
-    var createTime: Date  // 该话题(评论)发布时间
-    var updateTime: Date  // 该话题最新评论（回复）时间
-    var content: String
-    var likeCount: UInt
-    var replyCount: UInt
-    var userInfo: UserProfileDetail
-    var replyList: [ReplyDetail]
-    @LKBool var alreadyLike: Bool?  // 是否已点赞
+    public var topicId: UInt
+    public var articleId: UInt
+    public var userId: UInt
+    public var createTime: Date  // 该话题(评论)发布时间
+    public var updateTime: Date  // 该话题最新评论（回复）时间
+    public var content: String
+    public var likeCount: UInt
+    public var replyCount: UInt
+    public var userInfo: UserProfileDetail
+    public var replyList: [ReplyDetail]
+    @LKBool public var alreadyLike: Bool?  // 是否已点赞
 
     enum CodingKeys: String, CodingKey {
         case topicId = "tid"
@@ -62,9 +62,9 @@ public struct TopicDetail: Codable, Sendable {
 }
 
 public struct DiscussInfo: Codable, Sendable {
-    var list: [TopicDetail]
+    public var list: [TopicDetail]
     //var hots: [Any]
-    var pageInfo: PageInfo?
+    public var pageInfo: PageInfo?
 
     enum CodingKeys: String, CodingKey {
         case list = "list"
@@ -109,14 +109,14 @@ struct LikeTopicRequest: Codable, Sendable {
 }
 
 public struct UploadImageResponse: Codable, Sendable {
-    var resourceId: String
-    var resourcePath: String
-    var resourceURL: String
-    var resourceInfo: ResourceInfo
+    public var resourceId: String
+    public var resourcePath: String
+    public var resourceURL: String
+    public var resourceInfo: ResourceInfo
 
-    struct ResourceInfo: Codable, Sendable {
-        var width: UInt
-        var height: UInt
+    public struct ResourceInfo: Codable, Sendable {
+        public var width: UInt
+        public var height: UInt
 
         enum CodingKeys: String, CodingKey {
             case width = "width"

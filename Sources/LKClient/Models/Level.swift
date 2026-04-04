@@ -71,7 +71,7 @@ public enum Level: UInt8, Codable, Comparable, Sendable {
         return Level(rawValue: self.rawValue - 1)
     }
 
-    public static let allLevels: [Level] = [
+    static public let allLevels: [Level] = [
         .commoner,
         .knight,
         .lord,
@@ -84,7 +84,7 @@ public enum Level: UInt8, Codable, Comparable, Sendable {
     ]
 
     // MARK: - Comparable
-    public static func < (lhs: Level, rhs: Level) -> Bool {
+    static public func < (lhs: Level, rhs: Level) -> Bool {
         return lhs.rawValue < rhs.rawValue
     }
 }

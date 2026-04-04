@@ -108,37 +108,37 @@ public struct ArticleDetail: Codable, Sendable {
         onlyApp: false,
     )
 
-    var articleId: UInt
-    var userId: UInt
-    var title: String
-    var summary: String
-    var hitCount: UInt
-    var likeCount: UInt
-    var coinCount: UInt
-    var favoriteCount: UInt
-    var commentCount: UInt
-    var shareCount: UInt
-    var createTime: Date
-    @LKBool var hasPoll: Bool
-    var bannerURL: String
-    var updateTime: Date
-    @LKBool var onlyPasser: Bool
-    var coverURL: String
-    var lt: Date
-    var groupId: GroupId
-    var seriesId: UInt
-    var author: UserProfileDetail
+    public var articleId: UInt
+    public var userId: UInt
+    public var title: String
+    public var summary: String
+    public var hitCount: UInt
+    public var likeCount: UInt
+    public var coinCount: UInt
+    public var favoriteCount: UInt
+    public var commentCount: UInt
+    public var shareCount: UInt
+    public var createTime: Date
+    @LKBool public var hasPoll: Bool
+    public var bannerURL: String
+    public var updateTime: Date
+    @LKBool public var onlyPasser: Bool
+    public var coverURL: String
+    public var lt: Date
+    public var groupId: GroupId
+    public var seriesId: UInt
+    public var author: UserProfileDetail
     // var otherRecoms: [] // 未知
-    var cacheVersion: UInt
-    @LKBool var onlyApp: Bool
-    var alreadyCoinCount: UInt?  // 已经投币数
-    @LKBool var alreadyLike: Bool?  // 是否已点赞
-    @LKBool var alreadyFavavorite: Bool?  // 是否已收藏
-    @LKBool var alreadyFollow: Bool?  // 是否已关注作者
+    public var cacheVersion: UInt
+    @LKBool public var onlyApp: Bool
+    public var alreadyCoinCount: UInt?  // 已经投币数
+    @LKBool public var alreadyLike: Bool?  // 是否已点赞
+    @LKBool public var alreadyFavavorite: Bool?  // 是否已收藏
+    @LKBool public var alreadyFollow: Bool?  // 是否已关注作者
 
-    var content: String?  // 需要simple为false
-    var resource: Resource?  // 漫画文章可能没有这一项
-    var payInfo: PayInfo?  // 支付信息，未支付文章才有
+    public var content: String?  // 需要simple为false
+    public var resource: Resource?  // 漫画文章可能没有这一项
+    public var payInfo: PayInfo?  // 支付信息，未支付文章才有
 
     enum CodingKeys: String, CodingKey {
         case articleId = "aid"
@@ -186,11 +186,11 @@ struct GetArticleDetailRequest: Codable, Sendable {
 }
 
 public struct ArticleTag: Codable, Sendable {
-    var tagId: UInt
-    var word: String
-    var contentType: String
-    var weight: UInt
-    var isClickable: Bool
+    public var tagId: UInt
+    public var word: String
+    public var contentType: String
+    public var weight: UInt
+    public var isClickable: Bool
 
     enum CodingKeys: String, CodingKey {
         case tagId = "id"
@@ -202,8 +202,8 @@ public struct ArticleTag: Codable, Sendable {
 }
 
 struct ArticleRequest: Codable, Sendable {
-    var securityKey: String
-    var articleId: UInt
+    public var securityKey: String
+    public var articleId: UInt
 
     enum CodingKeys: String, CodingKey {
         case articleId = "aid"
