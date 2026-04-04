@@ -9,7 +9,7 @@ import CryptoKit
 import Foundation
 import OSLog
 
-public class LKClient {
+public actor LKClient {
     private let logger: Logger
     private let session: URLSession
 
