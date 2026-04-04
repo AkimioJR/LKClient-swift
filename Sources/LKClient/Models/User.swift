@@ -55,6 +55,67 @@ struct UserBalance: Codable, Hashable, Sendable {
     }
 }
 
+/// 基础用户信息
+/// 搜索接口、集合创作者、集合记录返回的用户列表使用这个结构体
+struct UserInfo: Codable, Sendable {
+    static let `default` = UserInfo(
+        userId: 0,
+        nickName: "",
+        avatarURL: "",
+        passer: false,
+        gender: .unknown,
+        sign: "",
+        status: false,
+        bannerURL: "",
+        banEndDate: Date(timeIntervalSince1970: 0),
+        levelInfo: .default,
+        followingCount: 0,
+        commentCount: 0,
+        favoriteCount: 0,
+        articleCount: 0,
+        followerCount: 0,
+        medals: [],
+    )
+
+    var userId: UInt
+    var nickName: String
+    var avatarURL: String
+    @LKBool var passer: Bool
+    var gender: GenderType
+    var sign: String
+    @LKBool var status: Bool
+    var bannerURL: String
+    var banEndDate: Date
+    var levelInfo: LevelInfo
+
+    var followingCount: UInt
+    var commentCount: UInt
+    var favoriteCount: UInt
+    var articleCount: UInt
+    var followerCount: UInt
+    var medals: [Medal]
+
+    enum CodingKeys: String, CodingKey {
+        case userId = "uid"
+        case nickName = "nickname"
+        case avatarURL = "avatar"
+        case passer = "passer"
+        case gender = "gender"
+        case sign = "sign"
+        case status = "status"
+        case bannerURL = "banner"
+        case banEndDate = "ban_end_date"
+        case levelInfo = "level"
+
+        case followingCount = "following"
+        case commentCount = "comments"
+        case favoriteCount = "favorites"
+        case articleCount = "articles"
+        case followerCount = "followers"
+        case medals = "medals"
+    }
+}
+
 public struct UserProfileDetail: Codable, Hashable, Sendable {
     static let `default` = UserProfileDetail(
         userId: 0,

@@ -63,7 +63,7 @@ struct SeriesRecordInfo: Codable, Sendable {
     var updateTime: Date
     var groupId: GroupId
     var parentGroupId: ParentGroupId
-    var editors: [SeriesInfo.EditorInfo]
+    var editors: [UserInfo]
 
     enum CodingKeys: String, CodingKey {
         case seriesId = "sid"
