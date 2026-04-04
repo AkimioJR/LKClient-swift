@@ -45,8 +45,8 @@ public struct ArticleDetail: Codable, Sendable {
             }
         }
 
-        var ids: [String]
-        var info: [String: Info]
+        public var ids: [String]
+        public var info: [String: Info]
 
         enum CodingKeys: String, CodingKey {
             case ids = "ids"
