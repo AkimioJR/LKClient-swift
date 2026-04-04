@@ -7,82 +7,82 @@
 
 import Foundation
 
-// 文章支付类型
-public enum PriceType: UInt, Codable, Sendable {
-    case coin = 0  // 投币支付
-}
-
-public struct PayInfo: Codable, Sendable {
-    var userId: UInt  // 支付给谁
-    var priceType: PriceType  // 支付类型
-    var price: UInt  // 价格
-    @LKBool var alreadyPay: Bool  // 是否已经支付
-
-    enum CodingKeys: String, CodingKey {
-        case userId = "uid"
-        case priceType = "price_type"
-        case price = "price"
-        case alreadyPay = "is_paid"
-    }
-}
-
-public struct ImageResourceInfo: Codable, Sendable {
-    var resourceId: UInt
-    var width: UInt
-    var height: UInt
-    var ext: String
-    var filename: String
-    var url: String
-
-    enum CodingKeys: String, CodingKey {
-        case resourceId = "resid"
-        case width = "width"
-        case height = "height"
-        case ext = "ext"
-        case filename = "filename"
-        case url = "url"
-    }
-}
-
-public struct ArticleResource: Codable, Sendable {
-    var ids: [String]
-    var resourceInfo: [String: ImageResourceInfo]
-
-    enum CodingKeys: String, CodingKey {
-        case ids = "ids"
-        case resourceInfo = "res_info"
-    }
-
-    // 有时候 res_info 的空响应是一个list
-    // "res":{"ids":["2,661","2,662"],"res_info":[]}
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.ids = (try? container.decode([String].self, forKey: .ids)) ?? []
-
-        if let dict = try? container.decode([String: ImageResourceInfo].self, forKey: .resourceInfo)
-        {
-            self.resourceInfo = dict
-            return
+public struct ArticleDetail: Codable, Sendable {
+    public struct PayInfo: Codable, Sendable {
+        // 文章支付类型
+        public enum PriceType: UInt, Codable, Sendable {
+            case coin = 0  // 投币支付
         }
 
-        if let arr = try? container.decode([ImageResourceInfo].self, forKey: .resourceInfo) {
-            if arr.isEmpty {
-                self.resourceInfo = [:]
-                return
+        var userId: UInt  // 支付给谁
+        var priceType: PriceType  // 支付类型
+        var price: UInt  // 价格
+        @LKBool var alreadyPay: Bool  // 是否已经支付
+
+        enum CodingKeys: String, CodingKey {
+            case userId = "uid"
+            case priceType = "price_type"
+            case price = "price"
+            case alreadyPay = "is_paid"
+        }
+    }
+    public struct Resource: Codable, Sendable {
+        public struct ImageResource: Codable, Sendable {
+            var resourceId: UInt
+            var width: UInt
+            var height: UInt
+            var ext: String
+            var filename: String
+            var url: String
+
+            enum CodingKeys: String, CodingKey {
+                case resourceId = "resid"
+                case width = "width"
+                case height = "height"
+                case ext = "ext"
+                case filename = "filename"
+                case url = "url"
             }
         }
 
-        throw DecodingError.typeMismatch(
-            [String: ImageResourceInfo].self,
-            DecodingError.Context(
-                codingPath: [CodingKeys.resourceInfo],
-                debugDescription: "Expected dictionary or empty array for res_info"
-            )
-        )
-    }
-}
+        var ids: [String]
+        var info: [String: ImageResource]
 
-public struct ArticleDetail: Codable, Sendable {
+        enum CodingKeys: String, CodingKey {
+            case ids = "ids"
+            case info = "res_info"
+        }
+
+        // 有时候 res_info 的空响应是一个list
+        // "res":{"ids":["2,661","2,662"],"res_info":[]}
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.ids = (try? container.decode([String].self, forKey: .ids)) ?? []
+
+            if let dict = try? container.decode(
+                [String: ImageResource].self, forKey: .info)
+            {
+                self.info = dict
+                return
+            }
+
+            if let arr = try? container.decode([ImageResource].self, forKey: .info) {
+                if arr.isEmpty {
+                    self.info = [:]
+                    return
+                }
+            }
+
+            throw DecodingError.typeMismatch(
+                [String: ImageResource].self,
+                DecodingError.Context(
+                    codingPath: [CodingKeys.info],
+                    debugDescription: "Expected dictionary or empty array for res_info"
+                )
+            )
+        }
+    }
+
     static let `default` = ArticleDetail(
         articleId: 0,
         userId: 0,
@@ -137,7 +137,7 @@ public struct ArticleDetail: Codable, Sendable {
     @LKBool var alreadyFollow: Bool?  // 是否已关注作者
 
     var content: String?  // 需要simple为false
-    var resource: ArticleResource?  // 漫画文章可能没有这一项
+    var resource: Resource?  // 漫画文章可能没有这一项
     var payInfo: PayInfo?  // 支付信息，未支付文章才有
 
     enum CodingKeys: String, CodingKey {
