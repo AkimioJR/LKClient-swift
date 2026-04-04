@@ -11,10 +11,10 @@ public struct ParentGroupItem: Codable, Sendable {
     var id: ParentGroupId
     //var logo: String
     var coverType: CoverType
-    var articleItems: [ArticleInfo]
+    var items: [Item]
     var updateTime: Date
 
-    struct ArticleInfo: Codable, Sendable {
+    struct Item: Codable, Sendable {
         var articleId: UInt
         var title: String
         var coverURL: String
@@ -48,7 +48,7 @@ public struct ParentGroupItem: Codable, Sendable {
         case id = "gid"
         //case logo = "logo"
         case coverType = "cover_type"
-        case articleItems = "items"
+        case items = "items"
         case updateTime = "last_time"
     }
 }
