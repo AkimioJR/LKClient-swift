@@ -27,7 +27,7 @@ public struct ArticleDetail: Codable, Sendable {
         }
     }
     public struct Resource: Codable, Sendable {
-        public struct ImageResource: Codable, Sendable {
+        public struct Info: Codable, Sendable {
             var resourceId: UInt
             var width: UInt
             var height: UInt
@@ -46,7 +46,7 @@ public struct ArticleDetail: Codable, Sendable {
         }
 
         var ids: [String]
-        var info: [String: ImageResource]
+        var info: [String: Info]
 
         enum CodingKeys: String, CodingKey {
             case ids = "ids"
@@ -60,13 +60,13 @@ public struct ArticleDetail: Codable, Sendable {
             self.ids = (try? container.decode([String].self, forKey: .ids)) ?? []
 
             if let dict = try? container.decode(
-                [String: ImageResource].self, forKey: .info)
+                [String: Info].self, forKey: .info)
             {
                 self.info = dict
                 return
             }
 
-            if let arr = try? container.decode([ImageResource].self, forKey: .info) {
+            if let arr = try? container.decode([Info].self, forKey: .info) {
                 if arr.isEmpty {
                     self.info = [:]
                     return
@@ -74,7 +74,7 @@ public struct ArticleDetail: Codable, Sendable {
             }
 
             throw DecodingError.typeMismatch(
-                [String: ImageResource].self,
+                [String: Info].self,
                 DecodingError.Context(
                     codingPath: [CodingKeys.info],
                     debugDescription: "Expected dictionary or empty array for res_info"
@@ -83,7 +83,7 @@ public struct ArticleDetail: Codable, Sendable {
         }
     }
 
-    static let `default` = ArticleDetail(
+    static public let `default` = ArticleDetail(
         articleId: 0,
         userId: 0,
         title: "",
