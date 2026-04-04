@@ -53,7 +53,7 @@ public struct ParentGroupItem: Codable, Sendable {
     }
 }
 
-struct getParentGroupInfoRequest: Codable, Sendable {
+struct GetParentGroupRequest: Codable, Sendable {
     var securityKey: String
 
     enum CodingKeys: String, CodingKey {

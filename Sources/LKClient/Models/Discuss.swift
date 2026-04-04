@@ -86,7 +86,7 @@ struct GetDiscussTopicsRequest: Codable, Sendable {
     }
 }
 
-struct PostDiscussTopicsRequest: Codable, Sendable {
+struct PostDiscussTopicRequest: Codable, Sendable {
     var articleId: UInt
     var content: String
     var securityKey: String
