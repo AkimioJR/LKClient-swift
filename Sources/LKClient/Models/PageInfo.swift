@@ -16,6 +16,21 @@ public struct PageInfo: Codable, Sendable {
     public var model: UInt
     public var supportModels: [UInt]
 
+    public init(
+        count: UInt, size: UInt, currentPage: UInt, previousPage: UInt, nextPage: UInt,
+        hasPreviousPage: Bool, hasNextPage: Bool, model: UInt, supportModels: [UInt]
+    ) {
+        self.count = count
+        self.size = size
+        self.currentPage = currentPage
+        self.previousPage = previousPage
+        self.nextPage = nextPage
+        self.hasPreviousPage = hasPreviousPage
+        self.hasNextPage = hasNextPage
+        self.model = model
+        self.supportModels = supportModels
+    }
+
     enum CodingKeys: String, CodingKey {
         case count = "count"
         case size = "size"

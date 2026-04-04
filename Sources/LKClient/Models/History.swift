@@ -81,8 +81,8 @@ public struct SeriesRecordInfo: Codable, Sendable {
 }
 
 public struct HistoryRecord<T: Codable & Sendable>: Codable, Sendable {
-    var list: [T]
-    var pageInfo: PageInfo
+    public var list: [T]
+    public var pageInfo: PageInfo
 
     enum CodingKeys: String, CodingKey {
         case list = "list"

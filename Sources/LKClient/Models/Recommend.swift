@@ -75,7 +75,7 @@ public struct RecommendGroup: Codable, Sendable {
         }
     }
 
-    init(
+    public init(
         type: GroupType, itemType: ItemType, rows: UInt, columns: UInt, more: String,
         moreType: MoreType, moreParams: UInt, items: [Item]
     ) {
@@ -149,7 +149,7 @@ public struct RecommendGroup: Codable, Sendable {
                 UInt.self, forKey: RecommendGroup.Item.CodingKeys.hitCount)
         }
 
-        init(
+        public init(
             id: UInt, type: UInt, title: String, actionType: ClassType, actionParams: UInt,
             pictureUrl: String, commentCount: UInt, hitCount: UInt, groupId: GroupId? = nil
         ) {
@@ -219,6 +219,53 @@ public struct FollowingArticle: Codable, Hashable, Sendable {
     //var parentGroupId: ParentGroupId
     public var author: UserProfileDetail
     public var seriesName: String?
+
+    public init(
+        acticleId: UInt, seriesId: UInt, title: String, bannerURL: String, userId: UInt,
+        hitCount: UInt, commentCount: UInt, createTime: Date, updateTime: Date, shareCount: UInt,
+        favoriteCount: UInt, coinCount: UInt, likeCount: UInt, coverURL: String,
+        coverType: CoverType, groupId: GroupId, author: UserProfileDetail, seriesName: String? = nil
+    ) {
+        self.acticleId = acticleId
+        self.seriesId = seriesId
+        self.title = title
+        self.bannerURL = bannerURL
+        self.userId = userId
+        self.hitCount = hitCount
+        self.commentCount = commentCount
+        self.createTime = createTime
+        self.updateTime = updateTime
+        self.shareCount = shareCount
+        self.favoriteCount = favoriteCount
+        self.coinCount = coinCount
+        self.likeCount = likeCount
+        self.coverURL = coverURL
+        self.coverType = coverType
+        self.groupId = groupId
+        self.author = author
+        self.seriesName = seriesName
+    }
+    // public init(from decoder: any Decoder) throws {
+    //     let container = try decoder.container(keyedBy: CodingKeys.self)
+    //     self.acticleId = try container.decode(UInt.self, forKey: .acticleId)
+    //     self.seriesId = try container.decode(UInt.self, forKey: .seriesId)
+    //     self.title = try container.decode(String.self, forKey: .title)
+    //     self.bannerURL = try container.decode(String.self, forKey: .bannerURL)
+    //     self.userId = try container.decode(UInt.self, forKey: .userId)
+    //     self.hitCount = try container.decode(UInt.self, forKey: .hitCount)
+    //     self.commentCount = try container.decode(UInt.self, forKey: .commentCount)
+    //     self.createTime = try container.decode(Date.self, forKey: .createTime)
+    //     self.updateTime = try container.decode(Date.self, forKey: .updateTime)
+    //     self.shareCount = try container.decode(UInt.self, forKey: .shareCount)
+    //     self.favoriteCount = try container.decode(UInt.self, forKey: .favoriteCount)
+    //     self.coinCount = try container.decode(UInt.self, forKey: .coinCount)
+    //     self.likeCount = try container.decode(UInt.self, forKey: .likeCount)
+    //     self.coverURL = try container.decode(String.self, forKey: .coverURL)
+    //     self.coverType = try container.decode(CoverType.self, forKey: .coverType)
+    //     self.groupId = try container.decode(GroupId.self, forKey: .groupId)
+    //     self.author = try container.decode(UserProfileDetail.self, forKey: .author)
+    //     self.seriesName = try container.decodeIfPresent(String.self, forKey: .seriesName)
+    // }
 
     enum CodingKeys: String, CodingKey {
         case acticleId = "aid"

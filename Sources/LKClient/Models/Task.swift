@@ -16,7 +16,7 @@ public enum TaskType: UInt8, CaseIterable, Codable, Sendable {
     case completeAllTasks = 7  // 完成全部任务
     case checkin = 8  // 每日签到
 
-    var name: String {
+    public var name: String {
         switch self {
         case .readArticle:
             return "阅读一篇帖子"
@@ -112,20 +112,38 @@ struct TaskListRequest: Codable, Sendable {
     }
 }
 
-public struct TaskItem: Codable, Sendable {
-    var type: TaskType
-    var state: TaskState
-
-    enum CodingKeys: String, CodingKey {
-        case type = "id"
-        case state = "status"
-    }
-}
-
 public struct TaskList: Codable, Sendable {
-    var compelteAllTaskId: TaskType
-    var compelteAllTaskstate: TaskState
-    var items: [TaskItem]
+    public var compelteAllTaskId: TaskType
+    public var compelteAllTaskstate: TaskState
+    public var items: [Item]
+
+    public struct Item: Codable, Sendable {
+        public var type: TaskType
+        public var state: TaskState
+
+        enum CodingKeys: String, CodingKey {
+            case type = "id"
+            case state = "status"
+        }
+
+        public init(type: TaskType, state: TaskState) {
+            self.type = type
+            self.state = state
+        }
+    }
+
+    public init(compelteAllTaskId: TaskType, compelteAllTaskstate: TaskState, items: [Item]) {
+        self.compelteAllTaskId = compelteAllTaskId
+        self.compelteAllTaskstate = compelteAllTaskstate
+        self.items = items
+    }
+    // public init(from decoder: any Decoder) throws {
+    //     let container = try decoder.container(keyedBy: CodingKeys.self)
+    //     self.compelteAllTaskId = try container.decode(TaskType.self, forKey: .compelteAllTaskId)
+    //     self.compelteAllTaskstate = try container.decode(
+    //         TaskState.self, forKey: .compelteAllTaskstate)
+    //     self.items = try container.decode([Self.Item].self, forKey: .items)
+    // }
 
     enum CodingKeys: String, CodingKey {
         case compelteAllTaskId = "id"
@@ -145,8 +163,8 @@ struct TaskCompleteRequest: Codable, Sendable {
 }
 
 public struct TaskCompleteResponse: Codable, Sendable {
-    var experience: UInt
-    var coinCount: UInt
+    public var experience: UInt
+    public var coinCount: UInt
     // var balance: UInt
 
     enum CodingKeys: String, CodingKey {

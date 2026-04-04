@@ -107,7 +107,7 @@ public struct UserSearchResult: Codable, Sendable {
 }
 
 public struct SeriesSearchResult: Codable, Sendable {
-    struct UserInfo: Codable, Sendable {
+    public struct UserInfo: Codable, Sendable {
         static let `default` = UserInfo(
             userId: 0,
             nickName: "",
@@ -145,21 +145,21 @@ public struct SeriesSearchResult: Codable, Sendable {
             case levelInfo = "level"
         }
     }
-    struct SearchData: Codable, Sendable {
-        var author: String  // 作者（并非发布集合的作者）
-        var bannerURL: String
-        var coverURL: String
-        var coverType: CoverType
-        var editors: [UserInfo]
-        var groupId: GroupId
-        var hightlightName: String
-        var hitCount: UInt
-        var updateTime: Date
-        var likeCount: UInt
-        var seriesName: String
-        var order: UInt
-        var rateCount: UInt
-        var seriesId: UInt
+    public struct SearchData: Codable, Sendable {
+        public var author: String  // 作者（并非发布集合的作者）
+        public var bannerURL: String
+        public var coverURL: String
+        public var coverType: CoverType
+        public var editors: [UserInfo]
+        public var groupId: GroupId
+        public var hightlightName: String
+        public var hitCount: UInt
+        public var updateTime: Date
+        public var likeCount: UInt
+        public var seriesName: String
+        public var order: UInt
+        public var rateCount: UInt
+        public var seriesId: UInt
 
         enum CodingKeys: String, CodingKey {
             case author = "author"
@@ -179,8 +179,8 @@ public struct SeriesSearchResult: Codable, Sendable {
         }
     }
 
-    var list: [SearchData]
-    var pageInfo: PageInfo
+    public var list: [SearchData]
+    public var pageInfo: PageInfo
 
     enum CodingKeys: String, CodingKey {
         case list = "list"

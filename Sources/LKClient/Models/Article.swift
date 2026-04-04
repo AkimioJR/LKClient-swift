@@ -140,6 +140,46 @@ public struct ArticleDetail: Codable, Sendable {
     public var resource: Resource?  // 漫画文章可能没有这一项
     public var payInfo: PayInfo?  // 支付信息，未支付文章才有
 
+    public init(
+        articleId: UInt, userId: UInt, title: String, summary: String, hitCount: UInt,
+        likeCount: UInt, coinCount: UInt, favoriteCount: UInt, commentCount: UInt, shareCount: UInt,
+        createTime: Date, hasPoll: Bool, bannerURL: String, updateTime: Date, onlyPasser: Bool,
+        coverURL: String, lt: Date, groupId: GroupId, seriesId: UInt, author: UserProfileDetail,
+        cacheVersion: UInt, onlyApp: Bool, alreadyCoinCount: UInt? = nil, alreadyLike: Bool? = nil,
+        alreadyFavavorite: Bool? = nil, alreadyFollow: Bool? = nil, content: String? = nil,
+        resource: Resource? = nil, payInfo: PayInfo? = nil
+    ) {
+        self.articleId = articleId
+        self.userId = userId
+        self.title = title
+        self.summary = summary
+        self.hitCount = hitCount
+        self.likeCount = likeCount
+        self.coinCount = coinCount
+        self.favoriteCount = favoriteCount
+        self.commentCount = commentCount
+        self.shareCount = shareCount
+        self.createTime = createTime
+        self.hasPoll = hasPoll
+        self.bannerURL = bannerURL
+        self.updateTime = updateTime
+        self.onlyPasser = onlyPasser
+        self.coverURL = coverURL
+        self.lt = lt
+        self.groupId = groupId
+        self.seriesId = seriesId
+        self.author = author
+        self.cacheVersion = cacheVersion
+        self.onlyApp = onlyApp
+        self.alreadyCoinCount = alreadyCoinCount
+        self.alreadyLike = alreadyLike
+        self.alreadyFavavorite = alreadyFavavorite
+        self.alreadyFollow = alreadyFollow
+        self.content = content
+        self.resource = resource
+        self.payInfo = payInfo
+    }
+
     enum CodingKeys: String, CodingKey {
         case articleId = "aid"
         case userId = "uid"

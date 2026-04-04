@@ -19,6 +19,22 @@ public struct ReplyDetail: Codable, Sendable {
     public var content: String
     public var userInfo: UserProfileDetail
 
+    public init(
+        topicId: UInt, replyId: UInt, articleId: UInt, parentReplyId: UInt, repliedUserId: UInt,
+        userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserProfileDetail
+    ) {
+        self.topicId = topicId
+        self.replyId = replyId
+        self.articleId = articleId
+        self.parentReplyId = parentReplyId
+        self.repliedUserId = repliedUserId
+        self.userId = userId
+        self.likeCount = likeCount
+        self.time = time
+        self.content = content
+        self.userInfo = userInfo
+    }
+
     enum CodingKeys: String, CodingKey {
         case topicId = "tid"
         case replyId = "rid"
@@ -45,6 +61,24 @@ public struct TopicDetail: Codable, Sendable {
     public var userInfo: UserProfileDetail
     public var replyList: [ReplyDetail]
     @LKBool public var alreadyLike: Bool?  // 是否已点赞
+
+    public init(
+        topicId: UInt, articleId: UInt, userId: UInt, createTime: Date, updateTime: Date,
+        content: String, likeCount: UInt, replyCount: UInt, userInfo: UserProfileDetail,
+        replyList: [ReplyDetail], alreadyLike: Bool? = nil
+    ) {
+        self.topicId = topicId
+        self.articleId = articleId
+        self.userId = userId
+        self.createTime = createTime
+        self.updateTime = updateTime
+        self.content = content
+        self.likeCount = likeCount
+        self.replyCount = replyCount
+        self.userInfo = userInfo
+        self.replyList = replyList
+        self.alreadyLike = alreadyLike
+    }
 
     enum CodingKeys: String, CodingKey {
         case topicId = "tid"

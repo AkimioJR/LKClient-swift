@@ -16,6 +16,11 @@ public enum GenderType: UInt8, Codable, Hashable, Sendable {
 public struct LevelInfo: Codable, Hashable, Sendable {
     static let `default` = LevelInfo(experience: 0, level: .commoner)
 
+    public init(experience: UInt, level: Level) {
+        self.experience = experience
+        self.level = level
+    }
+
     public var experience: UInt
     public var level: Level
     // var name: String
@@ -39,6 +44,29 @@ public struct Medal: Codable, Hashable, Sendable {
     @LKBool public var equip: Bool?  // 是否装备？
     public var expiration: Date?  // 过期时间，可能为"0000-00-00 00:00:00"
     public var imgURL: String?
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.medalId = try container.decode(UInt.self, forKey: .medalId)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.desc = try container.decode(String.self, forKey: .desc)
+        self.medalsType = try container.decode(UInt.self, forKey: .medalsType)
+        self._equip = try container.decode(LKBool<Bool?>.self, forKey: .equip)
+        self.expiration = try container.decodeIfPresent(Date.self, forKey: .expiration)
+        self.imgURL = try container.decodeIfPresent(String.self, forKey: .imgURL)
+    }
+    public init(
+        medalId: UInt, name: String, desc: String, medalsType: UInt, equip: Bool? = nil,
+        expiration: Date? = nil, imgURL: String? = nil
+    ) {
+        self.medalId = medalId
+        self.name = name
+        self.desc = desc
+        self.medalsType = medalsType
+        self.equip = equip
+        self.expiration = expiration
+        self.imgURL = imgURL
+    }
 
     enum CodingKeys: String, CodingKey {
         case medalId = "medal_id"
@@ -82,6 +110,30 @@ public struct UserInfo: Codable, Sendable {
         followerCount: 0,
         medals: [],
     )
+
+    public init(
+        userId: UInt, nickName: String, avatarURL: String, passer: Bool, gender: GenderType,
+        sign: String, status: Bool, bannerURL: String, banEndDate: Date, levelInfo: LevelInfo,
+        followingCount: UInt, commentCount: UInt, favoriteCount: UInt, articleCount: UInt,
+        followerCount: UInt, medals: [Medal]
+    ) {
+        self.userId = userId
+        self.nickName = nickName
+        self.avatarURL = avatarURL
+        self.passer = passer
+        self.gender = gender
+        self.sign = sign
+        self.status = status
+        self.bannerURL = bannerURL
+        self.banEndDate = banEndDate
+        self.levelInfo = levelInfo
+        self.followingCount = followingCount
+        self.commentCount = commentCount
+        self.favoriteCount = favoriteCount
+        self.articleCount = articleCount
+        self.followerCount = followerCount
+        self.medals = medals
+    }
 
     public var userId: UInt
     public var nickName: String
@@ -133,6 +185,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
         status: false,
         bannerURL: "",
         banEndDate: Date(timeIntervalSince1970: 0),
+        medals: nil,
         followingCount: 0,
         articleCount: 0,
         followerCount: 0,
@@ -166,6 +219,35 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
     // 仅他人信息
     @LKBool public var alreadyFollow: Bool?  // 是否关注
     @LKBool public var alreadyBlock: Bool?  // 是否拉黑
+
+    public init(
+        userId: UInt, nickName: String, avatarURL: String, passer: Bool, gender: GenderType,
+        sign: String, status: Bool, bannerURL: String, banEndDate: Date, medals: [Medal]? = nil,
+        followingCount: UInt, articleCount: UInt, followerCount: UInt, levelInfo: LevelInfo,
+        favoriteCount: UInt? = nil, commentCount: UInt? = nil, balance: UserBalance? = nil,
+        securityKey: String? = nil, alreadyFollow: Bool? = nil, alreadyBlock: Bool? = nil
+    ) {
+        self.userId = userId
+        self.nickName = nickName
+        self.avatarURL = avatarURL
+        self.passer = passer
+        self.gender = gender
+        self.sign = sign
+        self.status = status
+        self.bannerURL = bannerURL
+        self.banEndDate = banEndDate
+        self.medals = medals
+        self.followingCount = followingCount
+        self.articleCount = articleCount
+        self.followerCount = followerCount
+        self.levelInfo = levelInfo
+        self.favoriteCount = favoriteCount
+        self.commentCount = commentCount
+        self.balance = balance
+        self.securityKey = securityKey
+        self.alreadyFollow = alreadyFollow
+        self.alreadyBlock = alreadyBlock
+    }
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"

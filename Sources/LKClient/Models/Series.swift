@@ -134,15 +134,28 @@ struct GetSeriesRequest: Codable, Sendable {
 }
 
 public struct SeriesRateInfo: Codable, Sendable {
-    struct RateDetail: Codable, Sendable {
-        var userId: UInt
-        var rate: UInt
-        var text: String
-        var time: Date
-        var score: UInt
-        var likeCount: UInt
-        var userInfo: UserProfileDetail
+    public struct RateDetail: Codable, Sendable {
+        public var userId: UInt
+        public var rate: UInt
+        public var text: String
+        public var time: Date
+        public var score: UInt
+        public var likeCount: UInt
+        public var userInfo: UserProfileDetail
         // @LKBool var alreadyLike: Bool
+
+        public init(
+            userId: UInt, rate: UInt, text: String, time: Date, score: UInt, likeCount: UInt,
+            userInfo: UserProfileDetail
+        ) {
+            self.userId = userId
+            self.rate = rate
+            self.text = text
+            self.time = time
+            self.score = score
+            self.likeCount = likeCount
+            self.userInfo = userInfo
+        }
 
         enum CodingKeys: String, CodingKey {
             case userId = "uid"
@@ -156,8 +169,8 @@ public struct SeriesRateInfo: Codable, Sendable {
         }
     }
 
-    var list: [RateDetail]
-    var pageInfo: PageInfo
+    public var list: [RateDetail]
+    public var pageInfo: PageInfo
 
     enum CodingKeys: String, CodingKey {
         case list = "list"
