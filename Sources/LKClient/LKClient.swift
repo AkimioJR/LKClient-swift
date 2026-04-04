@@ -82,7 +82,8 @@ public class LKClient {
         versionName: String = "0.11.51",
         versionCode: UInt = 191,
         // sign: String = ""
-        logger: Logger = Logger(subsystem: "github.com.AkimioJR.SwiftLK", category: "LKClient"),
+        logger: Logger = Logger(
+            subsystem: "github.com.AkimioJR.LKClient-swift", category: "LKClient"),
         session: URLSession = URLSession(configuration: .default)
     ) {
         self.securityKey = securityKey
