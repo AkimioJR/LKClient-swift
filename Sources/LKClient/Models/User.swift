@@ -7,6 +7,12 @@
 
 import Foundation
 
+public enum GenderType: UInt8, Codable, Hashable, Sendable {
+    case unknown = 0
+    case male = 1
+    case female = 2
+}
+
 struct LevelInfo: Codable, Hashable, Sendable {
     static let `default` = LevelInfo(experience: 0, level: .commoner)
 
