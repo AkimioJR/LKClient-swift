@@ -28,12 +28,12 @@ public struct ArticleDetail: Codable, Sendable {
     }
     public struct Resource: Codable, Sendable {
         public struct Info: Codable, Sendable {
-            var resourceId: UInt
-            var width: UInt
-            var height: UInt
-            var ext: String
-            var filename: String
-            var url: String
+            public var resourceId: UInt
+            public var width: UInt
+            public var height: UInt
+            public var ext: String
+            public var filename: String
+            public var url: String
 
             enum CodingKeys: String, CodingKey {
                 case resourceId = "resid"
