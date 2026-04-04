@@ -13,12 +13,15 @@ public actor LKClient {
     private let logger: Logger
     private let session: URLSession
 
+    @MainActor
     private var securityKey: String
 
+    @MainActor
     public func setSecurityKey(_ key: String) {
         self.securityKey = key
     }
 
+    @MainActor
     public var userId: UInt {
         let paths = self.securityKey.split(separator: ":")
         if paths.count != 3 {
@@ -27,6 +30,7 @@ public actor LKClient {
         return UInt(paths[1]) ?? 0
     }
 
+    @MainActor
     public var isLoggedIn: Bool {
         return self.userId != 0
     }
@@ -101,6 +105,7 @@ public actor LKClient {
         self.session = session
     }
 
+    @MainActor
     public func logout() {
         self.securityKey = ""
     }
@@ -206,7 +211,7 @@ public actor LKClient {
         )
 
         if let key = loginResponse.securityKey {
-            self.securityKey = key
+            await self.setSecurityKey(key)
         }
 
         return loginResponse
@@ -216,7 +221,7 @@ public actor LKClient {
     public func fetchUserInfo(userId: UInt) async throws -> UserProfileDetail {
         let req = GetUserInfoRequest(
             userId: userId,
-            securityKey: self.securityKey,
+            securityKey: await self.securityKey,
         )
         self.logger.debug("正在获取用户信息，userId: \(userId)")
         return try await self.sendRequest(
@@ -232,7 +237,7 @@ public actor LKClient {
             "\(shouldFollow ? "关注" : "取消关注")用户(userId: \(userId))"
         )
         let req = FollowRequest(
-            userId: userId, unFollow: !shouldFollow, securityKey: self.securityKey)
+            userId: userId, unFollow: !shouldFollow, securityKey: await self.securityKey)
         _ = try await self.sendRequest(
             path: "/api/user/follow",
             requestData: req,
@@ -253,7 +258,7 @@ public actor LKClient {
             articleType: articleType,
             page: page,
             pageSize: pageSize,
-            securityKey: self.securityKey
+            securityKey: await self.securityKey
         )
         return try await self.sendRequest(
             path: "/api/user/get-articles",
@@ -265,7 +270,7 @@ public actor LKClient {
     // 获取推荐项目
     public func fetchRecommendedGroups(classId: UInt) async throws -> [RecommendGroup] {
         self.logger.debug("正在获取推荐项目，classId: \(classId)")
-        let req = GetRecommendRequest(securityKey: self.securityKey, classId: classId)
+        let req = GetRecommendRequest(securityKey: await self.securityKey, classId: classId)
 
         return try await self.sendRequest(
             path: "/api/recom/get-recommends",
@@ -281,7 +286,7 @@ public actor LKClient {
         let req = GetFollowingArticlesRequest(
             page: page,
             pageSize: pageSize,
-            securityKey: self.securityKey
+            securityKey: await self.securityKey
         )
 
         return try await self.sendRequest(
@@ -294,7 +299,7 @@ public actor LKClient {
     // 获取分区信息
     public func fetchParentGroups() async throws -> [ParentGroupItem] {
         self.logger.debug("正在获取分区信息")
-        let req = GetParentGroupRequest(securityKey: self.securityKey)
+        let req = GetParentGroupRequest(securityKey: await self.securityKey)
         return try await self.sendRequest(
             path: "/api/group/main",
             requestData: req,
@@ -310,7 +315,7 @@ public actor LKClient {
             "正在获取分类下文章，groupId: \(groupId), parentGroupId: \(parentGroupId), page: \(page), pageSize: \(pageSize)"
         )
         let req = GetCategoryArticlesInfoRequest(
-            securityKey: self.securityKey,
+            securityKey: await self.securityKey,
             groupId: groupId,
             parentGroupId: parentGroupId,
             page: page,
@@ -332,7 +337,7 @@ public actor LKClient {
             "正在获取文章详情，articleId: \(articleId), includeContent: \(includeContent)"
         )
         let req = GetArticleDetailRequest(
-            securityKey: self.securityKey,
+            securityKey: await self.securityKey,
             articleId: articleId,
             simple: !includeContent,
         )
@@ -347,7 +352,7 @@ public actor LKClient {
     // 获取文章 tag
     public func fetchArticleTags(articleId: UInt) async throws -> [ArticleTag] {
         self.logger.debug("正在获取文章标签，articleId: \(articleId)")
-        let req = ArticleRequest(securityKey: self.securityKey, articleId: articleId)
+        let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
         return try await self.sendRequest(
             path: "/api/tag/get-article-tags",
             requestData: req,
@@ -358,7 +363,7 @@ public actor LKClient {
     // 点赞文章
     public func likeArticle(articleId: UInt) async throws {
         self.logger.debug("正在点赞文章，articleId: \(articleId)")
-        let req = ArticleRequest(securityKey: self.securityKey, articleId: articleId)
+        let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
         _ = try await self.sendRequest(
             path: "/api/article/like",
             requestData: req,
@@ -380,7 +385,7 @@ public actor LKClient {
         let req = HistoryRequest(
             favoriteId: favoriteId,
             classType: classType,
-            securityKey: self.securityKey,
+            securityKey: await self.securityKey,
         )
         try await self.applyHistoryChange(
             req: req,
@@ -394,7 +399,7 @@ public actor LKClient {
         let req = HistoryRequest(
             favoriteId: favoriteId,
             classType: classType,
-            securityKey: self.securityKey,
+            securityKey: await self.securityKey,
         )
         try await self.applyHistoryChange(
             req: req,
@@ -408,7 +413,7 @@ public actor LKClient {
         let req = HistoryRequest(
             favoriteId: favoriteId,
             classType: classType,
-            securityKey: self.securityKey,
+            securityKey: await self.securityKey,
         )
         try await self.applyHistoryChange(
             req: req,
@@ -428,8 +433,8 @@ public actor LKClient {
             classType: classType,
             page: page,
             pageSize: pageSize,
-            userId: self.userId,
-            securityKey: self.securityKey,
+            userId: await self.userId,
+            securityKey: await self.securityKey,
         )
         return try await self.sendRequest(
             path: "/api/history/get-history",
@@ -450,8 +455,8 @@ public actor LKClient {
             classType: classType,
             page: page,
             pageSize: pageSize,
-            userId: self.userId,
-            securityKey: self.securityKey,
+            userId: await self.userId,
+            securityKey: await self.securityKey,
         )
         return try await self.sendRequest(
             path: "/api/history/get-collections",
@@ -463,7 +468,7 @@ public actor LKClient {
     // 查询集合信息
     public func fetchSeries(seriesId: UInt) async throws -> SeriesInfo {
         self.logger.debug("正在查询集合信息，seriesId: \(seriesId)")
-        let req = GetSeriesRequest(seriesId: seriesId, securityKey: self.securityKey)
+        let req = GetSeriesRequest(seriesId: seriesId, securityKey: await self.securityKey)
         return try await self.sendRequest(
             path: "/api/series/get-info",
             requestData: req,
@@ -475,7 +480,7 @@ public actor LKClient {
     public func fetchSeriesRatings(seriesId: UInt, page: UInt) async throws -> SeriesRateInfo {
         self.logger.debug("正在查询集合评价，seriesId: \(seriesId), page: \(page)")
         let req = GetSeriesRateRequest(
-            seriesId: seriesId, page: page, securityKey: self.securityKey)
+            seriesId: seriesId, page: page, securityKey: await self.securityKey)
         return try await self.sendRequest(
             path: "/api/series/get-rate-list",
             requestData: req,
@@ -496,7 +501,7 @@ public actor LKClient {
     // 搜索用户
     public func searchUser(query: String, page: UInt) async throws -> UserSearchResult {
         let req = GetSearchRequest(
-            query: query, type: .user, page: page, securityKey: self.securityKey)
+            query: query, type: .user, page: page, securityKey: await self.securityKey)
         return try await self.sendRequest(
             path: "/api/search/search-result",
             requestData: req,
@@ -507,7 +512,7 @@ public actor LKClient {
     public func searchSeries(query: String, page: UInt) async throws -> SeriesSearchResult {
         self.logger.debug("正在搜索集合，query: \(query), page: \(page)")
         let req = GetSearchRequest(
-            query: query, type: .series, page: page, securityKey: self.securityKey)
+            query: query, type: .series, page: page, securityKey: await self.securityKey)
         return try await self.sendRequest(
             path: "/api/search/search-result",
             requestData: req,
@@ -520,7 +525,7 @@ public actor LKClient {
     {
         self.logger.debug("正在搜索文章，query: \(query), page: \(page), searchType: \(searchType)")
         let req = GetSearchRequest(
-            query: query, type: searchType, page: page, securityKey: self.securityKey)
+            query: query, type: searchType, page: page, securityKey: await self.securityKey)
         return try await self.sendRequest(
             path: "/api/search/search-result",
             requestData: req,
@@ -554,7 +559,7 @@ public actor LKClient {
             articleId: articleId,
             page: page,
             pageSize: pageSize,
-            securityKey: self.securityKey
+            securityKey: await self.securityKey
         )
         return try await self.sendRequest(
             path: "/api/discuss/get-topic",
@@ -568,7 +573,7 @@ public actor LKClient {
         let req = PostDiscussTopicRequest(
             articleId: articleId,
             content: content,
-            securityKey: self.securityKey
+            securityKey: await self.securityKey
         )
         return try await self.sendRequest(
             path: "/api/discuss/post-topic",
@@ -581,7 +586,7 @@ public actor LKClient {
         self.logger.debug("正在点赞评论话题，topicId: \(topicId)")
         let req = LikeTopicRequest(
             topicId: topicId,
-            securityKey: self.securityKey
+            securityKey: await self.securityKey
         )
         _ = try await self.sendRequest(
             path: "/api/discuss/like",
@@ -594,7 +599,7 @@ public actor LKClient {
     // 获取任务列表
     public func fetchTaskList() async throws -> TaskList {
         self.logger.debug("正在获取任务列表...")
-        let req = TaskListRequest(securityKey: self.securityKey)
+        let req = TaskListRequest(securityKey: await self.securityKey)
         return try await self.sendRequest(
             path: "/api/task/list",
             requestData: req,
@@ -604,7 +609,7 @@ public actor LKClient {
     // 完成任务
     public func completeTask(type: TaskType) async throws -> TaskCompleteResponse {
         self.logger.debug("正在完成任务，type: \(type)")
-        let req = TaskCompleteRequest(type: type, securityKey: self.securityKey)
+        let req = TaskCompleteRequest(type: type, securityKey: await self.securityKey)
         return try await self.sendRequest(
             path: "/api/task/complete",
             requestData: req,
@@ -632,7 +637,7 @@ public actor LKClient {
 
         // 添加 'd' 字段 (JSON 数据)
         let dJSON = """
-            {"md5":"\(md5Hash)","security_key":"\(self.securityKey)"}
+            {"md5":"\(md5Hash)","security_key":"\(await self.securityKey)"}
             """
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("content-disposition: form-data; name=\"d\"\r\n\r\n".data(using: .utf8)!)
