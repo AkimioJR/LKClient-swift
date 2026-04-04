@@ -1,0 +1,73 @@
+//
+//  Category.swift
+//  SwiftLK
+//
+//  Created by 秋澪 on 2025/11/11.
+//
+
+import Foundation
+
+public struct ArticleInfo: Codable, Sendable {
+    var articleId: UInt
+    var title: String
+    var coverURL: String
+    var bannerURL: String
+    var seriesId: UInt
+    var seriesName: String?  // 非集合文章值为nil
+    var hitCount: UInt
+    var commentCount: UInt
+    var userId: UInt
+    var author: FlexibleParam?  // 某些文章可能没有 author（如系列文章）
+    var avatarURL: String?  // 某些文章可能没有 avatar
+    var createTime: Date  // 文章创建时间
+    var updateTime: Date  // 最后更新时间
+    var groupId: GroupId?  // 某些文章可能没有 groupId（如系列文章）
+
+    var coverType: CoverType?  // 某些文章可能没有 coverType
+    @LKBool var isTop: Bool?  // 是否是置顶
+
+    enum CodingKeys: String, CodingKey, Sendable {
+        case articleId = "aid"
+        case title = "title"
+        case coverURL = "cover"
+        case bannerURL = "banner"
+        case seriesId = "sid"
+        case seriesName = "series_name"
+        case hitCount = "hits"
+        case commentCount = "comments"
+        case userId = "uid"
+        case author = "author"
+        case avatarURL = "avatar"
+        case createTime = "time"
+        case updateTime = "last_time"
+        case groupId = "gid"
+        case coverType = "cover_type"
+        case isTop = "is_top"
+    }
+}
+
+public struct CategoryArticlesInfo: Codable, Sendable {
+    var list: [ArticleInfo]
+    var pageInfo: PageInfo
+
+    enum CodingKeys: String, CodingKey {
+        case list = "list"
+        case pageInfo = "page_info"
+    }
+}
+
+struct GetCategoryArticlesInfoRequest: Codable, Sendable {
+    var securityKey: String
+    var groupId: GroupId
+    var parentGroupId: ParentGroupId
+    var page: UInt
+    var pageSize: UInt
+
+    enum CodingKeys: String, CodingKey {
+        case securityKey = "security_key"
+        case groupId = "gid"
+        case parentGroupId = "parent_gid"
+        case page = "page"
+        case pageSize = "pageSize"
+    }
+}
