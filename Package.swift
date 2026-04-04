@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "BBCode",
+  name: "LKClient",
   platforms: [
     .macOS(.v14),
     .iOS(.v17),
