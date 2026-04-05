@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum LKError: Error, Sendable {
+public enum LKError: Error, Sendable {
     static let missingRequestParameter: LKError = .apiError(code: 3)
     static let notSignedIn: LKError = .apiError(code: 5)
 
@@ -25,7 +25,7 @@ enum LKError: Error, Sendable {
 
 // MARK: - LocalizedError
 extension LKError: LocalizedError {
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .apiError(let code):
             switch code {
