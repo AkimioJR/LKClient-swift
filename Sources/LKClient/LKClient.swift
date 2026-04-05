@@ -113,8 +113,7 @@ public actor LKClient {
         self.securityKey = ""
     }
 
-    // MARK: - Private Helper Methods
-    private func decompress(_ data: Data) throws(LKError) -> Data {
+    static private func decompress(_ data: Data) throws(LKError) -> Data {
         guard let compressedData = Data(base64Encoded: data) else {
             throw LKError.base64DecodingError
         }
@@ -127,14 +126,15 @@ public actor LKClient {
         return nsData as Data
     }
 
-    private func sendRequest<T: Encodable & Sendable, R: Decodable & Sendable>(
+    @concurrent
+    nonisolated func sendRequest<T: Encodable & Sendable, R: Decodable & Sendable>(
         path: String,
         requestData: T?,
         client: ClientType? = nil,
         platform: PlatformType? = nil
     ) async throws(LKError) -> R {
-        guard let url = URL(string: apiEndpoint + path) else {
-            throw LKError.apiEndpointError("Invalid URL: \(apiEndpoint + path)")
+        guard let url = await URL(string: self.apiEndpoint + path) else {
+            throw await LKError.apiEndpointError("Invalid URL: \(self.apiEndpoint + path)")
         }
 
         var request = LKRequest(data: requestData)
@@ -144,30 +144,30 @@ public actor LKClient {
         if let p = platform {
             request.platform = p
         }
-        request.gz = self.gzip
-        request.isEncrypted = self.encrypted
+        request.gz = await self.gzip
+        request.isEncrypted = await self.encrypted
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        urlRequest.setValue(await self.userAgent, forHTTPHeaderField: "User-Agent")
 
         do {
             let jsonData = try JSONEncoder().encode(request)
             urlRequest.httpBody = jsonData
         } catch {
-            throw LKError.decodingError(error)
+            throw .decodingError(error)
         }
 
         var data: Data
         do {
             (data, _) = try await self.session.data(for: urlRequest)
         } catch {
-            throw LKError.networkError(error)
+            throw .networkError(error)
         }
 
         if request.gz {
-            data = try decompress(data)
+            data = try Self.decompress(data)
         }
 
         do {
@@ -184,12 +184,12 @@ public actor LKClient {
             )
             debugPrint("response data: \(String(data: data, encoding: .utf8) ?? "nil")")
             debugPrint("error: \(error)")
-            throw LKError.decodingError(error)
+            throw .decodingError(error)
         }
     }
     /// 重载版本
     /// 适用于不需要请求体的API调用
-    private func sendRequest<R: Decodable & Sendable>(
+    func sendRequest<R: Decodable & Sendable>(
         path: String,
         client: ClientType? = nil,
         platform: PlatformType? = nil
@@ -203,7 +203,7 @@ public actor LKClient {
     }
     /// 重载版本
     /// 适用于不需要请求体且不关心响应体的API调用
-    private func sendVoidRequest<T: Encodable & Sendable>(
+    func sendVoidRequest<T: Encodable & Sendable>(
         path: String,
         requestData: T?,
         client: ClientType? = nil,
@@ -219,7 +219,7 @@ public actor LKClient {
     }
     /// 重载版本
     /// 适用于不需要请求体且不关心响应体的API调用
-    private func sendVoidRequest(
+    func sendVoidRequest(
         path: String,
         client: ClientType? = nil,
         platform: PlatformType? = nil
