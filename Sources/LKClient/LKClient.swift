@@ -127,7 +127,6 @@ public actor LKClient {
     private func sendRequest<T: Encodable & Sendable, R: Decodable & Sendable>(
         path: String,
         requestData: T,
-        responseType: R.Type,
         client: ClientType? = nil,
         platform: PlatformType? = nil
     ) async throws -> R {
@@ -194,7 +193,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/smiley/get-ver",
             requestData: EmptyRequest(),
-            responseType: UInt.self
         )
     }
 
@@ -204,10 +202,9 @@ public actor LKClient {
 
         self.logger.debug("正在登录用户: \(username)")
 
-        let loginResponse = try await self.sendRequest(
+        let loginResponse: UserProfileDetail = try await self.sendRequest(
             path: "/api/user/login",
             requestData: loginRequest,
-            responseType: UserProfileDetail.self
         )
 
         if let key = loginResponse.securityKey {
@@ -227,7 +224,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/user/info",
             requestData: req,
-            responseType: UserProfileDetail.self
         )
     }
 
@@ -238,11 +234,11 @@ public actor LKClient {
         )
         let req = FollowRequest(
             userId: userId, unFollow: !shouldFollow, securityKey: await self.securityKey)
-        _ = try await self.sendRequest(
-            path: "/api/user/follow",
-            requestData: req,
-            responseType: EmptyResponse.self
-        )
+        _ =
+            try await self.sendRequest(
+                path: "/api/user/follow",
+                requestData: req
+            ) as EmptyResponse
     }
 
     // 获取用户的文章
@@ -263,7 +259,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/user/get-articles",
             requestData: req,
-            responseType: UserArticle.self
         )
     }
 
@@ -275,7 +270,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/recom/get-recommends",
             requestData: req,
-            responseType: [RecommendGroup].self
         )
     }
     // 获取用户关注动态
@@ -292,7 +286,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/recom/get-follows",
             requestData: req,
-            responseType: [FollowingArticle].self
         )
     }
 
@@ -303,7 +296,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/group/main",
             requestData: req,
-            responseType: [ParentGroupItem].self
         )
     }
 
@@ -325,7 +317,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/category/get-article-by-cate",
             requestData: req,
-            responseType: CategoryArticlesInfo.self
         )
     }
 
@@ -345,7 +336,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/article/get-detail",
             requestData: req,
-            responseType: ArticleDetail.self,
         )
     }
 
@@ -356,7 +346,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/tag/get-article-tags",
             requestData: req,
-            responseType: [ArticleTag].self,
         )
     }
 
@@ -364,19 +353,19 @@ public actor LKClient {
     public func likeArticle(articleId: UInt) async throws {
         self.logger.debug("正在点赞文章，articleId: \(articleId)")
         let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
-        _ = try await self.sendRequest(
-            path: "/api/article/like",
-            requestData: req,
-            responseType: EmptyResponse.self,
-        )
+        _ =
+            try await self.sendRequest(
+                path: "/api/article/like",
+                requestData: req,
+            ) as EmptyResponse
     }
 
     private func applyHistoryChange(req: HistoryRequest, path: String) async throws {
-        _ = try await self.sendRequest(
-            path: path,
-            requestData: req,
-            responseType: EmptyResponse.self,
-        )
+        _ =
+            try await self.sendRequest(
+                path: path,
+                requestData: req,
+            ) as EmptyResponse
     }
 
     // 添加历史记录
@@ -439,7 +428,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/history/get-history",
             requestData: req,
-            responseType: HistoryRecord<T>.self,
         )
     }
 
@@ -461,7 +449,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/history/get-collections",
             requestData: req,
-            responseType: HistoryRecord<T>.self,
         )
     }
 
@@ -472,7 +459,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/series/get-info",
             requestData: req,
-            responseType: SeriesInfo.self,
         )
     }
 
@@ -484,7 +470,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/series/get-rate-list",
             requestData: req,
-            responseType: SeriesRateInfo.self,
         )
     }
 
@@ -494,7 +479,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/search/get-search-tags",
             requestData: EmptyRequest(),
-            responseType: [HotSearchTag].self,
         )
     }
 
@@ -505,7 +489,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/search/search-result",
             requestData: req,
-            responseType: UserSearchResult.self,
         )
     }
     // 搜索集合
@@ -516,7 +499,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/search/search-result",
             requestData: req,
-            responseType: SeriesSearchResult.self,
         )
     }
     // 搜索文章
@@ -529,7 +511,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/search/search-result",
             requestData: req,
-            responseType: ArticleSearchResult.self,
         )
     }
     // 搜索资讯
@@ -564,7 +545,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/discuss/get-topic",
             requestData: req,
-            responseType: DiscussInfo.self,
         )
     }
     // 发布文章评论话题
@@ -578,7 +558,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/discuss/post-topic",
             requestData: req,
-            responseType: UInt.self,
         )
     }
     // 点赞评论话题
@@ -588,11 +567,11 @@ public actor LKClient {
             topicId: topicId,
             securityKey: await self.securityKey
         )
-        _ = try await self.sendRequest(
-            path: "/api/discuss/like",
-            requestData: req,
-            responseType: EmptyResponse.self,
-        )
+        _ =
+            try await self.sendRequest(
+                path: "/api/discuss/like",
+                requestData: req,
+            ) as EmptyResponse
     }
 
     // MARK: - 任务 Task
@@ -603,7 +582,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/task/list",
             requestData: req,
-            responseType: TaskList.self,
         )
     }
     // 完成任务
@@ -613,7 +591,6 @@ public actor LKClient {
         return try await self.sendRequest(
             path: "/api/task/complete",
             requestData: req,
-            responseType: TaskCompleteResponse.self,
         )
     }
 
