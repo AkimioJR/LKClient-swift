@@ -111,7 +111,7 @@ public actor LKClient {
     }
 
     // MARK: - Private Helper Methods
-    private func decompress(_ data: Data) throws -> Data {
+    private func decompress(_ data: Data) throws(LKError) -> Data {
         guard let compressedData = Data(base64Encoded: data) else {
             throw LKError.base64DecodingError
         }
@@ -129,7 +129,7 @@ public actor LKClient {
         requestData: T,
         client: ClientType? = nil,
         platform: PlatformType? = nil
-    ) async throws -> R {
+    ) async throws(LKError) -> R {
         guard let url = URL(string: apiEndpoint + path) else {
             throw LKError.apiEndpointError("Invalid URL: \(apiEndpoint + path)")
         }
@@ -183,12 +183,12 @@ public actor LKClient {
             )
             debugPrint("response data: \(String(data: data, encoding: .utf8) ?? "nil")")
             debugPrint("error: \(error)")
-            throw error
+            throw LKError.decodingError(error)
         }
     }
 
     // 获取服务端版本信息
-    public func fetchServerVersion() async throws -> UInt {
+    public func fetchServerVersion() async throws(LKError) -> UInt {
         self.logger.debug("获取服务器版本...")
         return try await self.sendRequest(
             path: "/api/smiley/get-ver",
@@ -197,7 +197,8 @@ public actor LKClient {
     }
 
     // 登录客户端
-    public func login(username: String, password: String) async throws -> UserProfileDetail {
+    public func login(username: String, password: String) async throws(LKError) -> UserProfileDetail
+    {
         let loginRequest = LoginRequest(username: username, password: password)
 
         self.logger.debug("正在登录用户: \(username)")
@@ -215,7 +216,7 @@ public actor LKClient {
     }
 
     // 获取用户信息
-    public func fetchUserInfo(userId: UInt) async throws -> UserProfileDetail {
+    public func fetchUserInfo(userId: UInt) async throws(LKError) -> UserProfileDetail {
         let req = GetUserInfoRequest(
             userId: userId,
             securityKey: await self.securityKey,
@@ -244,7 +245,7 @@ public actor LKClient {
     // 获取用户的文章
     public func fetchUserArticles(
         userId: UInt, articleType: ArticleType, page: UInt, pageSize: UInt = 20
-    ) async throws -> UserArticle {
+    ) async throws(LKError) -> UserArticle {
         self.logger.debug(
             "正在获取用户(userId: \(userId))文章: articleType: \(articleType), page: \(page), pageSize: \(pageSize) "
         )
@@ -263,7 +264,7 @@ public actor LKClient {
     }
 
     // 获取推荐项目
-    public func fetchRecommendedGroups(classId: UInt) async throws -> [RecommendGroup] {
+    public func fetchRecommendedGroups(classId: UInt) async throws(LKError) -> [RecommendGroup] {
         self.logger.debug("正在获取推荐项目，classId: \(classId)")
         let req = GetRecommendRequest(securityKey: await self.securityKey, classId: classId)
 
@@ -290,7 +291,7 @@ public actor LKClient {
     }
 
     // 获取分区信息
-    public func fetchParentGroups() async throws -> [ParentGroupItem] {
+    public func fetchParentGroups() async throws(LKError) -> [ParentGroupItem] {
         self.logger.debug("正在获取分区信息")
         let req = GetParentGroupRequest(securityKey: await self.securityKey)
         return try await self.sendRequest(
@@ -302,7 +303,7 @@ public actor LKClient {
     // 获取分类下文章
     public func fetchCategoryArticles(
         groupId: GroupId, parentGroupId: ParentGroupId, page: UInt, pageSize: UInt = 40
-    ) async throws -> CategoryArticlesInfo {
+    ) async throws(LKError) -> CategoryArticlesInfo {
         self.logger.debug(
             "正在获取分类下文章，groupId: \(groupId), parentGroupId: \(parentGroupId), page: \(page), pageSize: \(pageSize)"
         )
@@ -340,7 +341,7 @@ public actor LKClient {
     }
 
     // 获取文章 tag
-    public func fetchArticleTags(articleId: UInt) async throws -> [ArticleTag] {
+    public func fetchArticleTags(articleId: UInt) async throws(LKError) -> [ArticleTag] {
         self.logger.debug("正在获取文章标签，articleId: \(articleId)")
         let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
         return try await self.sendRequest(
@@ -413,7 +414,7 @@ public actor LKClient {
     // 查询历史记录
     public func fetchHistoryRecords<T: Decodable>(
         type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
-    ) async throws -> HistoryRecord<T> {
+    ) async throws(LKError) -> HistoryRecord<T> {
         self.logger.debug(
             "正在查询历史记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
         )
@@ -434,7 +435,7 @@ public actor LKClient {
     // 查询收藏列表
     public func fetchFavoriteRecords<T: Decodable>(
         type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
-    ) async throws -> HistoryRecord<T> {
+    ) async throws(LKError) -> HistoryRecord<T> {
         self.logger.debug(
             "正在查询收藏记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
         )
@@ -453,7 +454,7 @@ public actor LKClient {
     }
 
     // 查询集合信息
-    public func fetchSeries(seriesId: UInt) async throws -> SeriesInfo {
+    public func fetchSeries(seriesId: UInt) async throws(LKError) -> SeriesInfo {
         self.logger.debug("正在查询集合信息，seriesId: \(seriesId)")
         let req = GetSeriesRequest(seriesId: seriesId, securityKey: await self.securityKey)
         return try await self.sendRequest(
@@ -463,7 +464,9 @@ public actor LKClient {
     }
 
     // 查询集合评价
-    public func fetchSeriesRatings(seriesId: UInt, page: UInt) async throws -> SeriesRateInfo {
+    public func fetchSeriesRatings(seriesId: UInt, page: UInt) async throws(LKError)
+        -> SeriesRateInfo
+    {
         self.logger.debug("正在查询集合评价，seriesId: \(seriesId), page: \(page)")
         let req = GetSeriesRateRequest(
             seriesId: seriesId, page: page, securityKey: await self.securityKey)
@@ -474,7 +477,7 @@ public actor LKClient {
     }
 
     // 获取热门搜索词条
-    public func fetchHotSearchTags() async throws -> [HotSearchTag] {
+    public func fetchHotSearchTags() async throws(LKError) -> [HotSearchTag] {
         self.logger.debug("正在获取热门搜索词条...")
         return try await self.sendRequest(
             path: "/api/search/get-search-tags",
@@ -483,7 +486,7 @@ public actor LKClient {
     }
 
     // 搜索用户
-    public func searchUser(query: String, page: UInt) async throws -> UserSearchResult {
+    public func searchUser(query: String, page: UInt) async throws(LKError) -> UserSearchResult {
         let req = GetSearchRequest(
             query: query, type: .user, page: page, securityKey: await self.securityKey)
         return try await self.sendRequest(
@@ -492,7 +495,8 @@ public actor LKClient {
         )
     }
     // 搜索集合
-    public func searchSeries(query: String, page: UInt) async throws -> SeriesSearchResult {
+    public func searchSeries(query: String, page: UInt) async throws(LKError) -> SeriesSearchResult
+    {
         self.logger.debug("正在搜索集合，query: \(query), page: \(page)")
         let req = GetSearchRequest(
             query: query, type: .series, page: page, securityKey: await self.securityKey)
@@ -502,8 +506,8 @@ public actor LKClient {
         )
     }
     // 搜索文章
-    public func searchArticle(query: String, page: UInt, searchType: SearchType) async throws
-        -> ArticleSearchResult
+    public func searchArticle(query: String, page: UInt, searchType: SearchType)
+        async throws(LKError) -> ArticleSearchResult
     {
         self.logger.debug("正在搜索文章，query: \(query), page: \(page), searchType: \(searchType)")
         let req = GetSearchRequest(
@@ -514,19 +518,23 @@ public actor LKClient {
         )
     }
     // 搜索资讯
-    public func searchNews(query: String, page: UInt) async throws -> ArticleSearchResult {
+    public func searchNews(query: String, page: UInt) async throws(LKError) -> ArticleSearchResult {
         return try await self.searchArticle(query: query, page: page, searchType: .news)
     }
     // 搜索动画
-    public func searchAnime(query: String, page: UInt) async throws -> ArticleSearchResult {
+    public func searchAnime(query: String, page: UInt) async throws(LKError) -> ArticleSearchResult
+    {
         return try await self.searchArticle(query: query, page: page, searchType: .anime)
     }
     // 搜索漫画
-    public func searchManga(query: String, page: UInt) async throws -> ArticleSearchResult {
+    public func searchManga(query: String, page: UInt) async throws(LKError) -> ArticleSearchResult
+    {
         return try await self.searchArticle(query: query, page: page, searchType: .manga)
     }
     // 搜索轻小说
-    public func searchLightnovel(query: String, page: UInt) async throws -> ArticleSearchResult {
+    public func searchLightnovel(query: String, page: UInt) async throws(LKError)
+        -> ArticleSearchResult
+    {
         return try await self.searchArticle(query: query, page: page, searchType: .lightnovel)
     }
 
@@ -548,7 +556,8 @@ public actor LKClient {
         )
     }
     // 发布文章评论话题
-    public func postDiscussionTopic(articleId: UInt, content: String) async throws -> UInt {
+    public func postDiscussionTopic(articleId: UInt, content: String) async throws(LKError) -> UInt
+    {
         self.logger.debug("正在发布文章评论话题，articleId: \(articleId), content: \(content)")
         let req = PostDiscussTopicRequest(
             articleId: articleId,
@@ -576,7 +585,7 @@ public actor LKClient {
 
     // MARK: - 任务 Task
     // 获取任务列表
-    public func fetchTaskList() async throws -> TaskList {
+    public func fetchTaskList() async throws(LKError) -> TaskList {
         self.logger.debug("正在获取任务列表...")
         let req = TaskListRequest(securityKey: await self.securityKey)
         return try await self.sendRequest(
@@ -585,7 +594,7 @@ public actor LKClient {
         )
     }
     // 完成任务
-    public func completeTask(type: TaskType) async throws -> TaskCompleteResponse {
+    public func completeTask(type: TaskType) async throws(LKError) -> TaskCompleteResponse {
         self.logger.debug("正在完成任务，type: \(type)")
         let req = TaskCompleteRequest(type: type, securityKey: await self.securityKey)
         return try await self.sendRequest(
