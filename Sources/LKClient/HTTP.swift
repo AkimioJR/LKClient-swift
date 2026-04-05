@@ -12,13 +12,13 @@ struct LKRequest<T: Encodable & Sendable>: Encodable, Sendable {
     @LKBool var isEncrypted: Bool
     var client: ClientType
     var platform: PlatformType
-    var data: T
+    var data: T?
     var versionName: String
     var versionCode: UInt
     var sign: String
 
     init(
-        data: T,
+        data: T? = nil,
         _ gz: Bool = false,
         _ isEncrypted: Bool = false,
         _ client: ClientType = .app,
@@ -71,22 +71,11 @@ struct LKResponse<T: Decodable & Sendable>: Decodable, Sendable {
         // 根据 code 处理不同情况
         switch self.code {
         case 0:  // 成功，解析 data 字段
-            if T.self != EmptyResponse.self {
-                self.data = try container.decode(T.self, forKey: .data)
-            }
+            self.data = try container.decode(T.self, forKey: .data)
 
         default:  // API 错误，不解析 data
             self.data = nil
             throw LKError.apiError(code: self.code)
         }
     }
-
-    // func encode(to encoder: Encoder) throws {
-    //     var container = encoder.container(keyedBy: CodingKeys.self)
-    //     try container.encode(code, forKey: .code)
-    //     try container.encode(timeStamp, forKey: .timeStamp)
-    //     if let data = data {
-    //         try container.encode(data, forKey: .data)
-    //     }
-    // }
 }

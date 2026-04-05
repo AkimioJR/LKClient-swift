@@ -10,6 +10,9 @@ import Foundation
 import OSLog
 
 public actor LKClient {
+    private struct EmptyRequest: Encodable, Sendable {}
+    private struct EmptyResponse: Decodable, Sendable {}
+
     private let logger: Logger
     private let session: URLSession
 
@@ -126,7 +129,7 @@ public actor LKClient {
 
     private func sendRequest<T: Encodable & Sendable, R: Decodable & Sendable>(
         path: String,
-        requestData: T,
+        requestData: T?,
         client: ClientType? = nil,
         platform: PlatformType? = nil
     ) async throws(LKError) -> R {
@@ -171,8 +174,6 @@ public actor LKClient {
             let resp = try Self.jsonDecoder.decode(LKResponse<R>.self, from: data)
             if let responseData = resp.data {
                 return responseData
-            } else if R.self == EmptyResponse.self {
-                return EmptyResponse() as! R
             } else {
                 throw LKError.apiEmptyDataError
             }
@@ -186,13 +187,56 @@ public actor LKClient {
             throw LKError.decodingError(error)
         }
     }
+    /// 重载版本
+    /// 适用于不需要请求体的API调用
+    private func sendRequest<R: Decodable & Sendable>(
+        path: String,
+        client: ClientType? = nil,
+        platform: PlatformType? = nil
+    ) async throws(LKError) -> R {
+        try await self.sendRequest(
+            path: path,
+            requestData: Optional<EmptyRequest>.none,
+            client: client,
+            platform: platform
+        )
+    }
+    /// 重载版本
+    /// 适用于不需要请求体且不关心响应体的API调用
+    private func sendVoidRequest<T: Encodable & Sendable>(
+        path: String,
+        requestData: T?,
+        client: ClientType? = nil,
+        platform: PlatformType? = nil
+    ) async throws(LKError) {
+        _ =
+            try await self.sendRequest(
+                path: path,
+                requestData: requestData,
+                client: client,
+                platform: platform
+            ) as EmptyResponse
+    }
+    /// 重载版本
+    /// 适用于不需要请求体且不关心响应体的API调用
+    private func sendVoidRequest(
+        path: String,
+        client: ClientType? = nil,
+        platform: PlatformType? = nil
+    ) async throws(LKError) {
+        try await self.sendVoidRequest(
+            path: path,
+            requestData: Optional<EmptyRequest>.none,
+            client: client,
+            platform: platform
+        )
+    }
 
     // 获取服务端版本信息
     public func fetchServerVersion() async throws(LKError) -> UInt {
         self.logger.debug("获取服务器版本...")
         return try await self.sendRequest(
-            path: "/api/smiley/get-ver",
-            requestData: EmptyRequest(),
+            path: "/api/smiley/get-ver"
         )
     }
 
@@ -235,11 +279,10 @@ public actor LKClient {
         )
         let req = FollowRequest(
             userId: userId, unFollow: !shouldFollow, securityKey: await self.securityKey)
-        _ =
-            try await self.sendRequest(
-                path: "/api/user/follow",
-                requestData: req
-            ) as EmptyResponse
+        try await self.sendVoidRequest(
+            path: "/api/user/follow",
+            requestData: req
+        )
     }
 
     // 获取用户的文章
@@ -354,19 +397,17 @@ public actor LKClient {
     public func likeArticle(articleId: UInt) async throws {
         self.logger.debug("正在点赞文章，articleId: \(articleId)")
         let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
-        _ =
-            try await self.sendRequest(
-                path: "/api/article/like",
-                requestData: req,
-            ) as EmptyResponse
+        try await self.sendVoidRequest(
+            path: "/api/article/like",
+            requestData: req,
+        )
     }
 
     private func applyHistoryChange(req: HistoryRequest, path: String) async throws {
-        _ =
-            try await self.sendRequest(
-                path: path,
-                requestData: req,
-            ) as EmptyResponse
+        try await self.sendVoidRequest(
+            path: path,
+            requestData: req,
+        )
     }
 
     // 添加历史记录
@@ -480,8 +521,7 @@ public actor LKClient {
     public func fetchHotSearchTags() async throws(LKError) -> [HotSearchTag] {
         self.logger.debug("正在获取热门搜索词条...")
         return try await self.sendRequest(
-            path: "/api/search/get-search-tags",
-            requestData: EmptyRequest(),
+            path: "/api/search/get-search-tags"
         )
     }
 
@@ -576,11 +616,10 @@ public actor LKClient {
             topicId: topicId,
             securityKey: await self.securityKey
         )
-        _ =
-            try await self.sendRequest(
-                path: "/api/discuss/like",
-                requestData: req,
-            ) as EmptyResponse
+        try await self.sendVoidRequest(
+            path: "/api/discuss/like",
+            requestData: req,
+        )
     }
 
     // MARK: - 任务 Task

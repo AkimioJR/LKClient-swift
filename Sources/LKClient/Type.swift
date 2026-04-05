@@ -54,10 +54,3 @@ public enum FlexibleParam: Codable, Sendable {
         return nil
     }
 }
-
-// 空请求结构体，用于不需要传递数据的API调用
-public struct EmptyRequest: Codable, Sendable {
-    public init() {}
-}
-
-public typealias EmptyResponse = EmptyRequest
