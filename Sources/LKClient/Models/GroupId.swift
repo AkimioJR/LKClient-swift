@@ -67,7 +67,7 @@ public enum ParentGroupId: UInt8, Codable, Comparable, Sendable {
     }
 
     public var logo: Image {
-        return Image("parent-group-id/\(self.rawValue)")
+        return Image("ParentGroup-Logo/\(self.rawValue)", bundle: .module)
     }
 }
 
