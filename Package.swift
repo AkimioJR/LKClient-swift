@@ -19,7 +19,10 @@ let package = Package(
   targets: [
     .target(
       name: "LKClient",
-      dependencies: []
+      dependencies: [],
+      resources: [
+        .process("Resources")
+      ]
     )
   ]
 )
