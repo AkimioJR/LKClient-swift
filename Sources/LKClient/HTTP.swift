@@ -65,15 +65,15 @@ struct LKResponse<T: Decodable & Sendable>: Decodable, Sendable {
 
         // 首先解析 code 和 timeStamp
         self.code = try container.decode(UInt.self, forKey: .code)
-        let timestamp = try container.decode(UInt64.self, forKey: .timeStamp)
-        self.time = Date(timeIntervalSince1970: TimeInterval(timestamp))
 
         // 根据 code 处理不同情况
         switch self.code {
-        case 0:  // 成功，解析 data 字段
+        case 0:  // 成功
+            let timestamp = try container.decode(UInt64.self, forKey: .timeStamp)
+            self.time = Date(timeIntervalSince1970: TimeInterval(timestamp))
             self.data = try container.decode(T.self, forKey: .data)
 
-        default:  // API 错误，不解析 data
+        default:  // 错误
             self.data = nil
             throw LKError.apiError(code: self.code)
         }
