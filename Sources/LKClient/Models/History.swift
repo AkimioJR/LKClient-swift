@@ -53,6 +53,61 @@ public struct ArticleRecordInfo: Codable, Sendable {
 }
 
 public struct SeriesRecordInfo: Codable, Sendable {
+    public struct EditorInfo: Codable, Sendable {
+        static public let `default` = EditorInfo(
+            userId: 0,
+            nickName: "",
+            avatarURL: "",
+            passer: false,
+            gender: .unknown,
+            sign: "",
+            status: false,
+            bannerURL: "",
+            banEndDate: Date(timeIntervalSince1970: 0),
+            levelInfo: .default,
+        )
+
+        public init(
+            userId: UInt, nickName: String, avatarURL: String, passer: Bool, gender: GenderType,
+            sign: String, status: Bool, bannerURL: String, banEndDate: Date, levelInfo: LevelInfo,
+        ) {
+            self.userId = userId
+            self.nickName = nickName
+            self.avatarURL = avatarURL
+            self.passer = passer
+            self.gender = gender
+            self.sign = sign
+            self.status = status
+            self.bannerURL = bannerURL
+            self.banEndDate = banEndDate
+            self.levelInfo = levelInfo
+        }
+
+        public var userId: UInt
+        public var nickName: String
+        public var avatarURL: String
+        @LKBool public var passer: Bool
+        public var gender: GenderType
+        public var sign: String
+        @LKBool public var status: Bool
+        public var bannerURL: String
+        public var banEndDate: Date
+        public var levelInfo: LevelInfo
+
+        enum CodingKeys: String, CodingKey {
+            case userId = "uid"
+            case nickName = "nickname"
+            case avatarURL = "avatar"
+            case passer = "passer"
+            case gender = "gender"
+            case sign = "sign"
+            case status = "status"
+            case bannerURL = "banner"
+            case banEndDate = "ban_end_date"
+            case levelInfo = "level"
+        }
+    }
+
     public var seriesId: UInt
     public var name: String
     public var author: String
@@ -63,7 +118,7 @@ public struct SeriesRecordInfo: Codable, Sendable {
     public var updateTime: Date
     public var groupId: GroupId
     public var parentGroupId: ParentGroupId
-    public var editors: [UserInfo]
+    public var editors: [EditorInfo]
 
     enum CodingKeys: String, CodingKey {
         case seriesId = "sid"

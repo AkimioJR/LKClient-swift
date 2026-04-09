@@ -90,7 +90,7 @@ public struct UserBalance: Codable, Hashable, Sendable {
 }
 
 /// 基础用户信息
-/// 搜索接口、集合创作者、集合记录返回的用户列表使用这个结构体
+/// 搜索接口、集合创作者返回的用户列表使用这个结构体
 public struct UserInfo: Codable, Sendable {
     static public let `default` = UserInfo(
         userId: 0,
