@@ -455,7 +455,7 @@ public actor LKClient {
     // 查询历史记录
     public func fetchHistoryRecords<T: Decodable>(
         type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
-    ) async throws(LKError) -> HistoryRecord<T> {
+    ) async throws(LKError) -> Record<T> {
         self.logger.debug(
             "正在查询历史记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
         )
@@ -476,7 +476,7 @@ public actor LKClient {
     // 查询收藏列表
     public func fetchFavoriteRecords<T: Decodable>(
         type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
-    ) async throws(LKError) -> HistoryRecord<T> {
+    ) async throws(LKError) -> Record<T> {
         self.logger.debug(
             "正在查询收藏记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
         )

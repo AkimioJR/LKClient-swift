@@ -80,7 +80,7 @@ public struct SeriesRecordInfo: Codable, Sendable {
     }
 }
 
-public struct HistoryRecord<T: Codable & Sendable>: Codable, Sendable {
+public struct Record<T: Codable & Sendable>: Codable, Sendable {
     public var list: [T]
     public var pageInfo: PageInfo
 
