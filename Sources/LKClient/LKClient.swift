@@ -178,12 +178,12 @@ public actor LKClient {
                 throw LKError.apiEmptyDataError
             }
         } catch {
-            debugPrint("request path: \(path)")
-            debugPrint(
+            print("request path: \(path)")
+            print(
                 "request data: \(String(data: urlRequest.httpBody ?? Data(), encoding: .utf8) ?? "nil")"
             )
-            debugPrint("response data: \(String(data: data, encoding: .utf8) ?? "nil")")
-            debugPrint("error: \(error)")
+            print("response data: \(String(data: data, encoding: .utf8) ?? "nil")")
+            print("error: \(error)")
             throw .decodingError(error)
         }
     }
@@ -403,7 +403,7 @@ public actor LKClient {
         )
     }
 
-    private func applyHistoryChange(req: HistoryRequest, path: String) async throws {
+    private func applyRecordChange(req: RecordRequest, path: String) async throws {
         try await self.sendVoidRequest(
             path: path,
             requestData: req,
@@ -413,12 +413,12 @@ public actor LKClient {
     // 添加历史记录
     public func addHistory(favoriteId: UInt, classType: ClassType) async throws {
         self.logger.debug("正在添加历史记录，favoriteId: \(favoriteId), classType: \(classType)")
-        let req = HistoryRequest(
+        let req = RecordRequest(
             favoriteId: favoriteId,
             classType: classType,
             securityKey: await self.securityKey,
         )
-        try await self.applyHistoryChange(
+        try await self.applyRecordChange(
             req: req,
             path: "/api/history/add-history"
         )
@@ -427,12 +427,12 @@ public actor LKClient {
     // 添加收藏
     public func addFavorite(favoriteId: UInt, classType: ClassType) async throws {
         self.logger.debug("正在添加收藏，favoriteId: \(favoriteId), classType: \(classType)")
-        let req = HistoryRequest(
+        let req = RecordRequest(
             favoriteId: favoriteId,
             classType: classType,
             securityKey: await self.securityKey,
         )
-        try await self.applyHistoryChange(
+        try await self.applyRecordChange(
             req: req,
             path: "/api/history/add-collection"
         )
@@ -441,12 +441,12 @@ public actor LKClient {
     // 删除收藏
     public func deleteFavorite(favoriteId: UInt, classType: ClassType) async throws {
         self.logger.debug("正在删除收藏，favoriteId: \(favoriteId), classType: \(classType)")
-        let req = HistoryRequest(
+        let req = RecordRequest(
             favoriteId: favoriteId,
             classType: classType,
             securityKey: await self.securityKey,
         )
-        try await self.applyHistoryChange(
+        try await self.applyRecordChange(
             req: req,
             path: "/api/history/del-collection",
         )
@@ -459,7 +459,7 @@ public actor LKClient {
         self.logger.debug(
             "正在查询历史记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
         )
-        let req = GetHistoryRequest(
+        let req = FetchRecordRequest(
             type: type,
             classType: classType,
             page: page,
@@ -480,7 +480,7 @@ public actor LKClient {
         self.logger.debug(
             "正在查询收藏记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
         )
-        let req = GetHistoryRequest(
+        let req = FetchRecordRequest(
             type: type,
             classType: classType,
             page: page,

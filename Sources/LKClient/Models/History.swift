@@ -8,7 +8,7 @@
 import Foundation
 
 // 添加/删除收藏请求
-struct HistoryRequest: Codable, Sendable {
+struct RecordRequest: Codable, Sendable {
     var favoriteId: UInt
     var classType: ClassType
     var securityKey: String
@@ -90,7 +90,7 @@ public struct HistoryRecord<T: Codable & Sendable>: Codable, Sendable {
     }
 }
 
-struct GetHistoryRequest: Codable, Sendable {
+struct FetchRecordRequest: Codable, Sendable {
     var type: ArticleType
     var classType: ClassType
     var page: UInt
