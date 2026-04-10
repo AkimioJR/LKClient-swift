@@ -134,50 +134,39 @@ struct GetSeriesRequest: Codable, Sendable {
 }
 
 public struct SeriesRateInfo: Codable, Sendable {
-    public struct RateDetail: Codable, Sendable {
-        public var userId: UInt
-        public var rate: UInt
-        public var text: String
-        public var time: Date
-        public var score: UInt
-        public var likeCount: UInt
-        public var userInfo: UserProfileDetail
-        // @LKBool var alreadyLike: Bool
+    public var userId: UInt
+    public var rate: UInt
+    public var text: String
+    public var time: Date
+    public var score: UInt
+    public var likeCount: UInt
+    public var userInfo: UserProfileDetail
+    // @LKBool var alreadyLike: Bool
 
-        public init(
-            userId: UInt, rate: UInt, text: String, time: Date, score: UInt, likeCount: UInt,
-            userInfo: UserProfileDetail
-        ) {
-            self.userId = userId
-            self.rate = rate
-            self.text = text
-            self.time = time
-            self.score = score
-            self.likeCount = likeCount
-            self.userInfo = userInfo
-        }
-
-        enum CodingKeys: String, CodingKey {
-            case userId = "uid"
-            case rate = "rate"
-            case text = "text"
-            case time = "time"
-            case score = "score"
-            case likeCount = "likes"
-            case userInfo = "user_info"
-            // case alreadyLike = "already_like"
-        }
+    public init(
+        userId: UInt, rate: UInt, text: String, time: Date, score: UInt, likeCount: UInt,
+        userInfo: UserProfileDetail
+    ) {
+        self.userId = userId
+        self.rate = rate
+        self.text = text
+        self.time = time
+        self.score = score
+        self.likeCount = likeCount
+        self.userInfo = userInfo
     }
-
-    public var list: [RateDetail]
-    public var pageInfo: PageInfo
 
     enum CodingKeys: String, CodingKey {
-        case list = "list"
-        case pageInfo = "page_info"
+        case userId = "uid"
+        case rate = "rate"
+        case text = "text"
+        case time = "time"
+        case score = "score"
+        case likeCount = "likes"
+        case userInfo = "user_info"
+        // case alreadyLike = "already_like"
     }
 }
-
 struct GetSeriesRateRequest: Codable, Sendable {
     var seriesId: UInt
     var page: UInt

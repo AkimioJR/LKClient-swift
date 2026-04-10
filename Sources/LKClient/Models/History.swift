@@ -135,16 +135,6 @@ public struct SeriesRecordInfo: Codable, Sendable {
     }
 }
 
-public struct Record<T: Codable & Sendable>: Codable, Sendable {
-    public var list: [T]
-    public var pageInfo: PageInfo
-
-    enum CodingKeys: String, CodingKey {
-        case list = "list"
-        case pageInfo = "page_info"
-    }
-}
-
 struct FetchRecordRequest: Codable, Sendable {
     var type: ArticleType
     var classType: ClassType

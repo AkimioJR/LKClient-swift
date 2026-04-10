@@ -46,17 +46,7 @@ public struct ArticleInfo: Codable, Sendable {
     }
 }
 
-public struct CategoryArticlesInfo: Codable, Sendable {
-    public var list: [ArticleInfo]
-    public var pageInfo: PageInfo
-
-    enum CodingKeys: String, CodingKey {
-        case list = "list"
-        case pageInfo = "page_info"
-    }
-}
-
-struct GetCategoryArticlesInfoRequest: Codable, Sendable {
+struct FetchCategoryArticlesInfoRequest: Codable, Sendable {
     var securityKey: String
     var groupId: GroupId
     var parentGroupId: ParentGroupId

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ParentGroupItem: Codable, Sendable {
+public struct ParentGroupRecommendItems: Codable, Sendable {
     public var id: ParentGroupId
     //var logo: String
     public var coverType: CoverType
@@ -53,7 +53,7 @@ public struct ParentGroupItem: Codable, Sendable {
     }
 }
 
-struct GetParentGroupRequest: Codable, Sendable {
+struct FetchParentGroupRecommendItemsRequest: Codable, Sendable {
     var securityKey: String
 
     enum CodingKeys: String, CodingKey {

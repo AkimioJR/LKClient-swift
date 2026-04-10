@@ -213,7 +213,7 @@ public struct ArticleDetail: Codable, Sendable {
     }
 }
 
-struct GetArticleDetailRequest: Codable, Sendable {
+struct FetchArticleDetailRequest: Codable, Sendable {
     var securityKey: String
     var articleId: UInt
     @LKBool var simple: Bool

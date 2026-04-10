@@ -79,3 +79,6 @@ struct LKResponse<T: Decodable & Sendable>: Decodable, Sendable {
         }
     }
 }
+
+struct EmptyRequest: Encodable, Sendable {}
+struct EmptyResponse: Decodable, Sendable {}

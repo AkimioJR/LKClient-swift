@@ -347,49 +347,38 @@ struct FollowRequest: Codable, Sendable {
     }
 }
 
-public struct UserArticle: Codable, Sendable {
-    public struct ArticleInfo: Codable, Sendable {
-        public var articleId: UInt
-        public var bannerURL: String
-        public var commentCount: UInt
-        public var groupId: GroupId
-        public var hitCount: UInt
-        public var createTime: Date
-        public var title: String
-        public var userId: UInt
-        public var coverURL: String
-        public var coverType: CoverType
-        public var seriesId: UInt
-        public var coinCount: UInt
-        @LKBool public var empty: Bool?
-
-        enum CodingKeys: String, CodingKey {
-            case articleId = "aid"
-            case bannerURL = "banner"
-            case commentCount = "comments"
-            case groupId = "gid"
-            case hitCount = "hits"
-            case createTime = "time"
-            case title = "title"
-            case userId = "uid"
-            case coverURL = "cover"
-            case coverType = "cover_type"
-            case seriesId = "sid"
-            case coinCount = "coins"
-            case empty = "empty"
-        }
-    }
-
-    public var list: [ArticleInfo]
-    public var pageInfo: PageInfo
+public struct UserArticleInfo: Codable, Sendable {
+    public var articleId: UInt
+    public var bannerURL: String
+    public var commentCount: UInt
+    public var groupId: GroupId
+    public var hitCount: UInt
+    public var createTime: Date
+    public var title: String
+    public var userId: UInt
+    public var coverURL: String
+    public var coverType: CoverType
+    public var seriesId: UInt
+    public var coinCount: UInt
+    @LKBool public var empty: Bool?
 
     enum CodingKeys: String, CodingKey {
-        case list = "list"
-        case pageInfo = "page_info"
+        case articleId = "aid"
+        case bannerURL = "banner"
+        case commentCount = "comments"
+        case groupId = "gid"
+        case hitCount = "hits"
+        case createTime = "time"
+        case title = "title"
+        case userId = "uid"
+        case coverURL = "cover"
+        case coverType = "cover_type"
+        case seriesId = "sid"
+        case coinCount = "coins"
+        case empty = "empty"
     }
 }
-
-struct GetUserArticleRequest: Codable, Sendable {
+struct FecthUserArticleRequest: Codable, Sendable {
     var userId: UInt
     var articleType: ArticleType
     let classType: UInt = 1

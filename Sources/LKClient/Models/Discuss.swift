@@ -95,17 +95,6 @@ public struct TopicDetail: Codable, Sendable {
     }
 }
 
-public struct DiscussInfo: Codable, Sendable {
-    public var list: [TopicDetail]
-    //var hots: [Any]
-    public var pageInfo: PageInfo?
-
-    enum CodingKeys: String, CodingKey {
-        case list = "list"
-        case pageInfo = "page_info"
-    }
-}
-
 struct GetDiscussTopicsRequest: Codable, Sendable {
     var articleId: UInt
     var page: UInt

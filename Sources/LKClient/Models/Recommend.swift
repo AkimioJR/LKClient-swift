@@ -199,7 +199,7 @@ struct GetRecommendRequest: Codable, Sendable {
     }
 }
 
-public struct FollowingArticle: Codable, Hashable, Sendable {
+public struct FollowingArticleInfo: Codable, Hashable, Sendable {
     public var acticleId: UInt
     public var seriesId: UInt
     public var title: String
@@ -245,27 +245,6 @@ public struct FollowingArticle: Codable, Hashable, Sendable {
         self.author = author
         self.seriesName = seriesName
     }
-    // public init(from decoder: any Decoder) throws {
-    //     let container = try decoder.container(keyedBy: CodingKeys.self)
-    //     self.acticleId = try container.decode(UInt.self, forKey: .acticleId)
-    //     self.seriesId = try container.decode(UInt.self, forKey: .seriesId)
-    //     self.title = try container.decode(String.self, forKey: .title)
-    //     self.bannerURL = try container.decode(String.self, forKey: .bannerURL)
-    //     self.userId = try container.decode(UInt.self, forKey: .userId)
-    //     self.hitCount = try container.decode(UInt.self, forKey: .hitCount)
-    //     self.commentCount = try container.decode(UInt.self, forKey: .commentCount)
-    //     self.createTime = try container.decode(Date.self, forKey: .createTime)
-    //     self.updateTime = try container.decode(Date.self, forKey: .updateTime)
-    //     self.shareCount = try container.decode(UInt.self, forKey: .shareCount)
-    //     self.favoriteCount = try container.decode(UInt.self, forKey: .favoriteCount)
-    //     self.coinCount = try container.decode(UInt.self, forKey: .coinCount)
-    //     self.likeCount = try container.decode(UInt.self, forKey: .likeCount)
-    //     self.coverURL = try container.decode(String.self, forKey: .coverURL)
-    //     self.coverType = try container.decode(CoverType.self, forKey: .coverType)
-    //     self.groupId = try container.decode(GroupId.self, forKey: .groupId)
-    //     self.author = try container.decode(UserProfileDetail.self, forKey: .author)
-    //     self.seriesName = try container.decodeIfPresent(String.self, forKey: .seriesName)
-    // }
 
     enum CodingKeys: String, CodingKey {
         case acticleId = "aid"
@@ -290,7 +269,7 @@ public struct FollowingArticle: Codable, Hashable, Sendable {
     }
 }
 
-struct GetFollowingArticlesRequest: Codable, Sendable {
+struct FetchFollowingArticlesRequest: Codable, Sendable {
     var page: UInt
     var pageSize: UInt
     var securityKey: String
