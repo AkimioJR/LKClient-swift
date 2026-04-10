@@ -71,7 +71,7 @@ struct LKResponse<T: Decodable & Sendable>: Decodable, Sendable {
         case 0:  // 成功
             let timestamp = try container.decode(UInt64.self, forKey: .timeStamp)
             self.time = Date(timeIntervalSince1970: TimeInterval(timestamp))
-            self.data = try container.decode(T.self, forKey: .data)
+            self.data = try container.decodeIfPresent(T.self, forKey: .data)
 
         default:  // 错误
             self.data = nil

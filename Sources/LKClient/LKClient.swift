@@ -172,7 +172,9 @@ public actor LKClient {
 
         do {
             let resp = try Self.jsonDecoder.decode(LKResponse<R>.self, from: data)
-            if let responseData = resp.data {
+            if R.self == EmptyResponse.self {
+                return EmptyResponse() as! R
+            } else if let responseData = resp.data {
                 return responseData
             } else {
                 throw LKError.apiEmptyDataError
