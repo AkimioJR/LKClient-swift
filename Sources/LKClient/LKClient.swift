@@ -191,7 +191,8 @@ public actor LKClient {
     }
     /// 重载版本
     /// 适用于不需要请求体的API调用
-    func sendRequest<R: Decodable & Sendable>(
+    @concurrent
+    nonisolated func sendRequest<R: Decodable & Sendable>(
         path: String,
         client: ClientType? = nil,
         platform: PlatformType? = nil
@@ -205,7 +206,8 @@ public actor LKClient {
     }
     /// 重载版本
     /// 适用于不需要请求体且不关心响应体的API调用
-    func sendVoidRequest<T: Encodable & Sendable>(
+    @concurrent
+    nonisolated func sendRequest<T: Encodable & Sendable>(
         path: String,
         requestData: T?,
         client: ClientType? = nil,
@@ -221,12 +223,13 @@ public actor LKClient {
     }
     /// 重载版本
     /// 适用于不需要请求体且不关心响应体的API调用
-    func sendVoidRequest(
+    @concurrent
+    nonisolated func sendRequest(
         path: String,
         client: ClientType? = nil,
         platform: PlatformType? = nil
     ) async throws(LKError) {
-        try await self.sendVoidRequest(
+        try await self.sendRequest(
             path: path,
             requestData: Optional<EmptyRequest>.none,
             client: client,
@@ -281,7 +284,7 @@ public actor LKClient {
         )
         let req = FollowRequest(
             userId: userId, unFollow: !shouldFollow, securityKey: await self.securityKey)
-        try await self.sendVoidRequest(
+        try await self.sendRequest(
             path: "/api/user/follow",
             requestData: req
         )
@@ -399,14 +402,14 @@ public actor LKClient {
     public func likeArticle(articleId: UInt) async throws {
         self.logger.debug("正在点赞文章，articleId: \(articleId)")
         let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
-        try await self.sendVoidRequest(
+        try await self.sendRequest(
             path: "/api/article/like",
             requestData: req,
         )
     }
 
     private func applyRecordChange(req: RecordRequest, path: String) async throws {
-        try await self.sendVoidRequest(
+        try await self.sendRequest(
             path: path,
             requestData: req,
         )
@@ -618,7 +621,7 @@ public actor LKClient {
             topicId: topicId,
             securityKey: await self.securityKey
         )
-        try await self.sendVoidRequest(
+        try await self.sendRequest(
             path: "/api/discuss/like",
             requestData: req,
         )
