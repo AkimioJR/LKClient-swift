@@ -588,8 +588,8 @@ public actor LKClient {
     }
 
     // 获取文章评论话题讨论
-    public func fetchDiscussionTopics(articleId: UInt, page: UInt, pageSize: UInt = 20) async throws
-        -> Page<TopicDetail>
+    public func fetchArticleTopics(articleId: UInt, page: UInt, pageSize: UInt = 20) async throws
+        -> Page<TopicInfo>
     {
         self.logger.debug(
             "正在获取文章评论话题讨论，articleId: \(articleId), page: \(page), pageSize: \(pageSize)")

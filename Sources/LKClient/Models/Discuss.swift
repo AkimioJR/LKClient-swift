@@ -49,7 +49,7 @@ public struct ReplyDetail: Codable, Sendable {
     }
 }
 
-public struct TopicDetail: Codable, Sendable {
+public struct TopicInfo: Codable, Sendable {
     public var topicId: UInt
     public var articleId: UInt
     public var userId: UInt
