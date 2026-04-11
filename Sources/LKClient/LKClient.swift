@@ -593,7 +593,7 @@ public actor LKClient {
     {
         self.logger.debug(
             "正在获取文章评论话题讨论，articleId: \(articleId), page: \(page), pageSize: \(pageSize)")
-        let req = GetDiscussTopicsRequest(
+        let req = FetchArticleTopicsRequest(
             articleId: articleId,
             page: page,
             pageSize: pageSize,
@@ -604,11 +604,12 @@ public actor LKClient {
             requestData: req,
         )
     }
-    // 发布文章评论话题
-    public func postDiscussionTopic(articleId: UInt, content: String) async throws(LKError) -> UInt
+    /// 发布文章评论话题
+    public func postArticleTopic(articleId: UInt, content: String) async throws(LKError)
+        -> PostArticleTopicResponse
     {
         self.logger.debug("正在发布文章评论话题，articleId: \(articleId), content: \(content)")
-        let req = PostDiscussTopicRequest(
+        let req = PostArticleTopicRequest(
             articleId: articleId,
             content: content,
             securityKey: await self.securityKey
@@ -618,8 +619,9 @@ public actor LKClient {
             requestData: req,
         )
     }
-    // 点赞评论话题
-    public func likeDiscussionTopic(topicId: UInt) async throws {
+
+    /// 点赞评论话题
+    public func likeArticleTopic(topicId: UInt) async throws {
         self.logger.debug("正在点赞评论话题，topicId: \(topicId)")
         let req = LikeTopicRequest(
             topicId: topicId,

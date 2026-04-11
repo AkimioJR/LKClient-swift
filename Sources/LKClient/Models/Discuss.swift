@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ReplyDetail: Codable, Sendable {
+public struct ReplyInfo: Codable, Sendable {
     public var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
     public var replyId: UInt  // 话题下面的第几个回复
     public var articleId: UInt  // 文章ID
@@ -59,13 +59,13 @@ public struct TopicInfo: Codable, Sendable {
     public var likeCount: UInt
     public var replyCount: UInt
     public var userInfo: UserProfileDetail
-    public var replyList: [ReplyDetail]
+    public var replyList: [ReplyInfo]
     @LKBool public var alreadyLike: Bool?  // 是否已点赞
 
     public init(
         topicId: UInt, articleId: UInt, userId: UInt, createTime: Date, updateTime: Date,
         content: String, likeCount: UInt, replyCount: UInt, userInfo: UserProfileDetail,
-        replyList: [ReplyDetail], alreadyLike: Bool? = nil
+        replyList: [ReplyInfo], alreadyLike: Bool? = nil
     ) {
         self.topicId = topicId
         self.articleId = articleId
@@ -95,7 +95,7 @@ public struct TopicInfo: Codable, Sendable {
     }
 }
 
-struct GetDiscussTopicsRequest: Codable, Sendable {
+struct FetchArticleTopicsRequest: Codable, Sendable {
     var articleId: UInt
     var page: UInt
     var pageSize: UInt
@@ -109,7 +109,15 @@ struct GetDiscussTopicsRequest: Codable, Sendable {
     }
 }
 
-struct PostDiscussTopicRequest: Codable, Sendable {
+public struct PostArticleTopicResponse: Codable, Sendable {
+    public var topicId: UInt
+
+    enum CodingKeys: String, CodingKey {
+        case topicId = "tid"
+    }
+}
+
+struct PostArticleTopicRequest: Codable, Sendable {
     var articleId: UInt
     var content: String
     var securityKey: String
