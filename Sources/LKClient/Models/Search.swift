@@ -227,7 +227,8 @@ extension LKClient {
         )
     }
 
-    private func search<Result: Decodable & Sendable>(
+    /// 搜索通用接口
+    public func search<Result: Decodable & Sendable>(
         for query: String,
         type: SearchType,
         page: UInt,
