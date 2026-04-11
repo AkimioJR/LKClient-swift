@@ -631,6 +631,26 @@ public actor LKClient {
         )
     }
 
+    /// 发布评论话题回复
+    public func postArticleReply(
+        articleId: UInt, topicId: UInt, content: String,
+        parentReplyId: UInt? = nil, parentUserId: UInt? = nil
+    ) async throws {
+        self.logger.debug("正在发布评论回复，topicId: \(topicId), content: \(content)")
+        let req = await PostArticleReplyRequest(
+            articleId: articleId,
+            topicId: topicId,
+            content: content,
+            parentReplyId: parentReplyId,
+            parentUserId: parentUserId,
+            securityKey: self.securityKey
+        )
+        try await self.sendRequest(
+            path: "/api/discuss/post-reply",
+            requestData: req,
+        )
+    }
+
     // MARK: - 任务 Task
     // 获取任务列表
     public func fetchTaskList() async throws(LKError) -> TaskList {

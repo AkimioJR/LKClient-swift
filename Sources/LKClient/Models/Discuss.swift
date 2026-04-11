@@ -131,6 +131,27 @@ struct LikeTopicRequest: Codable, Sendable {
     }
 }
 
+/// 回复 Topic 或者 Reply 的请求
+/// 如果 parentReplyId 和 parentUserId 都为 nil，则表示回复的是 Topic
+/// 如果 parentReplyId 和 parentUserId 都不为 nil，则表示回复的是 Reply
+public struct PostArticleReplyRequest: Codable, Sendable {
+    public var articleId: UInt
+    public var topicId: UInt
+    public var content: String
+    public var parentReplyId: UInt?
+    public var parentUserId: UInt?
+    public var securityKey: String
+
+    enum CodingKeys: String, CodingKey {
+        case articleId = "aid"
+        case topicId = "tid"
+        case content = "content"
+        case parentReplyId = "r_rid"
+        case parentUserId = "r_uid"
+        case securityKey = "security_key"
+    }
+}
+
 public struct UploadImageResponse: Codable, Sendable {
     public var resourceId: String
     public var resourcePath: String
