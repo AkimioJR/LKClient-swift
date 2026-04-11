@@ -66,15 +66,15 @@ public enum TaskType: UInt8, CaseIterable, Codable, Sendable {
     public var image: Image? {
         switch self {
         case .readArticle:
-            return Image("task/read")
+            return Image("Task-Logo/read", bundle: .module)
         case .collectArticle:
-            return Image("task/collect")
+            return Image("Task-Logo/collect", bundle: .module)
         case .likeArticle:
-            return Image("task/dianzan")
+            return Image("Task-Logo/dianzan", bundle: .module)
         case .shareArticle:
-            return Image("task/share")
+            return Image("Task-Logo/share", bundle: .module)
         case .coinArticle:
-            return Image("task/toubi")
+            return Image("Task-Logo/toubi", bundle: .module)
         default:
             return nil
         }
