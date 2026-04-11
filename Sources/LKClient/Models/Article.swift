@@ -250,3 +250,45 @@ struct ArticleRequest: Codable, Sendable {
         case securityKey = "security_key"
     }
 }
+
+/// MARK: - 文章相关
+extension LKClient {
+    /// 获取文章详情
+    public func fetchArticleDetail(articleId: UInt, includeContent: Bool) async throws
+        -> ArticleDetail
+    {
+        self.logger.debug(
+            "正在获取文章详情，articleId: \(articleId), includeContent: \(includeContent)"
+        )
+        let req = FetchArticleDetailRequest(
+            securityKey: await self.securityKey,
+            articleId: articleId,
+            simple: !includeContent,
+        )
+
+        return try await self.sendRequest(
+            path: "/api/article/get-detail",
+            requestData: req,
+        )
+    }
+
+    /// 获取文章 tag
+    public func fetchArticleTags(articleId: UInt) async throws(LKError) -> [ArticleTag] {
+        self.logger.debug("正在获取文章标签，articleId: \(articleId)")
+        let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
+        return try await self.sendRequest(
+            path: "/api/tag/get-article-tags",
+            requestData: req,
+        )
+    }
+
+    /// 点赞文章
+    public func likeArticle(articleId: UInt) async throws {
+        self.logger.debug("正在点赞文章，articleId: \(articleId)")
+        let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
+        try await self.sendRequest(
+            path: "/api/article/like",
+            requestData: req,
+        )
+    }
+}

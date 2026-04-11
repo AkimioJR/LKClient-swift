@@ -183,3 +183,75 @@ public struct UploadImageResponse: Codable, Sendable {
         case resourceInfo = "res_info"
     }
 }
+
+/// MARK: - 评论话题讨论
+extension LKClient {
+
+    /// 获取文章评论话题讨论
+    public func fetchArticleTopics(articleId: UInt, page: UInt, pageSize: UInt = 20) async throws
+        -> Page<TopicInfo>
+    {
+        self.logger.debug(
+            "正在获取文章评论话题讨论，articleId: \(articleId), page: \(page), pageSize: \(pageSize)")
+        let req = FetchArticleTopicsRequest(
+            articleId: articleId,
+            page: page,
+            pageSize: pageSize,
+            securityKey: await self.securityKey
+        )
+        return try await self.sendRequest(
+            path: "/api/discuss/get-topic",
+            requestData: req,
+        )
+    }
+    /// 发布文章评论话题
+    public func postArticleTopic(articleId: UInt, content: String) async throws(LKError)
+        -> PostArticleTopicResponse
+    {
+        self.logger.debug("正在发布文章评论话题，articleId: \(articleId), content: \(content)")
+        let req = PostArticleTopicRequest(
+            articleId: articleId,
+            content: content,
+            securityKey: await self.securityKey
+        )
+        return try await self.sendRequest(
+            path: "/api/discuss/post-topic",
+            requestData: req,
+        )
+    }
+
+    /// 点赞评论话题
+    public func likeArticleTopic(topicId: UInt) async throws {
+        self.logger.debug("正在点赞评论话题，topicId: \(topicId)")
+        let req = await LikeTopicRequest(
+            topicId: topicId,
+            securityKey: self.securityKey
+        )
+        try await self.sendRequest(
+            path: "/api/discuss/like",
+            requestData: req,
+        )
+    }
+
+    /// 发布评论话题回复
+    public func postArticleReply(
+        articleId: UInt,
+        topicId: UInt,
+        content: String,
+        parentReplyId: UInt? = nil, parentUserId: UInt? = nil
+    ) async throws {
+        self.logger.debug("正在发布评论回复，topicId: \(topicId), content: \(content)")
+        let req = await PostArticleReplyRequest(
+            articleId: articleId,
+            topicId: topicId,
+            content: content,
+            parentReplyId: parentReplyId,
+            parentUserId: parentUserId,
+            securityKey: self.securityKey
+        )
+        try await self.sendRequest(
+            path: "/api/discuss/post-reply",
+            requestData: req,
+        )
+    }
+}

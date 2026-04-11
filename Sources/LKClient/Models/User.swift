@@ -395,3 +395,71 @@ struct FecthUserArticleRequest: Codable, Sendable {
         case securityKey = "security_key"
     }
 }
+
+extension LKClient {
+    /// 登录客户端
+    public func login(username: String, password: String) async throws(LKError) -> UserProfileDetail
+    {
+        let loginRequest = LoginRequest(username: username, password: password)
+
+        self.logger.debug("正在登录用户: \(username)")
+
+        let loginResponse: UserProfileDetail = try await self.sendRequest(
+            path: "/api/user/login",
+            requestData: loginRequest,
+        )
+
+        if let key = loginResponse.securityKey {
+            await self.setSecurityKey(key)
+        }
+
+        return loginResponse
+    }
+
+    /// 获取用户信息
+    public func fetchUserInfo(userId: UInt) async throws(LKError) -> UserProfileDetail {
+        let req = GetUserInfoRequest(
+            userId: userId,
+            securityKey: await self.securityKey,
+        )
+        self.logger.debug("正在获取用户信息，userId: \(userId)")
+        return try await self.sendRequest(
+            path: "/api/user/info",
+            requestData: req,
+        )
+    }
+
+    /// 关注/取消关注用户
+    public func updateFollowStatus(userId: UInt, shouldFollow: Bool) async throws {
+        self.logger.debug(
+            "\(shouldFollow ? "关注" : "取消关注")用户(userId: \(userId))"
+        )
+        let req = FollowRequest(
+            userId: userId, unFollow: !shouldFollow, securityKey: await self.securityKey)
+        try await self.sendRequest(
+            path: "/api/user/follow",
+            requestData: req
+        )
+    }
+
+    /// 获取用户的文章
+    public func fetchUserArticles(
+        userId: UInt, articleType: ArticleType, page: UInt, pageSize: UInt = 20
+    ) async throws(LKError) -> Page<UserArticleInfo> {
+        self.logger.debug(
+            "正在获取用户(userId: \(userId))文章: articleType: \(articleType), page: \(page), pageSize: \(pageSize) "
+        )
+
+        let req = FecthUserArticleRequest(
+            userId: userId,
+            articleType: articleType,
+            page: page,
+            pageSize: pageSize,
+            securityKey: await self.securityKey
+        )
+        return try await self.sendRequest(
+            path: "/api/user/get-articles",
+            requestData: req,
+        )
+    }
+}

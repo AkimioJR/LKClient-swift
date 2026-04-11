@@ -216,3 +216,69 @@ public struct HotSearchTag: Codable, Sendable {
         case word = "alias"
     }
 }
+
+/// MARK: - 搜索相关
+extension LKClient {
+    /// 获取热门搜索词条
+    public func fetchHotSearchTags() async throws(LKError) -> [HotSearchTag] {
+        self.logger.debug("正在获取热门搜索词条...")
+        return try await self.sendRequest(
+            path: "/api/search/get-search-tags"
+        )
+    }
+
+    private func search<Result: Decodable & Sendable>(
+        for query: String,
+        type: SearchType,
+        page: UInt,
+    ) async throws(LKError) -> Page<Result> {
+        self.logger.debug("正在搜索, query: \(query), type: \(type), page: \(page)")
+        let req = await FetchSearchRequest(
+            query: query,
+            type: type,
+            page: page,
+            securityKey: self.securityKey,
+        )
+        return try await self.sendRequest(
+            path: "/api/search/search-result",
+            requestData: req
+        )
+    }
+
+    /// 搜索用户
+    public func searchUser(for query: String, page: UInt) async throws(LKError) -> Page<
+        UserSearchData
+    > {
+        return try await self.search(for: query, type: .user, page: page)
+    }
+    /// 搜索集合
+    public func searchSeries(for query: String, page: UInt) async throws(LKError) -> Page<
+        SeriesSearchData
+    > {
+        return try await self.search(for: query, type: .series, page: page)
+    }
+    /// 搜索资讯
+    public func searchNews(for query: String, page: UInt) async throws(LKError) -> Page<
+        ArticleSearchData
+    > {
+        return try await self.search(for: query, type: .news, page: page)
+    }
+    /// 搜索动画
+    public func searchAnime(for query: String, page: UInt) async throws(LKError) -> Page<
+        ArticleSearchData
+    > {
+        return try await self.search(for: query, type: .anime, page: page)
+    }
+    /// 搜索漫画
+    public func searchManga(for query: String, page: UInt) async throws(LKError) -> Page<
+        ArticleSearchData
+    > {
+        return try await self.search(for: query, type: .manga, page: page)
+    }
+    /// 搜索轻小说
+    public func searchLightnovel(for query: String, page: UInt) async throws(LKError)
+        -> Page<ArticleSearchData>
+    {
+        return try await self.search(for: query, type: .lightnovel, page: page)
+    }
+}

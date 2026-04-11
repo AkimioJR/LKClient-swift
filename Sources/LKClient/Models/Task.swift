@@ -162,7 +162,7 @@ struct TaskCompleteRequest: Codable, Sendable {
     }
 }
 
-public struct TaskCompleteResponse: Codable, Sendable {
+public struct TaskCompleteResult: Codable, Sendable {
     public var experience: UInt
     public var coinCount: UInt
     // var balance: UInt
@@ -172,4 +172,27 @@ public struct TaskCompleteResponse: Codable, Sendable {
         case coinCount = "coin"
         // case balance = "balance"
     }
+}
+
+// MARK: - 任务 Task
+extension LKClient {
+    // 获取任务列表
+    public func fetchTaskList() async throws(LKError) -> TaskList {
+        self.logger.debug("正在获取任务列表...")
+        let req = await TaskListRequest(securityKey: self.securityKey)
+        return try await self.sendRequest(
+            path: "/api/task/list",
+            requestData: req,
+        )
+    }
+    // 完成任务
+    public func completeTask(type: TaskType) async throws(LKError) -> TaskCompleteResult {
+        self.logger.debug("正在完成任务，type: \(type)")
+        let req = await TaskCompleteRequest(type: type, securityKey: self.securityKey)
+        return try await self.sendRequest(
+            path: "/api/task/complete",
+            requestData: req,
+        )
+    }
+
 }

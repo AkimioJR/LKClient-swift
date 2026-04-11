@@ -123,7 +123,7 @@ public struct SeriesInfo: Codable, Sendable {
     }
 }
 
-struct GetSeriesRequest: Codable, Sendable {
+struct FetchSeriesRequest: Codable, Sendable {
     var seriesId: UInt
     var securityKey: String
 
@@ -167,7 +167,7 @@ public struct SeriesRateInfo: Codable, Sendable {
         // case alreadyLike = "already_like"
     }
 }
-struct GetSeriesRateRequest: Codable, Sendable {
+struct FetchSeriesRateRequest: Codable, Sendable {
     var seriesId: UInt
     var page: UInt
     var securityKey: String
@@ -176,5 +176,32 @@ struct GetSeriesRateRequest: Codable, Sendable {
         case seriesId = "sid"
         case page = "page"
         case securityKey = "security_key"
+    }
+}
+
+/// MARK: - 集合相关
+
+extension LKClient {
+    /// 查询集合信息
+    public func fetchSeries(seriesId: UInt) async throws(LKError) -> SeriesInfo {
+        self.logger.debug("正在查询集合信息，seriesId: \(seriesId)")
+        let req = await FetchSeriesRequest(seriesId: seriesId, securityKey: self.securityKey)
+        return try await self.sendRequest(
+            path: "/api/series/get-info",
+            requestData: req,
+        )
+    }
+
+    /// 查询集合评价
+    public func fetchSeriesRatings(seriesId: UInt, page: UInt) async throws(LKError)
+        -> Page<SeriesRateInfo>
+    {
+        self.logger.debug("正在查询集合评价，seriesId: \(seriesId), page: \(page)")
+        let req = await FetchSeriesRateRequest(
+            seriesId: seriesId, page: page, securityKey: self.securityKey)
+        return try await self.sendRequest(
+            path: "/api/series/get-rate-list",
+            requestData: req,
+        )
     }
 }

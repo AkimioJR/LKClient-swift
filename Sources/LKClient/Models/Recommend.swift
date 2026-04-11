@@ -280,3 +280,32 @@ struct FetchFollowingArticlesRequest: Codable, Sendable {
         case securityKey = "security_key"
     }
 }
+
+extension LKClient {
+    /// 获取推荐项目
+    public func fetchRecommendedGroups(classId: UInt) async throws(LKError) -> [RecommendGroup] {
+        self.logger.debug("正在获取推荐项目，classId: \(classId)")
+        let req = GetRecommendRequest(securityKey: await self.securityKey, classId: classId)
+
+        return try await self.sendRequest(
+            path: "/api/recom/get-recommends",
+            requestData: req,
+        )
+    }
+    /// 获取用户关注动态
+    public func fetchFollowingArticles(page: UInt, pageSize: UInt = 20) async throws
+        -> [FollowingArticleInfo]
+    {
+        self.logger.debug("正在获取用户关注动态，page: \(page), pageSize: \(pageSize)")
+        let req = FetchFollowingArticlesRequest(
+            page: page,
+            pageSize: pageSize,
+            securityKey: await self.securityKey
+        )
+
+        return try await self.sendRequest(
+            path: "/api/recom/get-follows",
+            requestData: req,
+        )
+    }
+}

@@ -152,3 +152,97 @@ struct FetchRecordRequest: Codable, Sendable {
         case securityKey = "security_key"
     }
 }
+
+/// MARK: - 历史记录和收藏记录相关
+extension LKClient {
+    private func applyRecordChange(req: RecordRequest, path: String) async throws {
+        try await self.sendRequest(
+            path: path,
+            requestData: req,
+        )
+    }
+
+    /// 添加历史记录
+    public func addHistory(favoriteId: UInt, classType: ClassType) async throws {
+        self.logger.debug("正在添加历史记录，favoriteId: \(favoriteId), classType: \(classType)")
+        let req = RecordRequest(
+            favoriteId: favoriteId,
+            classType: classType,
+            securityKey: await self.securityKey,
+        )
+        try await self.applyRecordChange(
+            req: req,
+            path: "/api/history/add-history"
+        )
+    }
+
+    /// 添加收藏
+    public func addFavorite(favoriteId: UInt, classType: ClassType) async throws {
+        self.logger.debug("正在添加收藏，favoriteId: \(favoriteId), classType: \(classType)")
+        let req = RecordRequest(
+            favoriteId: favoriteId,
+            classType: classType,
+            securityKey: await self.securityKey,
+        )
+        try await self.applyRecordChange(
+            req: req,
+            path: "/api/history/add-collection"
+        )
+    }
+
+    /// 删除收藏
+    public func deleteFavorite(favoriteId: UInt, classType: ClassType) async throws {
+        self.logger.debug("正在删除收藏，favoriteId: \(favoriteId), classType: \(classType)")
+        let req = RecordRequest(
+            favoriteId: favoriteId,
+            classType: classType,
+            securityKey: await self.securityKey,
+        )
+        try await self.applyRecordChange(
+            req: req,
+            path: "/api/history/del-collection",
+        )
+    }
+
+    /// 查询历史记录
+    public func fetchHistoryRecords<T: Decodable>(
+        type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
+    ) async throws(LKError) -> Page<T> {
+        self.logger.debug(
+            "正在查询历史记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
+        )
+        let req = FetchRecordRequest(
+            type: type,
+            classType: classType,
+            page: page,
+            pageSize: pageSize,
+            userId: await self.userId,
+            securityKey: await self.securityKey,
+        )
+        return try await self.sendRequest(
+            path: "/api/history/get-history",
+            requestData: req,
+        )
+    }
+
+    // 查询收藏列表
+    public func fetchFavoriteRecords<T: Decodable>(
+        type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
+    ) async throws(LKError) -> Page<T> {
+        self.logger.debug(
+            "正在查询收藏记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
+        )
+        let req = FetchRecordRequest(
+            type: type,
+            classType: classType,
+            page: page,
+            pageSize: pageSize,
+            userId: await self.userId,
+            securityKey: await self.securityKey,
+        )
+        return try await self.sendRequest(
+            path: "/api/history/get-collections",
+            requestData: req,
+        )
+    }
+}
