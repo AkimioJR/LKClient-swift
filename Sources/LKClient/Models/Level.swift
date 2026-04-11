@@ -31,8 +31,12 @@ public enum Level: UInt8, Codable, Comparable, Sendable {
         }
     }
 
-    public var discription: String {
+    public var fullTitle: String {
         return "LV\(self.rawValue) \(self.title)"
+    }
+
+    public var description: String {
+        return "LKLevel LV\(self.rawValue) \(self.title)"
     }
 
     /// 达到该等级所需的经验值
