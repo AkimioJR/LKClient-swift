@@ -5,7 +5,7 @@
 //  Created by 秋澪 on 2025/12/19.
 //
 
-public enum Level: UInt8, CaseIterable, Codable, Comparable, Sendable {
+public enum Level: UInt8, CaseIterable, Equatable, Codable, Comparable, Sendable {
     case commoner = 1  // 平民
     case knight = 2  // 骑士
     case lord = 3  // 勋爵
