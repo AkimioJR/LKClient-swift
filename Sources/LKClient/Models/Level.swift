@@ -5,7 +5,7 @@
 //  Created by 秋澪 on 2025/12/19.
 //
 
-public enum Level: UInt8, Codable, Comparable, Sendable {
+public enum Level: UInt8, CaseIterable, Codable, Comparable, Sendable {
     case commoner = 1  // 平民
     case knight = 2  // 骑士
     case lord = 3  // 勋爵
@@ -36,7 +36,7 @@ public enum Level: UInt8, Codable, Comparable, Sendable {
     }
 
     public var description: String {
-        return "LKLevel LV\(self.rawValue) \(self.title)"
+        return "LKLevel{LV: \(self.rawValue)}"
     }
 
     /// 达到该等级所需的经验值
@@ -74,18 +74,6 @@ public enum Level: UInt8, Codable, Comparable, Sendable {
         }
         return Level(rawValue: self.rawValue - 1)
     }
-
-    static public let allLevels: [Level] = [
-        .commoner,
-        .knight,
-        .lord,
-        .viscount,
-        .earl,
-        .marquis,
-        .duke,
-        .prince,
-        .emperor,
-    ]
 
     // MARK: - Comparable
     static public func < (lhs: Level, rhs: Level) -> Bool {

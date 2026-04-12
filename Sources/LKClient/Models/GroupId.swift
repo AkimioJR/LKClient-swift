@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public enum ParentGroupId: UInt8, Codable, Comparable, Sendable {
+public enum ParentGroupId: UInt8, CaseIterable, Codable, Comparable, Sendable {
     case all = 0
     case news = 1
     case lightnovel = 3
@@ -73,11 +73,11 @@ public enum ParentGroupId: UInt8, Codable, Comparable, Sendable {
 
 extension ParentGroupId: CustomStringConvertible {
     public var description: String {
-        return "ParentGroupId.\(self.rawValue) (\(self.name))"
+        return "LKParentGroupId{value: \(self.rawValue), name: (\(self.name))}"
     }
 }
 
-public enum GroupId: UInt16, Codable, Comparable, Sendable {
+public enum GroupId: UInt16, CaseIterable, Codable, Comparable, Sendable {
     case all = 0
 
     case newsLightNovel = 100
@@ -227,6 +227,6 @@ public enum GroupId: UInt16, Codable, Comparable, Sendable {
 
 extension GroupId: CustomStringConvertible {
     public var description: String {
-        return "GroupId.\(self.rawValue) (\(self.name))"
+        return "LKGroupId{value: \(self.rawValue), name: \(self.name)}"
     }
 }

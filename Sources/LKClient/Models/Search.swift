@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum SearchType: UInt8, Codable, Sendable {
+public enum SearchType: UInt8, CaseIterable, Codable, Sendable {
     case all = 0
     case user = 1
     case series = 2
