@@ -195,7 +195,7 @@ public actor LKClient {
     @concurrent
     nonisolated func sendRequest<T: Encodable & Sendable>(
         path: String,
-        requestData: T?,
+        requestData: T,
         client: ClientType? = nil,
         platform: PlatformType? = nil
     ) async throws(LKError) {
