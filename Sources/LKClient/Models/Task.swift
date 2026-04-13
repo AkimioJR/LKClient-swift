@@ -63,7 +63,7 @@ public enum TaskType: UInt8, CaseIterable, Codable, Sendable {
         }
     }
 
-    public var image: Image? {
+    public var image: Image {
         switch self {
         case .readArticle:
             return Image("Task-Logo/read", bundle: .module)
@@ -75,8 +75,13 @@ public enum TaskType: UInt8, CaseIterable, Codable, Sendable {
             return Image("Task-Logo/share", bundle: .module)
         case .coinArticle:
             return Image("Task-Logo/toubi", bundle: .module)
-        default:
-            return nil
+
+        case .completeAllTasks:
+            return Image(systemName: "checkmark.seal.fill")
+                .symbolRenderingMode(.multicolor)
+        case .checkin:
+            return Image(systemName: "calendar.badge.checkmark")
+                .symbolRenderingMode(.multicolor)
         }
     }
 }
