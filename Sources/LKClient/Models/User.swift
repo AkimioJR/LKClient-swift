@@ -185,7 +185,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
         status: false,
         bannerURL: "",
         banEndDate: Date(timeIntervalSince1970: 0),
-        medals: nil,
+        medals: [],
         followingCount: 0,
         articleCount: 0,
         followerCount: 0,
@@ -201,7 +201,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
     @LKBool public var status: Bool
     public var bannerURL: String  // Banner image URL
     public var banEndDate: Date  // Date when ban ends
-    public var medals: [Medal]?  // 搜索结果中获取到的 UserProfileDetail 没有该字段
+    public var medals: [Medal]  // 搜索结果中获取到的 UserProfileDetail 没有该字段
     public var followingCount: UInt  // Number of users this user is following
     public var articleCount: UInt
     public var followerCount: UInt  // 粉丝数
@@ -222,7 +222,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
 
     public init(
         userId: UInt, nickName: String, avatarURL: String, passer: Bool, gender: GenderType,
-        sign: String, status: Bool, bannerURL: String, banEndDate: Date, medals: [Medal]? = nil,
+        sign: String, status: Bool, bannerURL: String, banEndDate: Date, medals: [Medal] = [],
         followingCount: UInt, articleCount: UInt, followerCount: UInt, levelInfo: LevelInfo,
         favoriteCount: UInt? = nil, commentCount: UInt? = nil, balance: UserBalance? = nil,
         securityKey: String? = nil, alreadyFollow: Bool? = nil, alreadyBlock: Bool? = nil
@@ -299,7 +299,7 @@ extension UserProfileDetail {
         self.banEndDate =
             try container.decodeIfPresent(Date.self, forKey: .banEndDate)
             ?? Date(timeIntervalSince1970: 0)
-        self.medals = try container.decodeIfPresent([Medal].self, forKey: .medals)
+        self.medals = try container.decodeIfPresent([Medal].self, forKey: .medals) ?? []
         self.followingCount = try container.decodeIfPresent(UInt.self, forKey: .followingCount) ?? 0
         self.articleCount = try container.decodeIfPresent(UInt.self, forKey: .articleCount) ?? 0
         self.followerCount = try container.decodeIfPresent(UInt.self, forKey: .followerCount) ?? 0
