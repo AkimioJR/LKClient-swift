@@ -1,4 +1,4 @@
-enum LKEmojiGroup: UInt {
+enum LKEmojiGroup: UInt8 {
     case neko = 15
     case luck = 10
     case onion = 5
