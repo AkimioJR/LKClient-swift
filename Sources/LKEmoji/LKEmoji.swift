@@ -1,4 +1,4 @@
-enum LKEmoji: UInt16 {
+enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
     case neko3 = 1044
     case neko7 = 1045
     case neko16 = 1046

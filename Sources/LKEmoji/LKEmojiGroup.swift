@@ -1,4 +1,4 @@
-enum LKEmojiGroup: UInt8 {
+enum LKEmojiGroup: UInt8, Equatable, CaseIterable, Sendable {
     case neko = 15
     case luck = 10
     case onion = 5
