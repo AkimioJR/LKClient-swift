@@ -18,10 +18,12 @@ public struct ReplyInfo: Codable, Sendable {
     public var time: Date
     public var content: String
     public var userInfo: UserProfileDetail
+    public var replayUserInfo: UserProfileDetail?
 
     public init(
         topicId: UInt, replyId: UInt, articleId: UInt, parentReplyId: UInt, repliedUserId: UInt,
-        userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserProfileDetail
+        userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserProfileDetail,
+        replayUserInfo: UserProfileDetail? = nil
     ) {
         self.topicId = topicId
         self.replyId = replyId
@@ -33,6 +35,7 @@ public struct ReplyInfo: Codable, Sendable {
         self.time = time
         self.content = content
         self.userInfo = userInfo
+        self.replayUserInfo = replayUserInfo
     }
 
     enum CodingKeys: String, CodingKey {
@@ -46,6 +49,7 @@ public struct ReplyInfo: Codable, Sendable {
         case time = "time"
         case content = "content"
         case userInfo = "user_info"
+        case replayUserInfo = "r_user_info"
     }
 }
 
