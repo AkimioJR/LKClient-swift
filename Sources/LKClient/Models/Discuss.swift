@@ -7,53 +7,54 @@
 
 import Foundation
 
-public struct ReplyInfo: Codable, Sendable {
-    public var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
-    public var replyId: UInt  // 话题下面的第几个回复
-    public var articleId: UInt  // 文章ID
-    public var parentReplyId: UInt  // 这条评论是回复那一条评论的，0代表回复主评论
-    public var repliedUserId: UInt  // 被回复的用户ID
-    public var userId: UInt  // 回复者的用户ID
-    public var likeCount: UInt
-    public var time: Date
-    public var content: String
-    public var userInfo: UserProfileDetail
-    public var replayUserInfo: UserProfileDetail?
-
-    public init(
-        topicId: UInt, replyId: UInt, articleId: UInt, parentReplyId: UInt, repliedUserId: UInt,
-        userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserProfileDetail,
-        replayUserInfo: UserProfileDetail? = nil
-    ) {
-        self.topicId = topicId
-        self.replyId = replyId
-        self.articleId = articleId
-        self.parentReplyId = parentReplyId
-        self.repliedUserId = repliedUserId
-        self.userId = userId
-        self.likeCount = likeCount
-        self.time = time
-        self.content = content
-        self.userInfo = userInfo
-        self.replayUserInfo = replayUserInfo
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case topicId = "tid"
-        case replyId = "rid"
-        case articleId = "pid"
-        case parentReplyId = "r_rid"
-        case repliedUserId = "r_uid"
-        case userId = "uid"
-        case likeCount = "likes"
-        case time = "time"
-        case content = "content"
-        case userInfo = "user_info"
-        case replayUserInfo = "r_user_info"
-    }
-}
-
 public struct TopicInfo: Codable, Sendable {
+
+    public struct ReplyInfo: Codable, Sendable {
+        public var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
+        public var replyId: UInt  // 话题下面的第几个回复
+        public var articleId: UInt  // 文章ID
+        public var parentReplyId: UInt  // 这条评论是回复那一条评论的，0代表回复主评论
+        public var repliedUserId: UInt  // 被回复的用户ID
+        public var userId: UInt  // 回复者的用户ID
+        public var likeCount: UInt
+        public var time: Date
+        public var content: String
+        public var userInfo: UserProfileDetail
+        public var replayUserInfo: UserProfileDetail?
+
+        public init(
+            topicId: UInt, replyId: UInt, articleId: UInt, parentReplyId: UInt, repliedUserId: UInt,
+            userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserProfileDetail,
+            replayUserInfo: UserProfileDetail? = nil
+        ) {
+            self.topicId = topicId
+            self.replyId = replyId
+            self.articleId = articleId
+            self.parentReplyId = parentReplyId
+            self.repliedUserId = repliedUserId
+            self.userId = userId
+            self.likeCount = likeCount
+            self.time = time
+            self.content = content
+            self.userInfo = userInfo
+            self.replayUserInfo = replayUserInfo
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case topicId = "tid"
+            case replyId = "rid"
+            case articleId = "pid"
+            case parentReplyId = "r_rid"
+            case repliedUserId = "r_uid"
+            case userId = "uid"
+            case likeCount = "likes"
+            case time = "time"
+            case content = "content"
+            case userInfo = "user_info"
+            case replayUserInfo = "r_user_info"
+        }
+    }
+
     public var topicId: UInt
     public var articleId: UInt
     public var userId: UInt
