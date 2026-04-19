@@ -75,7 +75,7 @@ extension LKClient {
     }
 
     /// 打赏文章
-    public func rewardedArticle(for articleId: UInt, count: UInt) async throws(LKError) {
+    public func rewardArticle(for articleId: UInt, count: UInt) async throws(LKError) {
         try await self.useCoin(
             for: .rewardArticle,
             params: articleId,
