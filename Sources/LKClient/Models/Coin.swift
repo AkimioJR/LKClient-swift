@@ -21,9 +21,9 @@ struct UseCoinRequest: Codable, Sendable {
     }
 }
 
-/// MARK: - 投币相关
+/// MARK: - 硬币相关
 extension LKClient {
-    /// 投币
+    /// 使用硬币
     public func useCoin(
         type: UseCoinType,
         params: UInt,
@@ -49,4 +49,23 @@ extension LKClient {
         )
     }
 
+    /// 打赏文章
+    public func rewardedArticle(for articleId: UInt, count: UInt) async throws(LKError) {
+        try await self.useCoin(
+            type: .rewardArticle,
+            params: articleId,
+            number: count,
+            price: 1,
+        )
+    }
+
+    /// 投币支付
+    public func payForArticle(articleId: UInt, price: UInt) async throws(LKError) {
+        try await self.useCoin(
+            type: .payForArticle,
+            params: articleId,
+            number: 1,
+            price: price,
+        )
+    }
 }
