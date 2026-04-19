@@ -1,3 +1,5 @@
+import SwiftUI
+
 public enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
     case neko3 = 1044
     case neko7 = 1045
@@ -836,6 +838,10 @@ public enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
             return String(rest[..<dotIndex])
         }
         return String(rest)
+    }
+
+    public var image: Image {
+        Image("LKEmoji/\(self.label)", bundle: .module)
     }
 
     private static let codeMap: [String: Self] = [
