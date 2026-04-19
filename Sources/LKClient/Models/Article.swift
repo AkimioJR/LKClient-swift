@@ -14,16 +14,16 @@ public struct ArticleDetail: Codable, Sendable {
             case coin = 0  // 投币支付
         }
 
-        var userId: UInt  // 支付给谁
-        var priceType: PriceType  // 支付类型
-        var price: UInt  // 价格
-        @LKBool var alreadyPay: Bool  // 是否已经支付
+        public var userId: UInt  // 支付给谁
+        public var priceType: PriceType  // 支付类型
+        public var price: UInt  // 价格
+        @LKBool public var isPaid: Bool  // 是否已经支付
 
         enum CodingKeys: String, CodingKey {
             case userId = "uid"
             case priceType = "price_type"
             case price = "price"
-            case alreadyPay = "is_paid"
+            case isPaid = "is_paid"
         }
     }
     public struct Resource: Codable, Sendable {
