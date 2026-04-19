@@ -13,7 +13,8 @@ let package = Package(
     .visionOS(.v1),
   ],
   products: [
-    .library(name: "LKClient", targets: ["LKClient"])
+    .library(name: "LKClient", targets: ["LKClient"]),
+    .library(name: "LKEmoji", targets: ["LKEmoji"]),
   ],
   dependencies: [],
   targets: [
@@ -23,6 +24,11 @@ let package = Package(
       resources: [
         .process("Resources")
       ]
-    )
+    ),
+    .target(
+      name: "LKEmoji",
+      dependencies: []
+    ),
+
   ]
 )
