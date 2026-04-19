@@ -27,7 +27,10 @@ let package = Package(
     ),
     .target(
       name: "LKEmoji",
-      dependencies: []
+      dependencies: [],
+      resources: [
+        .process("Resources")
+      ]
     ),
     .testTarget(
       name: "LKEmojiTests",
