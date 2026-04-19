@@ -35,6 +35,8 @@ extension LKError: LocalizedError {
             case 5:
                 return "未登录"
             // case 6: retunrn "未完成" // 可能是，不确定，从task api猜测
+            case 5002:
+                return "已达到最大投币数"
             default:
                 return "API 错误 (错误码: \(code))"
             }
