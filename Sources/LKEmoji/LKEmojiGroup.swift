@@ -1,3 +1,5 @@
+import SwiftUI
+
 public enum LKEmojiGroup: UInt8, Equatable, CaseIterable, Sendable {
     case neko = 15
     case luck = 10
@@ -15,13 +17,23 @@ public enum LKEmojiGroup: UInt8, Equatable, CaseIterable, Sendable {
         }
     }
 
-    public var image: String {
+    public var url: String {
         switch self {
         case .neko: return "https://static.lightnovel.fun/smiley/neko/83.gif"
         case .luck: return "https://static.lightnovel.fun/smiley/luck/ls12.GIF"
         case .onion: return "https://static.lightnovel.fun/smiley/onion/y6.gif"
         case .df35: return "https://static.lightnovel.fun/smiley/df35/df048.jpg"
         case .father: return "https://static.lightnovel.fun/smiley/father/father07.gif"
+        }
+    }
+
+    public var logo: Image {
+        switch self {
+        case .neko: return LKEmoji.neko83.image
+        case .luck: return LKEmoji.luck12.image
+        case .onion: return LKEmoji.onion6.image
+        case .df35: return LKEmoji.df048.image
+        case .father: return LKEmoji.father07.image
         }
     }
 
