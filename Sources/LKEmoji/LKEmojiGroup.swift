@@ -28,4 +28,12 @@ public enum LKEmojiGroup: UInt8, Equatable, CaseIterable, Sendable {
     public var id: UInt8 {
         return self.rawValue
     }
+
+    public var emojis: Set<LKEmoji> {
+        return Set(
+            LKEmoji.allCases.filter { emoji in
+                return emoji.group == self
+            }
+        )
+    }
 }
