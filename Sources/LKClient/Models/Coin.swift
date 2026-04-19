@@ -1,6 +1,7 @@
 public enum CoinUsage: UInt8, Codable, Sendable {
     case payForArticle = 1  // 投币支付
     case rewardArticle = 2  // 打赏文章
+    case redeemMedal = 5  // 兑换勋章
 }
 
 struct UseCoinRequest: Codable, Sendable {
@@ -87,6 +88,14 @@ extension LKClient {
         try await self.useCoin(
             for: .payForArticle,
             params: articleId,
+            price: price,
+        )
+    }
+    /// 兑换勋章
+    public func redeemMedal(for medalId: UInt, price: UInt) async throws(LKError) {
+        try await self.useCoin(
+            for: .redeemMedal,
+            params: medalId,
             price: price,
         )
     }
