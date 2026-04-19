@@ -1,4 +1,4 @@
-enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
+public enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
     case neko3 = 1044
     case neko7 = 1045
     case neko16 = 1046
@@ -257,11 +257,11 @@ enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
     case father44 = 788
     case father45 = 789
 
-    var id: UInt {
+    public var id: UInt16 {
         return self.rawValue
     }
 
-    var group: LKEmojiGroup {
+    public var group: LKEmojiGroup {
         switch self {
         case .neko3, .neko7, .neko16, .neko45, .neko46, .neko83, .neko90, .neko92, .neko117,
             .neko177, .neko180, .neko218, .neko242, .neko246, .neko250, .neko285, .neko290,
@@ -304,7 +304,7 @@ enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
         }
     }
 
-    var code: String {
+    public var code: String {
         switch self {
         case .neko3: return "{:neko3:}"
         case .neko7: return "{:neko7:}"
@@ -566,7 +566,7 @@ enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
         }
     }
 
-    var url: String {
+    public var url: String {
         switch self {
         case .neko3: return "https://static.lightnovel.fun/smiley/neko/3.gif"
         case .neko7: return "https://static.lightnovel.fun/smiley/neko/7.gif"
@@ -828,7 +828,7 @@ enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
         }
     }
 
-    var label: String {
+    public var label: String {
         let prefix = "https://static.lightnovel.fun/smiley/"
         let fullUrl = self.url
         let rest = fullUrl.dropFirst(prefix.count)
@@ -1358,12 +1358,12 @@ enum LKEmoji: UInt16, Equatable, CaseIterable, Sendable {
         "https://static.lightnovel.fun/smiley/father/father45.gif": .father45,
     ]
 
-    init?(code: String) {
+    public init?(code: String) {
         guard let value = Self.codeMap[code] else { return nil }
         self = value
     }
 
-    init?(url: String) {
+    public init?(url: String) {
         guard let value = Self.urlMap[url] else { return nil }
         self = value
     }
