@@ -17,7 +17,7 @@ public struct ArticleInfo: Codable, Sendable {
     public var hitCount: UInt
     public var commentCount: UInt
     public var userId: UInt
-    public var author: FlexibleParam?  // 某些文章可能没有 author（如系列文章）
+    @FlexibleString public var author: String?  // 某些文章可能没有 author（如系列文章）
     public var avatarURL: String?  // 某些文章可能没有 avatar
     public var createTime: Date  // 文章创建时间
     public var updateTime: Date  // 最后更新时间

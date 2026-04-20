@@ -47,7 +47,7 @@ public struct UserBalance: Codable, Hashable, Sendable {
 
 /// 基础用户信息
 /// 搜索接口、集合创作者返回的用户列表使用这个结构体
-public struct UserInfo: Codable, Sendable {
+public struct UserInfo: Codable, Sendable, Hashable {
     static public let `default` = UserInfo(
         userId: 0,
         nickName: "",
@@ -96,7 +96,7 @@ public struct UserInfo: Codable, Sendable {
     public var avatarURL: String
     @LKBool public var passer: Bool
     public var gender: GenderType
-    public var sign: String
+    @FlexibleString public var sign: String
     @LKBool public var status: Bool
     public var bannerURL: String
     public var banEndDate: Date
@@ -153,7 +153,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
     public var avatarURL: String  // Avatar image URL
     @LKBool public var passer: Bool
     public var gender: GenderType
-    public var sign: String
+    @FlexibleString public var sign: String
     @LKBool public var status: Bool
     public var bannerURL: String  // Banner image URL
     public var banEndDate: Date  // Date when ban ends
@@ -249,7 +249,7 @@ extension UserProfileDetail {
         self.avatarURL = try container.decodeIfPresent(String.self, forKey: .avatarURL) ?? ""
         self._passer = try container.decode(LKBool<Bool>.self, forKey: .passer)
         self.gender = try container.decodeIfPresent(GenderType.self, forKey: .gender) ?? .unknown
-        self.sign = try container.decodeIfPresent(String.self, forKey: .sign) ?? ""
+        self._sign = try container.decode(FlexibleString<String>.self, forKey: .sign)
         self._status = try container.decode(LKBool<Bool>.self, forKey: .status)
         self.bannerURL = try container.decodeIfPresent(String.self, forKey: .bannerURL) ?? ""
         self.banEndDate =

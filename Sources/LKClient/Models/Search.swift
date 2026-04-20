@@ -170,7 +170,7 @@ public struct SeriesSearchData: Codable, Sendable {
 }
 public struct ArticleSearchData: Codable, Sendable {
     public var articleId: UInt
-    public var author: FlexibleParam
+    @FlexibleString public var author: String
     public var avatarURL: String
     public var bannerURL: String
     public var commentCount: UInt
