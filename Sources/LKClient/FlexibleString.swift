@@ -71,3 +71,16 @@ public struct FlexibleString<T: FlexibleStringConvertible>: Codable {
 extension FlexibleString: Sendable where T: Sendable {}
 extension FlexibleString: Equatable where T: Equatable {}
 extension FlexibleString: Hashable where T: Hashable {}
+
+// 为 KeyedDecodingContainer 添加扩展，优雅处理可选的 FlexibleString 字段
+extension KeyedDecodingContainer {
+    public func decode<T>(_ type: FlexibleString<T>.Type, forKey key: Key) throws -> FlexibleString<
+        T
+    > {
+        // 如果键不存在或解码失败，返回 nil 值的 LKBool
+        if let value = try? decodeIfPresent(FlexibleString<T>.self, forKey: key) {
+            return value
+        }
+        return FlexibleString(wrappedValue: T(fromFlexibleString: nil))
+    }
+}
