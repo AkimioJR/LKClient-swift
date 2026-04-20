@@ -8,11 +8,13 @@ public protocol FlexibleStringValue: Codable, Sendable, Hashable {
 // 让 String 遵循协议
 extension String: FlexibleStringValue {
     public init(from container: SingleValueDecodingContainer) throws {
-        if let double = try? container.decode(Double.self) {
-            self = String(double)
-        } else {
-            let string = try container.decode(String.self)
+        if let string = try? container.decode(String.self) {
             self = string
+        } else if let int = try? container.decode(Int.self) {
+            self = String(int)
+        } else {
+            let double = try container.decode(Double.self)
+            self = String(double)
         }
     }
 
@@ -26,11 +28,13 @@ extension Optional: FlexibleStringValue where Wrapped == String {
     public init(from container: SingleValueDecodingContainer) throws {
         if container.decodeNil() {
             self = nil
-        } else if let double = try? container.decode(Double.self) {
-            self = String(double)
-        } else {
-            let string = try container.decode(String.self)
+        } else if let string = try? container.decode(String.self) {
             self = string
+        } else if let int = try? container.decode(Int.self) {
+            self = String(int)
+        } else {
+            let double = try container.decode(Double.self)
+            self = String(double)
         }
     }
 
