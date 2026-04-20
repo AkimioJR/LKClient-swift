@@ -37,8 +37,8 @@ public actor LKClient {
             let dateString = try container.decode(String.self)
 
             // 处理特殊的空值情况
-            if dateString == "0000-00-00 00:00:00" || dateString.isEmpty {
-                return Date(timeIntervalSince1970: 0)  // Unix epoch
+            if dateString == "0000-00-00 00:00:00" {
+                return Date(timeIntervalSinceReferenceDate: .infinity)  // 使用一个特殊的未来时间来表示无效日期
             }
 
             if let parsedDate = formatter.date(from: dateString) {
