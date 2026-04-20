@@ -170,7 +170,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
     // 仅能看到自己的信息
     public var commentCount: UInt?
     public var balance: UserBalance?
-    public var securityKey: String?  // 仅在登录用户时返回
+    var securityKey: String?  // 仅在登录用户时返回
 
     // 仅他人信息
     @LKBool public var alreadyFollow: Bool?  // 是否关注
@@ -340,7 +340,8 @@ struct FecthUserArticleRequest: Codable, Sendable {
 
 extension LKClient {
     /// 登录客户端
-    public func login(username: String, password: String) async throws(LKError) -> UserProfileDetail
+    public func login(username: String, password: String, saveSecurityKey: Bool = true)
+        async throws(LKError) -> (UserProfileDetail, String)
     {
         let loginRequest = LoginRequest(username: username, password: password)
 
@@ -351,11 +352,15 @@ extension LKClient {
             requestData: loginRequest,
         )
 
-        if let key = loginResponse.securityKey {
-            await self.setSecurityKey(key)
+        guard let securityKey = loginResponse.securityKey else {
+            throw .apiEmptyDataError
         }
 
-        return loginResponse
+        if saveSecurityKey {
+            await self.setSecurityKey(securityKey)
+        }
+
+        return (loginResponse, securityKey)
     }
 
     /// 获取用户信息
