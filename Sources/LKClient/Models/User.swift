@@ -149,7 +149,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
     )
 
     public var userId: UInt
-    public var nickName: String
+    @FlexibleString public var nickName: String
     public var avatarURL: String  // Avatar image URL
     @LKBool public var passer: Bool
     public var gender: GenderType
@@ -234,34 +234,20 @@ extension UserProfileDetail {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.userId = try container.decodeIfPresent(UInt.self, forKey: .userId) ?? 0
-
-        if let nickname = try? container.decode(String.self, forKey: .nickName) {
-            self.nickName = nickname
-        } else if let nicknameUInt = try? container.decode(UInt.self, forKey: .nickName) {
-            self.nickName = String(nicknameUInt)
-        } else if let nicknameInt = try? container.decode(Int.self, forKey: .nickName) {
-            self.nickName = String(nicknameInt)
-        } else {
-            self.nickName = ""
-        }
-
-        self.avatarURL = try container.decodeIfPresent(String.self, forKey: .avatarURL) ?? ""
+        self.userId = try container.decode(UInt.self, forKey: .userId)
+        self._nickName = try container.decode(FlexibleString<String>.self, forKey: .nickName)
+        self.avatarURL = try container.decode(String.self, forKey: .avatarURL)
         self._passer = try container.decode(LKBool<Bool>.self, forKey: .passer)
-        self.gender = try container.decodeIfPresent(GenderType.self, forKey: .gender) ?? .unknown
+        self.gender = try container.decode(GenderType.self, forKey: .gender)
         self._sign = try container.decode(FlexibleString<String>.self, forKey: .sign)
         self._status = try container.decode(LKBool<Bool>.self, forKey: .status)
-        self.bannerURL = try container.decodeIfPresent(String.self, forKey: .bannerURL) ?? ""
-        self.banEndDate =
-            try container.decodeIfPresent(Date.self, forKey: .banEndDate)
-            ?? Date(timeIntervalSince1970: 0)
-        self.medals = try container.decodeIfPresent([Medal].self, forKey: .medals) ?? []
-        self.followingCount = try container.decodeIfPresent(UInt.self, forKey: .followingCount) ?? 0
-        self.articleCount = try container.decodeIfPresent(UInt.self, forKey: .articleCount) ?? 0
-        self.followerCount = try container.decodeIfPresent(UInt.self, forKey: .followerCount) ?? 0
-        self.levelInfo =
-            try container.decodeIfPresent(LevelInfo.self, forKey: .levelInfo) ?? .default
-
+        self.bannerURL = try container.decode(String.self, forKey: .bannerURL)
+        self.banEndDate = try container.decode(Date.self, forKey: .banEndDate)
+        self.medals = try container.decode([Medal].self, forKey: .medals)
+        self.followingCount = try container.decode(UInt.self, forKey: .followingCount)
+        self.articleCount = try container.decode(UInt.self, forKey: .articleCount)
+        self.followerCount = try container.decode(UInt.self, forKey: .followerCount)
+        self.levelInfo = try container.decode(LevelInfo.self, forKey: .levelInfo)
         self.favoriteCount = try container.decodeIfPresent(UInt.self, forKey: .favoriteCount)
         self.commentCount = try container.decodeIfPresent(UInt.self, forKey: .commentCount)
         self.balance = try container.decodeIfPresent(UserBalance.self, forKey: .balance)
