@@ -8,7 +8,7 @@
 import Foundation
 
 public struct ArticleDetail: Codable, Sendable {
-    public struct PayInfo: Codable, Sendable {
+    public struct PayInfo: Codable, Sendable, Equatable {
         // 文章支付类型
         public enum PriceType: UInt, Codable, Sendable {
             case coin = 0  // 投币支付
@@ -27,7 +27,7 @@ public struct ArticleDetail: Codable, Sendable {
         }
     }
     public struct Resource: Codable, Sendable {
-        public struct Info: Codable, Sendable {
+        public struct Info: Codable, Sendable, Equatable {
             public var resourceId: UInt
             public var width: UInt
             public var height: UInt
