@@ -292,7 +292,7 @@ struct FollowRequest: Codable, Sendable {
 public struct UserArticleInfo: Codable, Sendable {
     public var articleId: UInt
     public var bannerURL: String
-    public var commentCount: UInt
+    // public var commentCount: UInt // 接口返回的全是 0
     public var groupId: GroupId
     public var hitCount: UInt
     public var createTime: Date
@@ -307,7 +307,7 @@ public struct UserArticleInfo: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case articleId = "aid"
         case bannerURL = "banner"
-        case commentCount = "comments"
+        // case commentCount = "comments"
         case groupId = "gid"
         case hitCount = "hits"
         case createTime = "time"

@@ -68,7 +68,7 @@ public struct SeriesInfo: Codable, Sendable {
         rateCount: 0,
         updateTime: Date(timeIntervalSince1970: 0),
         hitCount: 0,
-        likeCount: 0,
+        // likeCount: 0,
         editors: [],
         score: 0.0,
         articles: [],
@@ -86,7 +86,7 @@ public struct SeriesInfo: Codable, Sendable {
     public var rateCount: UInt  // 评分人数
     public var updateTime: Date
     public var hitCount: UInt
-    public var likeCount: UInt
+    // public var likeCount: UInt
     public var editors: [UserInfo]
     public var score: Float64  // 0～10
     // var characters: [Any] // 未知数据结构
@@ -111,7 +111,7 @@ public struct SeriesInfo: Codable, Sendable {
         case rateCount = "rates"
         case updateTime = "last_time"
         case hitCount = "hits"
-        case likeCount = "likes"
+        // case likeCount = "likes"
         case editors = "editors"
         case score = "score"
         // case characters = "characters"
