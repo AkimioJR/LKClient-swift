@@ -63,7 +63,7 @@ public struct SeriesRecordInfo: Codable, Sendable {
             sign: "",
             status: false,
             bannerURL: "",
-            banEndDate: Date(timeIntervalSince1970: 0),
+            banEndDate: .invalidDate,
             levelInfo: .default,
         )
 

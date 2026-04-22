@@ -38,7 +38,7 @@ public actor LKClient {
 
             // 处理特殊的空值情况
             if dateString == "0000-00-00 00:00:00" {
-                return Date(timeIntervalSinceReferenceDate: .infinity)  // 使用一个特殊的未来时间来表示无效日期
+                return .invalidDate
             }
 
             if let parsedDate = formatter.date(from: dateString) {
