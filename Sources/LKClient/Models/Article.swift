@@ -225,15 +225,15 @@ struct FetchArticleDetailRequest: Codable, Sendable {
     }
 }
 
-public struct ArticleTag: Codable, Sendable {
-    public var tagId: UInt
+public struct ArticleTag: Codable, Sendable, Identifiable {
+    public var id: UInt
     public var word: String
     public var contentType: String
     public var weight: UInt
     public var isClickable: Bool
 
     enum CodingKeys: String, CodingKey {
-        case tagId = "id"
+        case id = "id"
         case word = "word"
         case contentType = "content_type"
         case weight = "weight"
