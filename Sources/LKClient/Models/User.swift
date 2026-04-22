@@ -92,7 +92,7 @@ public struct UserInfo: Codable, Sendable, Hashable {
     }
 
     public var userId: UInt
-    public var nickName: String
+    @FlexibleString public var nickName: String
     public var avatarURL: String
     @LKBool public var passer: Bool
     public var gender: GenderType

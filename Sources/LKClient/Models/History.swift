@@ -84,11 +84,11 @@ public struct SeriesRecordInfo: Codable, Sendable {
         }
 
         public var userId: UInt
-        public var nickName: String
+        @FlexibleString public var nickName: String
         public var avatarURL: String
         @LKBool public var passer: Bool
         public var gender: GenderType
-        public var sign: String
+        @FlexibleString public var sign: String
         @LKBool public var status: Bool
         public var bannerURL: String
         public var banEndDate: Date
