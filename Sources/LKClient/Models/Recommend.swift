@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public struct RecommendGroup: Codable, Sendable {
+public struct RecommendGroupDTO: Codable, Sendable {
     public var type: GroupType
     public var itemType: ItemType
     public var rows: UInt
@@ -105,27 +105,28 @@ public struct RecommendGroup: Codable, Sendable {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.id = try container.decode(UInt.self, forKey: RecommendGroup.Item.CodingKeys.id)
-            self.type = try container.decode(UInt.self, forKey: RecommendGroup.Item.CodingKeys.type)
+            self.id = try container.decode(UInt.self, forKey: RecommendGroupDTO.Item.CodingKeys.id)
+            self.type = try container.decode(
+                UInt.self, forKey: RecommendGroupDTO.Item.CodingKeys.type)
             self.title = try container.decode(
-                String.self, forKey: RecommendGroup.Item.CodingKeys.title)
+                String.self, forKey: RecommendGroupDTO.Item.CodingKeys.title)
             self.actionType = try container.decode(
-                ClassType.self, forKey: RecommendGroup.Item.CodingKeys.actionType)
+                ClassType.self, forKey: RecommendGroupDTO.Item.CodingKeys.actionType)
             switch self.actionType {
             case .article, .series:
                 self.actionParams = try container.decode(
-                    UInt.self, forKey: RecommendGroup.Item.CodingKeys.actionParams)
+                    UInt.self, forKey: RecommendGroupDTO.Item.CodingKeys.actionParams)
             case .themereply:
                 // 先尝试解析为 UInt
                 if let id = try? container.decode(
-                    UInt.self, forKey: RecommendGroup.Item.CodingKeys.actionParams)
+                    UInt.self, forKey: RecommendGroupDTO.Item.CodingKeys.actionParams)
                 {
                     self.actionParams = id
                 } else {
                     // 否则尝试解析为 URL 字符串并提取 ID
                     // https://www.lightnovel.fun/cn/themereply/1142391
                     let urlStr = try container.decode(
-                        String.self, forKey: RecommendGroup.Item.CodingKeys.actionParams)
+                        String.self, forKey: RecommendGroupDTO.Item.CodingKeys.actionParams)
                     guard let lastComponent = urlStr.components(separatedBy: "/").last,
                         let id = UInt(lastComponent)
                     else {
@@ -140,13 +141,13 @@ public struct RecommendGroup: Codable, Sendable {
             }
 
             self.pictureUrl = try container.decode(
-                String.self, forKey: RecommendGroup.Item.CodingKeys.pictureUrl)
+                String.self, forKey: RecommendGroupDTO.Item.CodingKeys.pictureUrl)
             self.groupId = try container.decodeIfPresent(
-                GroupId.self, forKey: RecommendGroup.Item.CodingKeys.groupId)
+                GroupId.self, forKey: RecommendGroupDTO.Item.CodingKeys.groupId)
             self.commentCount = try container.decode(
-                UInt.self, forKey: RecommendGroup.Item.CodingKeys.commentCount)
+                UInt.self, forKey: RecommendGroupDTO.Item.CodingKeys.commentCount)
             self.hitCount = try container.decode(
-                UInt.self, forKey: RecommendGroup.Item.CodingKeys.hitCount)
+                UInt.self, forKey: RecommendGroupDTO.Item.CodingKeys.hitCount)
         }
 
         public init(
@@ -199,7 +200,7 @@ struct GetRecommendRequest: Codable, Sendable {
     }
 }
 
-public struct FollowingArticleInfo: Codable, Hashable, Sendable {
+public struct FollowingArticleInfoDTO: Codable, Hashable, Sendable {
     public var acticleId: UInt
     public var seriesId: UInt
     public var title: String
@@ -257,7 +258,7 @@ struct FetchFollowingArticlesRequest: Codable, Sendable {
 
 extension LKClient {
     /// 获取推荐项目
-    public func fetchRecommendedGroups(classId: UInt) async throws(LKError) -> [RecommendGroup] {
+    public func fetchRecommendedGroups(classId: UInt) async throws(LKError) -> [RecommendGroupDTO] {
         self.logger.debug("正在获取推荐项目，classId: \(classId)")
         let req = GetRecommendRequest(securityKey: await self.securityKey, classId: classId)
 
@@ -268,7 +269,7 @@ extension LKClient {
     }
     /// 获取用户关注动态
     public func fetchFollowingArticles(page: UInt, pageSize: UInt = 20) async throws
-        -> [FollowingArticleInfo]
+        -> [FollowingArticleInfoDTO]
     {
         self.logger.debug("正在获取用户关注动态，page: \(page), pageSize: \(pageSize)")
         let req = FetchFollowingArticlesRequest(
