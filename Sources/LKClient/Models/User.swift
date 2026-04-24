@@ -55,9 +55,9 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
     public var banEndDate: Date
     public var level: UserProgress
 
-    @NoMeaningOptional public var followingCount: UInt?
-    @NoMeaningOptional public var followerCount: UInt?
-    @NoMeaningOptional public var articleCount: UInt?
+    public var followingCount: UInt?
+    public var followerCount: UInt?
+    public var articleCount: UInt?
 
     public var medals: [MedalDTO] = []
 
@@ -115,6 +115,35 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
         self.followerCount = followerCount
         self.articleCount = articleCount
         self.medals = medals
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.userId = try container.decode(UInt.self, forKey: .userId)
+        self._nickname = try container.decode(FlexibleString<String>.self, forKey: .nickname)
+        self.avatarURL = try container.decode(String.self, forKey: .avatarURL)
+        self._passer = try container.decode(LKBool<Bool>.self, forKey: .passer)
+        self.gender = try container.decode(GenderType.self, forKey: .gender)
+        self._sign = try container.decode(FlexibleString<String>.self, forKey: .sign)
+        self._isBanned = try container.decode(LKBool<Bool>.self, forKey: .isBanned)
+        self.banEndDate = try container.decode(Date.self, forKey: .banEndDate)
+        self.level = try container.decode(UserProgress.self, forKey: .level)
+        if let followingCount = try container.decodeIfPresent(UInt.self, forKey: .followingCount),
+            followingCount != 0
+        {
+            self.followingCount = followingCount
+        }
+        if let followerCount = try container.decodeIfPresent(UInt.self, forKey: .followerCount),
+            followerCount != 0
+        {
+            self.followerCount = followerCount
+        }
+        if let articleCount = try container.decodeIfPresent(UInt.self, forKey: .articleCount),
+            articleCount != 0
+        {
+            self.articleCount = articleCount
+        }
+        self.medals = try container.decodeIfPresent([MedalDTO].self, forKey: .medals) ?? []
     }
 }
 
