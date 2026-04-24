@@ -200,7 +200,7 @@ struct GetRecommendRequest: Codable, Sendable {
     }
 }
 
-public struct FollowingArticleInfoDTO: Codable, Hashable, Sendable {
+public struct FollowingArticleDTO: Codable, Hashable, Sendable {
     public var acticleId: UInt
     public var seriesId: UInt
     public var title: String
@@ -269,7 +269,7 @@ extension LKClient {
     }
     /// 获取用户关注动态
     public func fetchFollowingArticles(page: UInt, pageSize: UInt = 20) async throws
-        -> [FollowingArticleInfoDTO]
+        -> [FollowingArticleDTO]
     {
         self.logger.debug("正在获取用户关注动态，page: \(page), pageSize: \(pageSize)")
         let req = FetchFollowingArticlesRequest(
