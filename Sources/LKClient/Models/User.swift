@@ -99,11 +99,14 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
     public var levelInfo: LevelInfo
 
     @NoMeaningOptional public var followingCount: UInt?
-    @NoMeaningOptional public var commentCount: UInt?
-    @NoMeaningOptional public var favoriteCount: UInt?
-    @NoMeaningOptional public var articleCount: UInt?
     @NoMeaningOptional public var followerCount: UInt?
+    @NoMeaningOptional public var articleCount: UInt?
+
     public var medals: [Medal] = []
+
+    /// /api/user/info 接口中存在但数值始终为0，推测其他接口有数据但也始终为0
+    // @NoMeaningOptional public var commentCount: UInt?
+    // @NoMeaningOptional public var favoriteCount: UInt?
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"
@@ -118,15 +121,19 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
         case levelInfo = "level"
 
         case followingCount = "following"
-        case commentCount = "comments"
-        case favoriteCount = "favorites"
-        case articleCount = "articles"
         case followerCount = "followers"
+        case articleCount = "articles"
+
         case medals = "medals"
+
+        // case commentCount = "comments"
+        // case favoriteCount = "favorites"
     }
 }
 
-/// 用户信息接口返回的完整用户信息结构体，包含了 `UserInfoDTO` 中的所有字段，以及一些仅在用户信息接口中返回的字段
+/// 用户信息接口返回的完整用户信息结构体
+/// 包含了 `UserInfoDTO` 中的所有字段，以及一些仅在用户信息接口中返回的字段
+/// /api/user/info
 public struct UserProfileDTO: Codable, Hashable, Sendable {
     public var userId: UInt
     @FlexibleString public var nickName: String
@@ -138,17 +145,15 @@ public struct UserProfileDTO: Codable, Hashable, Sendable {
     // public var bannerURL: String  // Banner image URL
     public var banEndDate: Date  // Date when ban ends
     public var medals: [Medal]
-    public var followingCount: UInt  // Number of users this user is following
-    public var articleCount: UInt
+    public var followingCount: UInt  // 该用户关注其他用户的数量
     public var followerCount: UInt  // 粉丝数
+    public var articleCount: UInt
     public var levelInfo: LevelInfo
 
-    // 文章详情获取到的 UserProfileDTO 没有以下字段
-    public var favoriteCount: UInt?
-    // var allLevels: [LevelInfo]?
+    // @NoMeaningOptional public var commentCount: UInt? 似乎始终为 0
+    // @NoMeaningOptional public var favoriteCount: UInt? 似乎始终为 0
 
     // 仅能看到自己的信息
-    public var commentCount: UInt?
     public var balance: UserBalance?
     var securityKey: String?  // 仅在登录用户时返回
 
@@ -168,43 +173,20 @@ public struct UserProfileDTO: Codable, Hashable, Sendable {
         case banEndDate = "ban_end_date"
         case medals = "medals"
         case followingCount = "following"
-        case favoriteCount = "favorites"
-        case articleCount = "articles"
         case followerCount = "followers"
+        case articleCount = "articles"
         case levelInfo = "level"
-        case commentCount = "comments"
+
+        // case commentCount = "comments"
+        // case favoriteCount = "favorites"
+
+        // case allLevels = "all_level" // 仅自己返回，但接口数据固定，暂不建模
+
         case balance = "balance"
-        // case allLevels = "all_level"
         case securityKey = "security_key"
+
         case alreadyFollow = "followed"
         case alreadyBlock = "blocked"
-    }
-}
-
-extension UserProfileDTO {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        self.userId = try container.decode(UInt.self, forKey: .userId)
-        self._nickName = try container.decode(FlexibleString<String>.self, forKey: .nickName)
-        self.avatarURL = try container.decode(String.self, forKey: .avatarURL)
-        self._passer = try container.decode(LKBool<Bool>.self, forKey: .passer)
-        self.gender = try container.decode(GenderType.self, forKey: .gender)
-        self._sign = try container.decode(FlexibleString<String>.self, forKey: .sign)
-        self._status = try container.decode(LKBool<Bool>.self, forKey: .status)
-        // self.bannerURL = try container.decode(String.self, forKey: .bannerURL)
-        self.banEndDate = try container.decode(Date.self, forKey: .banEndDate)
-        self.medals = try container.decode([Medal].self, forKey: .medals)
-        self.followingCount = try container.decode(UInt.self, forKey: .followingCount)
-        self.articleCount = try container.decode(UInt.self, forKey: .articleCount)
-        self.followerCount = try container.decode(UInt.self, forKey: .followerCount)
-        self.levelInfo = try container.decode(LevelInfo.self, forKey: .levelInfo)
-        self.favoriteCount = try container.decodeIfPresent(UInt.self, forKey: .favoriteCount)
-        self.commentCount = try container.decodeIfPresent(UInt.self, forKey: .commentCount)
-        self.balance = try container.decodeIfPresent(UserBalance.self, forKey: .balance)
-        self.securityKey = try container.decodeIfPresent(String.self, forKey: .securityKey)
-        self._alreadyFollow = try container.decode(LKBool<Bool?>.self, forKey: .alreadyFollow)
-        self._alreadyBlock = try container.decode(LKBool<Bool?>.self, forKey: .alreadyBlock)
     }
 }
 

@@ -19,13 +19,13 @@ public struct TopicInfo: Codable, Sendable {
         public var likeCount: UInt
         public var time: Date
         public var content: String
-        public var userInfo: UserProfileDTO
-        public var replayUserInfo: UserProfileDTO?
+        public var userInfo: UserInfoDTO
+        public var replayUserInfoDTO: UserInfoDTO?
 
         public init(
             topicId: UInt, replyId: UInt, articleId: UInt, parentReplyId: UInt, repliedUserId: UInt,
-            userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserProfileDTO,
-            replayUserInfo: UserProfileDTO? = nil
+            userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserInfoDTO,
+            replayUserInfoDTO: UserInfoDTO? = nil
         ) {
             self.topicId = topicId
             self.replyId = replyId
@@ -37,7 +37,7 @@ public struct TopicInfo: Codable, Sendable {
             self.time = time
             self.content = content
             self.userInfo = userInfo
-            self.replayUserInfo = replayUserInfo
+            self.replayUserInfoDTO = replayUserInfoDTO
         }
 
         enum CodingKeys: String, CodingKey {
@@ -51,7 +51,7 @@ public struct TopicInfo: Codable, Sendable {
             case time = "time"
             case content = "content"
             case userInfo = "user_info"
-            case replayUserInfo = "r_user_info"
+            case replayUserInfoDTO = "r_user_info"
         }
     }
 
@@ -63,13 +63,13 @@ public struct TopicInfo: Codable, Sendable {
     public var content: String
     public var likeCount: UInt
     public var replyCount: UInt
-    public var userInfo: UserProfileDTO
+    public var userInfo: UserInfoDTO
     public var replyList: [ReplyInfo]
     @LKBool public var alreadyLike: Bool?  // 是否已点赞
 
     public init(
         topicId: UInt, articleId: UInt, userId: UInt, createTime: Date, updateTime: Date,
-        content: String, likeCount: UInt, replyCount: UInt, userInfo: UserProfileDTO,
+        content: String, likeCount: UInt, replyCount: UInt, userInfo: UserInfoDTO,
         replyList: [ReplyInfo], alreadyLike: Bool? = nil
     ) {
         self.topicId = topicId

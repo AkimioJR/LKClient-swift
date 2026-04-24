@@ -87,7 +87,7 @@ public struct SeriesInfo: Codable, Sendable {
     public var updateTime: Date
     public var hitCount: UInt
     // public var likeCount: UInt
-    public var editors: [UserInfo]
+    public var editors: [UserInfoDTO]
     public var score: Float64  // 0～10
     // var characters: [Any] // 未知数据结构
     public var articles: [ArticleInfo]
@@ -140,21 +140,8 @@ public struct SeriesRateInfo: Codable, Sendable {
     public var time: Date
     public var score: UInt
     public var likeCount: UInt
-    public var userInfo: UserProfileDTO
+    public var userInfo: UserInfoDTO
     // @LKBool var alreadyLike: Bool
-
-    public init(
-        userId: UInt, rate: UInt, text: String, time: Date, score: UInt, likeCount: UInt,
-        userInfo: UserProfileDTO
-    ) {
-        self.userId = userId
-        self.rate = rate
-        self.text = text
-        self.time = time
-        self.score = score
-        self.likeCount = likeCount
-        self.userInfo = userInfo
-    }
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"

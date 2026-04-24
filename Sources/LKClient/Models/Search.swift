@@ -97,50 +97,11 @@ public struct UserSearchData: Codable, Sendable {
 }
 
 public struct SeriesSearchData: Codable, Sendable {
-    public struct UserInfo: Codable, Sendable {
-        static let `default` = UserInfo(
-            userId: 0,
-            nickName: "",
-            avatarURL: "",
-            passer: false,
-            gender: .unknown,
-            sign: "",
-            status: false,
-            bannerURL: "",
-            banEndDate: .invalidDate,
-            levelInfo: .default,
-        )
-
-        var userId: UInt
-        var nickName: String
-        var avatarURL: String
-        @LKBool var passer: Bool
-        var gender: GenderType
-        var sign: String
-        @LKBool var status: Bool
-        var bannerURL: String
-        var banEndDate: Date
-        var levelInfo: LevelInfo
-
-        enum CodingKeys: String, CodingKey {
-            case userId = "uid"
-            case nickName = "nickname"
-            case avatarURL = "avatar"
-            case passer = "passer"
-            case gender = "gender"
-            case sign = "sign"
-            case status = "status"
-            case bannerURL = "banner"
-            case banEndDate = "ban_end_date"
-            case levelInfo = "level"
-        }
-    }
-
     public var author: String  // 作者（并非发布集合的作者）
     public var bannerURL: String
     public var coverURL: String
     public var coverType: CoverType
-    public var editors: [UserInfo]
+    public var editors: [UserInfoDTO]
     public var groupId: GroupId
     public var hightlightName: String
     public var hitCount: UInt
