@@ -127,7 +127,7 @@ public struct ArticleDetail: Codable, Sendable {
     public var lt: Date
     public var groupId: GroupId
     public var seriesId: UInt
-    public var author: UserProfileDetail
+    public var author: UserProfileDTO
     // var otherRecoms: [] // 未知
     public var cacheVersion: UInt
     @LKBool public var onlyApp: Bool
@@ -144,7 +144,7 @@ public struct ArticleDetail: Codable, Sendable {
         articleId: UInt, userId: UInt, title: String, summary: String, hitCount: UInt,
         likeCount: UInt, coinCount: UInt, favoriteCount: UInt, commentCount: UInt, shareCount: UInt,
         createTime: Date, hasPoll: Bool, bannerURL: String, updateTime: Date, onlyPasser: Bool,
-        coverURL: String, lt: Date, groupId: GroupId, seriesId: UInt, author: UserProfileDetail,
+        coverURL: String, lt: Date, groupId: GroupId, seriesId: UInt, author: UserProfileDTO,
         cacheVersion: UInt, onlyApp: Bool, alreadyCoinCount: UInt? = nil, alreadyLike: Bool? = nil,
         alreadyFavavorite: Bool? = nil, alreadyFollow: Bool? = nil, content: String? = nil,
         resource: Resource? = nil, payInfo: PayInfo? = nil

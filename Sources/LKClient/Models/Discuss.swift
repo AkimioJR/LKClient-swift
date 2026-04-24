@@ -19,13 +19,13 @@ public struct TopicInfo: Codable, Sendable {
         public var likeCount: UInt
         public var time: Date
         public var content: String
-        public var userInfo: UserProfileDetail
-        public var replayUserInfo: UserProfileDetail?
+        public var userInfo: UserProfileDTO
+        public var replayUserInfo: UserProfileDTO?
 
         public init(
             topicId: UInt, replyId: UInt, articleId: UInt, parentReplyId: UInt, repliedUserId: UInt,
-            userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserProfileDetail,
-            replayUserInfo: UserProfileDetail? = nil
+            userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserProfileDTO,
+            replayUserInfo: UserProfileDTO? = nil
         ) {
             self.topicId = topicId
             self.replyId = replyId
@@ -63,13 +63,13 @@ public struct TopicInfo: Codable, Sendable {
     public var content: String
     public var likeCount: UInt
     public var replyCount: UInt
-    public var userInfo: UserProfileDetail
+    public var userInfo: UserProfileDTO
     public var replyList: [ReplyInfo]
     @LKBool public var alreadyLike: Bool?  // 是否已点赞
 
     public init(
         topicId: UInt, articleId: UInt, userId: UInt, createTime: Date, updateTime: Date,
-        content: String, likeCount: UInt, replyCount: UInt, userInfo: UserProfileDetail,
+        content: String, likeCount: UInt, replyCount: UInt, userInfo: UserProfileDTO,
         replyList: [ReplyInfo], alreadyLike: Bool? = nil
     ) {
         self.topicId = topicId

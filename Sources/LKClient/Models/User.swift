@@ -138,8 +138,8 @@ public struct UserInfo: Codable, Sendable, Hashable {
     }
 }
 
-public struct UserProfileDetail: Codable, Hashable, Sendable {
-    static public let `default` = UserProfileDetail(
+public struct UserProfileDTO: Codable, Hashable, Sendable {
+    static public let `default` = UserProfileDTO(
         userId: 0,
         nickName: "",
         avatarURL: "",
@@ -147,7 +147,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
         gender: .unknown,
         sign: "",
         status: false,
-        bannerURL: "",
+        // bannerURL: "",
         banEndDate: .invalidDate,
         medals: [],
         followingCount: 0,
@@ -163,15 +163,15 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
     public var gender: GenderType
     @FlexibleString public var sign: String
     @LKBool public var status: Bool
-    public var bannerURL: String  // Banner image URL
+    // public var bannerURL: String  // Banner image URL
     public var banEndDate: Date  // Date when ban ends
-    public var medals: [Medal]  // 搜索结果中获取到的 UserProfileDetail 没有该字段
+    public var medals: [Medal]
     public var followingCount: UInt  // Number of users this user is following
     public var articleCount: UInt
     public var followerCount: UInt  // 粉丝数
     public var levelInfo: LevelInfo
 
-    // 文章详情获取到的 UserProfileDetail 没有以下字段
+    // 文章详情获取到的 UserProfileDTO 没有以下字段
     public var favoriteCount: UInt?
     // var allLevels: [LevelInfo]?
 
@@ -186,7 +186,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
 
     public init(
         userId: UInt, nickName: String, avatarURL: String, passer: Bool, gender: GenderType,
-        sign: String, status: Bool, bannerURL: String, banEndDate: Date, medals: [Medal] = [],
+        sign: String, status: Bool, banEndDate: Date, medals: [Medal] = [],
         followingCount: UInt, articleCount: UInt, followerCount: UInt, levelInfo: LevelInfo,
         favoriteCount: UInt? = nil, commentCount: UInt? = nil, balance: UserBalance? = nil,
         securityKey: String? = nil, alreadyFollow: Bool? = nil, alreadyBlock: Bool? = nil
@@ -198,7 +198,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
         self.gender = gender
         self.sign = sign
         self.status = status
-        self.bannerURL = bannerURL
+        // self.bannerURL = bannerURL
         self.banEndDate = banEndDate
         self.medals = medals
         self.followingCount = followingCount
@@ -221,7 +221,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
         case gender = "gender"
         case sign = "sign"
         case status = "status"
-        case bannerURL = "banner"
+        // case bannerURL = "banner"
         case banEndDate = "ban_end_date"
         case medals = "medals"
         case followingCount = "following"
@@ -238,7 +238,7 @@ public struct UserProfileDetail: Codable, Hashable, Sendable {
     }
 }
 
-extension UserProfileDetail {
+extension UserProfileDTO {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -249,7 +249,7 @@ extension UserProfileDetail {
         self.gender = try container.decode(GenderType.self, forKey: .gender)
         self._sign = try container.decode(FlexibleString<String>.self, forKey: .sign)
         self._status = try container.decode(LKBool<Bool>.self, forKey: .status)
-        self.bannerURL = try container.decode(String.self, forKey: .bannerURL)
+        // self.bannerURL = try container.decode(String.self, forKey: .bannerURL)
         self.banEndDate = try container.decode(Date.self, forKey: .banEndDate)
         self.medals = try container.decode([Medal].self, forKey: .medals)
         self.followingCount = try container.decode(UInt.self, forKey: .followingCount)
@@ -349,13 +349,13 @@ struct FecthUserArticleRequest: Codable, Sendable {
 extension LKClient {
     /// 登录客户端
     public func login(username: String, password: String, saveSecurityKey: Bool = true)
-        async throws(LKError) -> (UserProfileDetail, String)
+        async throws(LKError) -> (UserProfileDTO, String)
     {
         let loginRequest = LoginRequest(username: username, password: password)
 
         self.logger.debug("正在登录用户: \(username)")
 
-        let loginResponse: UserProfileDetail = try await self.sendRequest(
+        let loginResponse: UserProfileDTO = try await self.sendRequest(
             path: "/api/user/login",
             requestData: loginRequest,
         )
@@ -372,7 +372,7 @@ extension LKClient {
     }
 
     /// 获取用户信息
-    public func fetchUserInfo(userId: UInt) async throws(LKError) -> UserProfileDetail {
+    public func fetchUserInfo(userId: UInt) async throws(LKError) -> UserProfileDTO {
         let req = GetUserInfoRequest(
             userId: userId,
             securityKey: await self.securityKey,

@@ -140,12 +140,12 @@ public struct SeriesRateInfo: Codable, Sendable {
     public var time: Date
     public var score: UInt
     public var likeCount: UInt
-    public var userInfo: UserProfileDetail
+    public var userInfo: UserProfileDTO
     // @LKBool var alreadyLike: Bool
 
     public init(
         userId: UInt, rate: UInt, text: String, time: Date, score: UInt, likeCount: UInt,
-        userInfo: UserProfileDetail
+        userInfo: UserProfileDTO
     ) {
         self.userId = userId
         self.rate = rate

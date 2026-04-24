@@ -217,14 +217,14 @@ public struct FollowingArticleInfo: Codable, Hashable, Sendable {
     public var coverType: CoverType
     public var groupId: GroupId
     //var parentGroupId: ParentGroupId
-    public var author: UserProfileDetail
+    public var author: UserProfileDTO
     public var seriesName: String?
 
     public init(
         acticleId: UInt, seriesId: UInt, title: String, bannerURL: String, userId: UInt,
         hitCount: UInt, commentCount: UInt, createTime: Date, updateTime: Date, shareCount: UInt,
         favoriteCount: UInt, coinCount: UInt, likeCount: UInt, coverURL: String,
-        coverType: CoverType, groupId: GroupId, author: UserProfileDetail, seriesName: String? = nil
+        coverType: CoverType, groupId: GroupId, author: UserProfileDTO, seriesName: String? = nil
     ) {
         self.acticleId = acticleId
         self.seriesId = seriesId
