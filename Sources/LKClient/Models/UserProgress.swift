@@ -7,4 +7,8 @@ public struct UserProgress: Codable, Hashable, Sendable {
     enum CodingKeys: String, CodingKey {
         case experience = "exp"
     }
+
+    public init(experience: UInt) {
+        self.experience = experience
+    }
 }
