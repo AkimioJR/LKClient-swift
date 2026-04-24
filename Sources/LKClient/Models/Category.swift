@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ArticleInfo: Codable, Sendable {
+public struct ArticleInfoDTO: Codable, Sendable {
     public var articleId: UInt
     public var title: String
     public var coverURL: String
@@ -59,5 +59,28 @@ struct FetchCategoryArticlesInfoRequest: Codable, Sendable {
         case parentGroupId = "parent_gid"
         case page = "page"
         case pageSize = "pageSize"
+    }
+}
+
+extension LKClient {
+    /// 获取分类下文章
+    public func fetchCategoryArticles(
+        groupId: GroupId, parentGroupId: ParentGroupId, page: UInt, pageSize: UInt = 40
+    ) async throws(LKError) -> Page<ArticleInfoDTO> {
+        self.logger.debug(
+            "正在获取分类下文章，groupId: \(groupId), parentGroupId: \(parentGroupId), page: \(page), pageSize: \(pageSize)"
+        )
+        let req = FetchCategoryArticlesInfoRequest(
+            securityKey: await self.securityKey,
+            groupId: groupId,
+            parentGroupId: parentGroupId,
+            page: page,
+            pageSize: pageSize,
+        )
+
+        return try await self.sendRequest(
+            path: "/api/category/get-article-by-cate",
+            requestData: req,
+        )
     }
 }

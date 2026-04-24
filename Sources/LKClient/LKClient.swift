@@ -241,27 +241,6 @@ public actor LKClient {
         )
     }
 
-    /// 获取分类下文章
-    public func fetchCategoryArticles(
-        groupId: GroupId, parentGroupId: ParentGroupId, page: UInt, pageSize: UInt = 40
-    ) async throws(LKError) -> Page<ArticleInfo> {
-        self.logger.debug(
-            "正在获取分类下文章，groupId: \(groupId), parentGroupId: \(parentGroupId), page: \(page), pageSize: \(pageSize)"
-        )
-        let req = FetchCategoryArticlesInfoRequest(
-            securityKey: await self.securityKey,
-            groupId: groupId,
-            parentGroupId: parentGroupId,
-            page: page,
-            pageSize: pageSize,
-        )
-
-        return try await self.sendRequest(
-            path: "/api/category/get-article-by-cate",
-            requestData: req,
-        )
-    }
-
     // 上传图片
     public func uploadImage(data: Data, filename: String, mimeType: String = "image/png")
         async throws -> UploadImageResponse
