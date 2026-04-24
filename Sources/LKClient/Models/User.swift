@@ -50,7 +50,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
     @LKBool public var passer: Bool
     public var gender: GenderType
     @FlexibleString public var sign: String
-    @LKBool public var status: Bool
+    @LKBool public var isBanned: Bool
     // public var bannerURL: String
     public var banEndDate: Date
     public var level: UserProgress
@@ -72,7 +72,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
         case passer = "passer"
         case gender = "gender"
         case sign = "sign"
-        case status = "status"
+        case isBanned = "status"
         // case bannerURL = "banner"
         case banEndDate = "ban_end_date"
         case level = "level"
@@ -94,7 +94,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
         passer: Bool,
         gender: GenderType,
         sign: String,
-        status: Bool,
+        isBanned: Bool,
         banEndDate: Date,
         level: UserProgress,
         followingCount: UInt? = nil,
@@ -108,7 +108,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
         self.passer = passer
         self.gender = gender
         self.sign = sign
-        self.status = status
+        self.isBanned = isBanned
         self.banEndDate = banEndDate
         self.level = level
         self.followingCount = followingCount
@@ -128,7 +128,7 @@ public struct UserProfileDTO: Codable, Hashable, Sendable {
     @LKBool public var passer: Bool
     public var gender: GenderType
     @FlexibleString public var sign: String
-    @LKBool public var status: Bool
+    @LKBool public var isBanned: Bool
     // public var bannerURL: String  // Banner image URL
     public var banEndDate: Date  // Date when ban ends
     public var medals: [MedalDTO]
@@ -155,7 +155,7 @@ public struct UserProfileDTO: Codable, Hashable, Sendable {
         case passer = "passer"
         case gender = "gender"
         case sign = "sign"
-        case status = "status"
+        case isBanned = "status"
         // case bannerURL = "banner"
         case banEndDate = "ban_end_date"
         case medals = "medals"
