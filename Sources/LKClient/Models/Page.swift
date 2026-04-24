@@ -6,18 +6,6 @@
 //
 
 public struct PageInfo: Codable, Sendable {
-    static let `default` = PageInfo(
-        count: 0,
-        size: 0,
-        currentPage: 0,
-        previousPage: 0,
-        nextPage: 0,
-        hasPreviousPage: false,
-        hasNextPage: false,
-        model: 0,
-        supportModels: []
-    )
-
     public var count: UInt
     public var size: UInt
     public var currentPage: UInt
@@ -27,21 +15,6 @@ public struct PageInfo: Codable, Sendable {
     @LKBool public var hasNextPage: Bool
     public var model: UInt
     public var supportModels: [UInt]
-
-    public init(
-        count: UInt, size: UInt, currentPage: UInt, previousPage: UInt, nextPage: UInt,
-        hasPreviousPage: Bool, hasNextPage: Bool, model: UInt, supportModels: [UInt]
-    ) {
-        self.count = count
-        self.size = size
-        self.currentPage = currentPage
-        self.previousPage = previousPage
-        self.nextPage = nextPage
-        self.hasPreviousPage = hasPreviousPage
-        self.hasNextPage = hasNextPage
-        self.model = model
-        self.supportModels = supportModels
-    }
 
     enum CodingKeys: String, CodingKey {
         case count = "count"
@@ -54,6 +27,18 @@ public struct PageInfo: Codable, Sendable {
         case model = "model"
         case supportModels = "support_model"
     }
+
+    fileprivate static let `default` = PageInfo(
+        count: 0,
+        size: 0,
+        currentPage: 0,
+        previousPage: 0,
+        nextPage: 0,
+        hasPreviousPage: false,
+        hasNextPage: false,
+        model: 0,
+        supportModels: []
+    )
 }
 
 public struct Page<T: Decodable & Sendable>: Decodable, Sendable {
