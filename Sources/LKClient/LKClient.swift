@@ -38,7 +38,7 @@ public actor LKClient {
 
             // 处理特殊的空值情况
             if dateString == "0000-00-00 00:00:00" {
-                return .invalidDate
+                return .invalid
             }
 
             if let parsedDate = formatter.date(from: dateString) {

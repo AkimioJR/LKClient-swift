@@ -1,5 +1,5 @@
 import Foundation
 
 extension Date {
-    public static let invalidDate = Date.distantPast
+    public static let invalid = Date.distantPast
 }
