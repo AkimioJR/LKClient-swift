@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ArticleDetail: Codable, Sendable {
+public struct ArticleDetailDTO: Codable, Sendable {
     public struct PayInfo: Codable, Sendable, Equatable {
         // 文章支付类型
         public enum PriceType: UInt, Codable, Sendable {
@@ -99,7 +99,7 @@ public struct ArticleDetail: Codable, Sendable {
     public var updateTime: Date
     @LKBool public var onlyPasser: Bool
     public var coverURL: String
-    public var lt: Date
+    // public var lt: Date // 似乎和 updateTime 是重复字段
     public var groupId: GroupId
     public var seriesId: UInt
     public var author: UserInfoDTO
@@ -133,7 +133,7 @@ public struct ArticleDetail: Codable, Sendable {
         case onlyPasser = "only_passer"
         case coverURL = "cover"
         case updateTime = "last_time"
-        case lt = "lt"
+        // case lt = "lt"
         case groupId = "gid"
         case seriesId = "sid"
         case author = "author"
@@ -148,7 +148,7 @@ public struct ArticleDetail: Codable, Sendable {
     }
 }
 
-struct FetchArticleDetailRequest: Codable, Sendable {
+struct FetchArticleDetailDTORequest: Codable, Sendable {
     var securityKey: String
     var articleId: UInt
     @LKBool var simple: Bool
@@ -160,7 +160,7 @@ struct FetchArticleDetailRequest: Codable, Sendable {
     }
 }
 
-public struct ArticleTag: Codable, Sendable, Identifiable {
+public struct ArticleTagDTO: Codable, Sendable, Identifiable {
     public var id: UInt
     public var word: String
     public var contentType: String
@@ -189,13 +189,13 @@ struct ArticleRequest: Codable, Sendable {
 /// MARK: - 文章相关
 extension LKClient {
     /// 获取文章详情
-    public func fetchArticleDetail(articleId: UInt, includeContent: Bool) async throws
-        -> ArticleDetail
+    public func fetchArticleDetail(_ articleId: UInt, includeContent: Bool) async throws
+        -> ArticleDetailDTO
     {
         self.logger.debug(
             "正在获取文章详情，articleId: \(articleId), includeContent: \(includeContent)"
         )
-        let req = FetchArticleDetailRequest(
+        let req = FetchArticleDetailDTORequest(
             securityKey: await self.securityKey,
             articleId: articleId,
             simple: !includeContent,
@@ -208,7 +208,7 @@ extension LKClient {
     }
 
     /// 获取文章 tag
-    public func fetchArticleTags(articleId: UInt) async throws(LKError) -> [ArticleTag] {
+    public func fetchArticleTags(_ articleId: UInt) async throws(LKError) -> [ArticleTagDTO] {
         self.logger.debug("正在获取文章标签，articleId: \(articleId)")
         let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
         return try await self.sendRequest(
@@ -218,7 +218,7 @@ extension LKClient {
     }
 
     /// 点赞文章
-    public func likeArticle(articleId: UInt) async throws {
+    public func likeArticle(_ articleId: UInt) async throws {
         self.logger.debug("正在点赞文章，articleId: \(articleId)")
         let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
         try await self.sendRequest(
