@@ -110,7 +110,7 @@ extension LKClient {
     }
 
     /// 添加历史记录
-    public func addHistory(favoriteId: UInt, classType: ClassType) async throws {
+    public func addHistory(_ favoriteId: UInt, classType: ClassType) async throws {
         self.logger.debug("正在添加历史记录，favoriteId: \(favoriteId), classType: \(classType)")
         let req = RecordRequest(
             favoriteId: favoriteId,
@@ -124,7 +124,7 @@ extension LKClient {
     }
 
     /// 添加收藏
-    public func addFavorite(favoriteId: UInt, classType: ClassType) async throws {
+    public func addFavorite(_ favoriteId: UInt, classType: ClassType) async throws {
         self.logger.debug("正在添加收藏，favoriteId: \(favoriteId), classType: \(classType)")
         let req = RecordRequest(
             favoriteId: favoriteId,
@@ -138,7 +138,7 @@ extension LKClient {
     }
 
     /// 删除收藏
-    public func deleteFavorite(favoriteId: UInt, classType: ClassType) async throws {
+    public func deleteFavorite(_ favoriteId: UInt, classType: ClassType) async throws {
         self.logger.debug("正在删除收藏，favoriteId: \(favoriteId), classType: \(classType)")
         let req = RecordRequest(
             favoriteId: favoriteId,
