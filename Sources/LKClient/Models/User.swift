@@ -53,51 +53,39 @@ public struct UserBalance: Codable, Hashable, Sendable {
     }
 }
 
-/// 基础用户信息
-/// 搜索接口、集合创作者返回的用户列表使用这个结构体
-public struct UserInfo: Codable, Sendable, Hashable {
-    static public let `default` = UserInfo(
-        userId: 0,
-        nickName: "",
-        avatarURL: "",
-        passer: false,
-        gender: .unknown,
-        sign: "",
-        status: false,
-        bannerURL: "",
-        banEndDate: .invalidDate,
-        levelInfo: .default,
-        followingCount: 0,
-        commentCount: 0,
-        favoriteCount: 0,
-        articleCount: 0,
-        followerCount: 0,
-        medals: [],
-    )
-
-    public init(
-        userId: UInt, nickName: String, avatarURL: String, passer: Bool, gender: GenderType,
-        sign: String, status: Bool, bannerURL: String, banEndDate: Date, levelInfo: LevelInfo,
-        followingCount: UInt, commentCount: UInt, favoriteCount: UInt, articleCount: UInt,
-        followerCount: UInt, medals: [Medal]
-    ) {
-        self.userId = userId
-        self.nickName = nickName
-        self.avatarURL = avatarURL
-        self.passer = passer
-        self.gender = gender
-        self.sign = sign
-        self.status = status
-        self.bannerURL = bannerURL
-        self.banEndDate = banEndDate
-        self.levelInfo = levelInfo
-        self.followingCount = followingCount
-        self.commentCount = commentCount
-        self.favoriteCount = favoriteCount
-        self.articleCount = articleCount
-        self.followerCount = followerCount
-        self.medals = medals
-    }
+/// 基础用户信息，除了专门的用户信息接口外，其他接口中返回的用户信息都用这个结构体表示
+///
+/// **banner** 字段所有用户一致，全部舍弃
+///
+///  ### 🔴 高风险：必导致反序列化失败的字段缺失
+///  #### 1. `/api/article/get-detail.data.author`
+///  **缺失字段**：`comments`、`favorites`
+///  你的模型中：
+///  ```swift
+///  public var commentCount: UInt    // 非可选，对应 JSON "comments"
+///  public var favoriteCount: UInt   // 非可选，对应 JSON "favorites"
+///  ```
+///  该接口的 JSON 中**完全没有这两个 key**，会导致整个 `UserInfoDTO` 反序列化直接抛出错误。
+///  #### 2. `/api/search/search-result.data.list.1.editors.1`（搜索集合里的编辑）
+///  **缺失字段**：`comments`、`favorites`、`articles`、`followers`、`medals`
+///  这是最精简的一个用户信息，除了基础信息外，统计数据和徽章数组**全部缺失**。
+///  你的模型中：
+///  ```swift
+///  public var commentCount: UInt    // 缺失
+///  public var favoriteCount: UInt   // 缺失
+///  public var medals: [Medal]       // 缺失（非可选数组）
+///  ```
+///  同样会导致反序列化失败。
+///
+/// ### 🟡 零值情况（字段存在，值为 0，无风险）
+/// 以下接口中虽然值为 0，但**字段完整存在**，可以正常反序列化到你的 `UInt` 类型：
+/// - `/api/discuss/get-topic.data.list.1.user_info`: `comments: 0`, `favorites: 0`, `articles: 0`, `followers: 0`
+/// - `/api/discuss/get-topic.data.list.1.reply_list.1.user_info`: `comments: 0`, `favorites: 0`
+/// - `/api/series/get-info.data.editors.1`: `comments: 0`, `favorites: 0`
+/// - `/api/series/get-rate-list.data.list.1.user_info`: `following: 0`, `comments: 0`, `favorites: 0`, `articles: 0`, `followers: 0`
+/// - `/api/recom/get-follows.data.1.author`: `comments: 0`, `favorites: 0`
+/// - `/api/search/search-result.data.list.1`（搜索用户）: `comments: 0`, `favorites: 0`
+public struct UserInfoDTO: Codable, Sendable, Hashable {
 
     public var userId: UInt
     @FlexibleString public var nickName: String
@@ -106,16 +94,16 @@ public struct UserInfo: Codable, Sendable, Hashable {
     public var gender: GenderType
     @FlexibleString public var sign: String
     @LKBool public var status: Bool
-    public var bannerURL: String
+    // public var bannerURL: String
     public var banEndDate: Date
     public var levelInfo: LevelInfo
 
-    public var followingCount: UInt
-    public var commentCount: UInt
-    public var favoriteCount: UInt
-    public var articleCount: UInt
-    public var followerCount: UInt
-    public var medals: [Medal]
+    @NoMeaningOptional public var followingCount: UInt?
+    @NoMeaningOptional public var commentCount: UInt?
+    @NoMeaningOptional public var favoriteCount: UInt?
+    @NoMeaningOptional public var articleCount: UInt?
+    @NoMeaningOptional public var followerCount: UInt?
+    public var medals: [Medal] = []
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"
@@ -125,7 +113,7 @@ public struct UserInfo: Codable, Sendable, Hashable {
         case gender = "gender"
         case sign = "sign"
         case status = "status"
-        case bannerURL = "banner"
+        // case bannerURL = "banner"
         case banEndDate = "ban_end_date"
         case levelInfo = "level"
 
@@ -138,24 +126,8 @@ public struct UserInfo: Codable, Sendable, Hashable {
     }
 }
 
+/// 用户信息接口返回的完整用户信息结构体，包含了 `UserInfoDTO` 中的所有字段，以及一些仅在用户信息接口中返回的字段
 public struct UserProfileDTO: Codable, Hashable, Sendable {
-    static public let `default` = UserProfileDTO(
-        userId: 0,
-        nickName: "",
-        avatarURL: "",
-        passer: false,
-        gender: .unknown,
-        sign: "",
-        status: false,
-        // bannerURL: "",
-        banEndDate: .invalidDate,
-        medals: [],
-        followingCount: 0,
-        articleCount: 0,
-        followerCount: 0,
-        levelInfo: .default,
-    )
-
     public var userId: UInt
     @FlexibleString public var nickName: String
     public var avatarURL: String  // Avatar image URL
@@ -183,35 +155,6 @@ public struct UserProfileDTO: Codable, Hashable, Sendable {
     // 仅他人信息
     @LKBool public var alreadyFollow: Bool?  // 是否关注
     @LKBool public var alreadyBlock: Bool?  // 是否拉黑
-
-    public init(
-        userId: UInt, nickName: String, avatarURL: String, passer: Bool, gender: GenderType,
-        sign: String, status: Bool, banEndDate: Date, medals: [Medal] = [],
-        followingCount: UInt, articleCount: UInt, followerCount: UInt, levelInfo: LevelInfo,
-        favoriteCount: UInt? = nil, commentCount: UInt? = nil, balance: UserBalance? = nil,
-        securityKey: String? = nil, alreadyFollow: Bool? = nil, alreadyBlock: Bool? = nil
-    ) {
-        self.userId = userId
-        self.nickName = nickName
-        self.avatarURL = avatarURL
-        self.passer = passer
-        self.gender = gender
-        self.sign = sign
-        self.status = status
-        // self.bannerURL = bannerURL
-        self.banEndDate = banEndDate
-        self.medals = medals
-        self.followingCount = followingCount
-        self.articleCount = articleCount
-        self.followerCount = followerCount
-        self.levelInfo = levelInfo
-        self.favoriteCount = favoriteCount
-        self.commentCount = commentCount
-        self.balance = balance
-        self.securityKey = securityKey
-        self.alreadyFollow = alreadyFollow
-        self.alreadyBlock = alreadyBlock
-    }
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"
@@ -275,7 +218,7 @@ struct LoginRequest: Codable, Sendable {
     }
 }
 
-struct GetUserInfoRequest: Codable, Sendable {
+struct FetchUserProfileDTORequest: Codable, Sendable {
     var userId: UInt
     var securityKey: String
 
@@ -372,8 +315,8 @@ extension LKClient {
     }
 
     /// 获取用户信息
-    public func fetchUserInfo(userId: UInt) async throws(LKError) -> UserProfileDTO {
-        let req = GetUserInfoRequest(
+    public func fetchUserProfile(userId: UInt) async throws(LKError) -> UserProfileDTO {
+        let req = FetchUserProfileDTORequest(
             userId: userId,
             securityKey: await self.securityKey,
         )
