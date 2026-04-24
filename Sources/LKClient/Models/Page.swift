@@ -66,6 +66,17 @@ public struct Page<T: Decodable & Sendable>: Decodable, Sendable {
     }
 
     public init(from decoder: any Decoder) throws {
+        // 1. 首先尝试判断是否为空数组 `[]`
+        if let unkeyedContainer = try? decoder.unkeyedContainer() {
+            // 确认是数组且长度为0
+            if unkeyedContainer.count == 0 {
+                self.info = .default
+                self.list = []
+                return
+            }
+        }
+
+        // 2. 如果不是空数组，则按照正常的字典结构解析
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.info = try container.decodeIfPresent(PageInfo.self, forKey: .info) ?? .default  // 当 list 为空时，page_info 可能不存在，此时使用默认值
         self.list = try container.decodeIfPresent([T].self, forKey: .list) ?? []  // 当 list 为空时，list 可能不存在，此时使用空数组
