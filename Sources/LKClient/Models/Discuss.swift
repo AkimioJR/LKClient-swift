@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct TopicInfo: Codable, Sendable {
+public struct TopicInfoDTO: Codable, Sendable {
 
     public struct ReplyInfo: Codable, Sendable {
         public var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
@@ -21,24 +21,6 @@ public struct TopicInfo: Codable, Sendable {
         public var content: String
         public var userInfo: UserInfoDTO
         public var replayUserInfoDTO: UserInfoDTO?
-
-        public init(
-            topicId: UInt, replyId: UInt, articleId: UInt, parentReplyId: UInt, repliedUserId: UInt,
-            userId: UInt, likeCount: UInt, time: Date, content: String, userInfo: UserInfoDTO,
-            replayUserInfoDTO: UserInfoDTO? = nil
-        ) {
-            self.topicId = topicId
-            self.replyId = replyId
-            self.articleId = articleId
-            self.parentReplyId = parentReplyId
-            self.repliedUserId = repliedUserId
-            self.userId = userId
-            self.likeCount = likeCount
-            self.time = time
-            self.content = content
-            self.userInfo = userInfo
-            self.replayUserInfoDTO = replayUserInfoDTO
-        }
 
         enum CodingKeys: String, CodingKey {
             case topicId = "tid"
@@ -66,24 +48,6 @@ public struct TopicInfo: Codable, Sendable {
     public var userInfo: UserInfoDTO
     public var replyList: [ReplyInfo]
     @LKBool public var alreadyLike: Bool?  // 是否已点赞
-
-    public init(
-        topicId: UInt, articleId: UInt, userId: UInt, createTime: Date, updateTime: Date,
-        content: String, likeCount: UInt, replyCount: UInt, userInfo: UserInfoDTO,
-        replyList: [ReplyInfo], alreadyLike: Bool? = nil
-    ) {
-        self.topicId = topicId
-        self.articleId = articleId
-        self.userId = userId
-        self.createTime = createTime
-        self.updateTime = updateTime
-        self.content = content
-        self.likeCount = likeCount
-        self.replyCount = replyCount
-        self.userInfo = userInfo
-        self.replyList = replyList
-        self.alreadyLike = alreadyLike
-    }
 
     enum CodingKeys: String, CodingKey {
         case topicId = "tid"
@@ -193,8 +157,8 @@ public struct UploadImageResponse: Codable, Sendable {
 extension LKClient {
 
     /// 获取文章评论话题讨论
-    public func fetchArticleTopics(articleId: UInt, page: UInt, pageSize: UInt = 20) async throws
-        -> Page<TopicInfo>
+    public func fetchArticleTopics(_ articleId: UInt, page: UInt, pageSize: UInt = 20) async throws
+        -> Page<TopicInfoDTO>
     {
         self.logger.debug(
             "正在获取文章评论话题讨论，articleId: \(articleId), page: \(page), pageSize: \(pageSize)")
@@ -210,7 +174,7 @@ extension LKClient {
         )
     }
     /// 发布文章评论话题
-    public func postArticleTopic(articleId: UInt, content: String) async throws(LKError)
+    public func postArticleTopic(_ articleId: UInt, content: String) async throws(LKError)
         -> PostArticleTopicResponse
     {
         self.logger.debug("正在发布文章评论话题，articleId: \(articleId), content: \(content)")
@@ -226,7 +190,7 @@ extension LKClient {
     }
 
     /// 点赞评论话题
-    public func likeArticleTopic(topicId: UInt) async throws {
+    public func likeArticleTopic(_ topicId: UInt) async throws {
         self.logger.debug("正在点赞评论话题，topicId: \(topicId)")
         let req = await LikeTopicRequest(
             topicId: topicId,
@@ -240,7 +204,7 @@ extension LKClient {
 
     /// 发布评论话题回复
     public func postArticleReply(
-        articleId: UInt,
+        _ articleId: UInt,
         topicId: UInt,
         content: String,
         parentReplyId: UInt? = nil, parentUserId: UInt? = nil
