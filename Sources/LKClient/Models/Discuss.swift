@@ -7,9 +7,9 @@
 
 import Foundation
 
-public struct TopicInfoDTO: Codable, Sendable {
+public struct TopicDTO: Codable, Sendable {
 
-    public struct ReplyInfo: Codable, Sendable {
+    public struct ReplyDTO: Codable, Sendable {
         public var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
         public var replyId: UInt  // 话题下面的第几个回复
         public var articleId: UInt  // 文章ID
@@ -46,7 +46,7 @@ public struct TopicInfoDTO: Codable, Sendable {
     public var likeCount: UInt
     public var replyCount: UInt
     public var userInfo: UserInfoDTO
-    public var replyList: [ReplyInfo]
+    public var replyList: [ReplyDTO]
     @LKBool public var alreadyLike: Bool?  // 是否已点赞
 
     enum CodingKeys: String, CodingKey {
@@ -158,7 +158,7 @@ extension LKClient {
 
     /// 获取文章评论话题讨论
     public func fetchArticleTopics(_ articleId: UInt, page: UInt, pageSize: UInt = 20) async throws
-        -> Page<TopicInfoDTO>
+        -> Page<TopicDTO>
     {
         self.logger.debug(
             "正在获取文章评论话题讨论，articleId: \(articleId), page: \(page), pageSize: \(pageSize)")
