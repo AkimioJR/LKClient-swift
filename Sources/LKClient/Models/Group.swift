@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ParentGroupRecommendItems: Codable, Sendable {
+public struct ParentGroupRecommendDTO: Codable, Sendable {
     public var id: ParentGroupId
     //var logo: String
     public var coverType: CoverType
@@ -58,5 +58,17 @@ struct FetchParentGroupRecommendItemsRequest: Codable, Sendable {
 
     enum CodingKeys: String, CodingKey {
         case securityKey = "security_key"
+    }
+}
+
+extension LKClient {
+    /// 获取分区信息
+    public func fetchParentGroups() async throws(LKError) -> [ParentGroupRecommendDTO] {
+        self.logger.debug("正在获取分区信息")
+        let req = FetchParentGroupRecommendItemsRequest(securityKey: await self.securityKey)
+        return try await self.sendRequest(
+            path: "/api/group/main",
+            requestData: req,
+        )
     }
 }

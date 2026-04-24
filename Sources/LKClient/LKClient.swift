@@ -231,16 +231,6 @@ public actor LKClient {
         )
     }
 
-    /// 获取分区信息
-    public func fetchParentGroups() async throws(LKError) -> [ParentGroupRecommendItems] {
-        self.logger.debug("正在获取分区信息")
-        let req = FetchParentGroupRecommendItemsRequest(securityKey: await self.securityKey)
-        return try await self.sendRequest(
-            path: "/api/group/main",
-            requestData: req,
-        )
-    }
-
     // 上传图片
     public func uploadImage(data: Data, filename: String, mimeType: String = "image/png")
         async throws -> UploadImageResponse
