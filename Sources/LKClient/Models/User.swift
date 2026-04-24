@@ -45,7 +45,7 @@ public struct UserBalance: Codable, Hashable, Sendable {
 public struct UserInfoDTO: Codable, Sendable, Hashable {
 
     public var userId: UInt
-    @FlexibleString public var nickName: String
+    @FlexibleString public var nickname: String
     public var avatarURL: String
     @LKBool public var passer: Bool
     public var gender: GenderType
@@ -67,7 +67,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"
-        case nickName = "nickname"
+        case nickname = "nickname"
         case avatarURL = "avatar"
         case passer = "passer"
         case gender = "gender"
@@ -89,7 +89,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
 
     public init(
         userId: UInt,
-        nickName: String,
+        nickname: String,
         avatarURL: String,
         passer: Bool,
         gender: GenderType,
@@ -103,7 +103,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
         medals: [MedalDTO]
     ) {
         self.userId = userId
-        self.nickName = nickName
+        self.nickname = nickname
         self.avatarURL = avatarURL
         self.passer = passer
         self.gender = gender
@@ -123,7 +123,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
 /// /api/user/info
 public struct UserProfileDTO: Codable, Hashable, Sendable {
     public var userId: UInt
-    @FlexibleString public var nickName: String
+    @FlexibleString public var nickname: String
     public var avatarURL: String  // Avatar image URL
     @LKBool public var passer: Bool
     public var gender: GenderType
@@ -150,7 +150,7 @@ public struct UserProfileDTO: Codable, Hashable, Sendable {
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"
-        case nickName = "nickname"
+        case nickname = "nickname"
         case avatarURL = "avatar"
         case passer = "passer"
         case gender = "gender"
