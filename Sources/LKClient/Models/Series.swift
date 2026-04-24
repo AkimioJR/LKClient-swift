@@ -7,21 +7,8 @@
 
 import Foundation
 
-public struct SeriesInfo: Codable, Sendable {
-    public struct ArticleInfo: Codable, Sendable {
-        static let `default` = ArticleInfo(
-            order: 0,
-            articleId: 0,
-            title: "",
-            bannerURL: "",
-            coverURL: "",
-            // hitCount: 0,
-            // commentCount: 0,
-            coverType: .landscape,
-            createTime: Date(timeIntervalSince1970: 0),
-            updateTime: Date(timeIntervalSince1970: 0)
-        )
-
+public struct SeriesDTO: Codable, Sendable {
+    public struct ArticleDTO: Codable, Sendable {
         public var order: UInt
         public var articleId: UInt
         public var title: String
@@ -55,25 +42,6 @@ public struct SeriesInfo: Codable, Sendable {
         }
     }
 
-    static public let `default` = SeriesInfo(
-        seriesId: 0,
-        seriesName: "",
-        groupId: .all,
-        author: "",
-        intro: "",
-        bannerURL: "",
-        rate: 0,
-        coverURL: "",
-        coverType: .landscape,
-        rateCount: 0,
-        updateTime: Date(timeIntervalSince1970: 0),
-        hitCount: 0,
-        // likeCount: 0,
-        editors: [],
-        score: 0.0,
-        articles: [],
-    )
-
     public var seriesId: UInt
     public var seriesName: String
     public var groupId: GroupId
@@ -90,7 +58,7 @@ public struct SeriesInfo: Codable, Sendable {
     public var editors: [UserInfoDTO]
     public var score: Float64  // 0～10
     // var characters: [Any] // 未知数据结构
-    public var articles: [ArticleInfo]
+    public var articles: [ArticleDTO]
 
     // 用户对集合的个人信息
     @LKBool public var alreadyFavavorite: Bool?  // 是否已收藏
@@ -133,7 +101,7 @@ struct FetchSeriesRequest: Codable, Sendable {
     }
 }
 
-public struct SeriesRateInfo: Codable, Sendable {
+public struct SeriesRateDTO: Codable, Sendable {
     public var userId: UInt
     public var rate: UInt
     public var text: String
@@ -170,7 +138,7 @@ struct FetchSeriesRateRequest: Codable, Sendable {
 
 extension LKClient {
     /// 查询集合信息
-    public func fetchSeries(seriesId: UInt) async throws(LKError) -> SeriesInfo {
+    public func fetchSeries(_ seriesId: UInt) async throws(LKError) -> SeriesDTO {
         self.logger.debug("正在查询集合信息，seriesId: \(seriesId)")
         let req = await FetchSeriesRequest(seriesId: seriesId, securityKey: self.securityKey)
         return try await self.sendRequest(
@@ -180,8 +148,8 @@ extension LKClient {
     }
 
     /// 查询集合评价
-    public func fetchSeriesRatings(seriesId: UInt, page: UInt) async throws(LKError)
-        -> Page<SeriesRateInfo>
+    public func fetchSeriesRatings(_ seriesId: UInt, page: UInt)
+        async throws(LKError) -> Page<SeriesRateDTO>
     {
         self.logger.debug("正在查询集合评价，seriesId: \(seriesId), page: \(page)")
         let req = await FetchSeriesRateRequest(
