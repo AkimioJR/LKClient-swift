@@ -102,7 +102,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
     @NoMeaningOptional public var followerCount: UInt?
     @NoMeaningOptional public var articleCount: UInt?
 
-    public var medals: [Medal] = []
+    public var medals: [MedalDTO] = []
 
     /// /api/user/info 接口中存在但数值始终为0，推测其他接口有数据但也始终为0
     // @NoMeaningOptional public var commentCount: UInt?
@@ -144,7 +144,7 @@ public struct UserProfileDTO: Codable, Hashable, Sendable {
     @LKBool public var status: Bool
     // public var bannerURL: String  // Banner image URL
     public var banEndDate: Date  // Date when ban ends
-    public var medals: [Medal]
+    public var medals: [MedalDTO]
     public var followingCount: UInt  // 该用户关注其他用户的数量
     public var followerCount: UInt  // 粉丝数
     public var articleCount: UInt

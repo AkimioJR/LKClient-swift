@@ -30,13 +30,13 @@ public enum MedalStatus: UInt8, Equatable, CaseIterable, Sendable, Codable {
     }
 }
 
-public struct MedalGroup: Sendable, Codable, Identifiable {
+public struct MedalGroupDTO: Sendable, Codable, Identifiable {
     public var id: UInt8
     public var desc: String
-    public var items: [Medal]
+    public var items: [MedalDTO]
 }
 
-public struct Medal: Codable, Hashable, Sendable {
+public struct MedalDTO: Codable, Hashable, Sendable {
     public var medalId: UInt
     public var name: String
     public var desc: String
@@ -58,47 +58,6 @@ public struct Medal: Codable, Hashable, Sendable {
     public var endTime: Date?  // 有效期截止时间，"0000-00-00 00:00:00" 为永久有效
     public var levelLimit: Level?  // 兑换勋章的等级限制
     // public var levelLimitName: String?
-
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.medalId = try container.decode(UInt.self, forKey: .medalId)
-        self.name = try container.decode(String.self, forKey: .name)
-        self.desc = try container.decode(String.self, forKey: .desc)
-        self.medalsType = try container.decode(UInt.self, forKey: .medalsType)
-        self._equip = try container.decode(LKBool<Bool?>.self, forKey: .equip)
-        self.expiration = try container.decodeIfPresent(Date.self, forKey: .expiration)
-        self.imgURL = try container.decodeIfPresent(String.self, forKey: .imgURL)
-        self.parentId = try container.decodeIfPresent(UInt.self, forKey: .parentId)
-        self.status = try container.decodeIfPresent(MedalStatus.self, forKey: .status)
-        self.priceType = try container.decodeIfPresent(UInt8.self, forKey: .priceType)
-        self.rechargeNum = try container.decodeIfPresent(Int.self, forKey: .rechargeNum)
-        self.price = try container.decodeIfPresent(UInt.self, forKey: .price)
-        self.stock = try container.decodeIfPresent(Int.self, forKey: .stock)
-        self.endTime = try container.decodeIfPresent(Date.self, forKey: .endTime)
-        self.levelLimit = try container.decodeIfPresent(Level.self, forKey: .levelLimit)
-    }
-    public init(
-        medalId: UInt, name: String, desc: String, medalsType: UInt, equip: Bool? = nil,
-        expiration: Date? = nil, imgURL: String? = nil, parentId: UInt? = nil,
-        status: MedalStatus? = nil, priceType: UInt8? = nil, rechargeNum: Int? = nil,
-        price: UInt? = nil, stock: Int? = nil, endTime: Date? = nil, levelLimit: Level? = nil
-    ) {
-        self.medalId = medalId
-        self.name = name
-        self.desc = desc
-        self.medalsType = medalsType
-        self.equip = equip
-        self.expiration = expiration
-        self.imgURL = imgURL
-        self.parentId = parentId
-        self.status = status
-        self.priceType = priceType
-        self.rechargeNum = rechargeNum
-        self.price = price
-        self.stock = stock
-        self.endTime = endTime
-        self.levelLimit = levelLimit
-    }
 
     enum CodingKeys: String, CodingKey {
         case medalId = "medal_id"
@@ -135,7 +94,7 @@ struct FetchMedalListRequest: Encodable {
 struct FetchTaskMedalListResponse: Decodable {
     var title: String
     var type: MedalType
-    var list: [MedalGroup]
+    var list: [MedalGroupDTO]
 
     enum CodingKeys: String, CodingKey {
         case title = "title"
@@ -147,19 +106,20 @@ struct FetchTaskMedalListResponse: Decodable {
 /// MARK: - 勋章中心 API
 extension LKClient {
     /// 获取勋章列表
-    func fetchTaskMedalList<T: Decodable & Sendable>(for type: MedalType) async throws -> T {
+    private func fetchTaskMedalList<T: Decodable & Sendable>(for type: MedalType) async throws -> T
+    {
         self.logger.debug("正在获取 \(type.name) 勋章列表...")
         let request = await FetchMedalListRequest(type: .task, securityKey: self.securityKey)
         return try await self.sendRequest(path: "/api/medal/list", requestData: request)
     }
 
     /// 获取任务勋章列表
-    public func fetchTaskMedalList() async throws -> [MedalGroup] {
+    public func fetchTaskMedalList() async throws -> [MedalGroupDTO] {
         let resp: FetchTaskMedalListResponse = try await self.fetchTaskMedalList(for: .task)
         return resp.list
     }
     /// 获取兑换勋章列表
-    public func fetchExchangeMedalList() async throws -> Page<MedalGroup> {
+    public func fetchExchangeMedalList() async throws -> Page<MedalGroupDTO> {
         return try await self.fetchTaskMedalList(for: .exchange)
     }
 }

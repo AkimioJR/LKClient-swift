@@ -71,7 +71,7 @@ public struct UserSearchData: Codable, Sendable {
     public var favoriteCount: UInt
     public var articleCount: UInt
     public var followerCount: UInt
-    public var medals: [Medal]
+    public var medals: [MedalDTO]
     public var levelInfo: LevelInfo
     public var highlightedNickname: String
 
