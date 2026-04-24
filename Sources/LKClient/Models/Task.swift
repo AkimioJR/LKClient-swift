@@ -117,7 +117,7 @@ struct TaskListRequest: Codable, Sendable {
     }
 }
 
-public struct TaskList: Codable, Sendable {
+public struct TaskListDTO: Codable, Sendable {
     public var compelteAllTaskId: TaskType
     public var compelteAllTaskstate: TaskState
     public var items: [Item]
@@ -130,25 +130,7 @@ public struct TaskList: Codable, Sendable {
             case type = "id"
             case state = "status"
         }
-
-        public init(type: TaskType, state: TaskState) {
-            self.type = type
-            self.state = state
-        }
     }
-
-    public init(compelteAllTaskId: TaskType, compelteAllTaskstate: TaskState, items: [Item]) {
-        self.compelteAllTaskId = compelteAllTaskId
-        self.compelteAllTaskstate = compelteAllTaskstate
-        self.items = items
-    }
-    // public init(from decoder: any Decoder) throws {
-    //     let container = try decoder.container(keyedBy: CodingKeys.self)
-    //     self.compelteAllTaskId = try container.decode(TaskType.self, forKey: .compelteAllTaskId)
-    //     self.compelteAllTaskstate = try container.decode(
-    //         TaskState.self, forKey: .compelteAllTaskstate)
-    //     self.items = try container.decode([Self.Item].self, forKey: .items)
-    // }
 
     enum CodingKeys: String, CodingKey {
         case compelteAllTaskId = "id"
@@ -167,7 +149,7 @@ struct TaskCompleteRequest: Codable, Sendable {
     }
 }
 
-public struct TaskCompleteResult: Codable, Sendable {
+public struct TaskCompleteResultDTO: Codable, Sendable {
     public var experience: UInt
     public var coinCount: UInt
     // var balance: UInt
@@ -182,7 +164,7 @@ public struct TaskCompleteResult: Codable, Sendable {
 // MARK: - 任务 Task
 extension LKClient {
     // 获取任务列表
-    public func fetchTaskList() async throws(LKError) -> TaskList {
+    public func fetchTaskList() async throws(LKError) -> TaskListDTO {
         self.logger.debug("正在获取任务列表...")
         let req = await TaskListRequest(securityKey: self.securityKey)
         return try await self.sendRequest(
@@ -191,7 +173,7 @@ extension LKClient {
         )
     }
     // 完成任务
-    public func completeTask(type: TaskType) async throws(LKError) -> TaskCompleteResult {
+    public func completeTask(type: TaskType) async throws(LKError) -> TaskCompleteResultDTO {
         self.logger.debug("正在完成任务，type: \(type)")
         let req = await TaskCompleteRequest(type: type, securityKey: self.securityKey)
         return try await self.sendRequest(
@@ -199,5 +181,4 @@ extension LKClient {
             requestData: req,
         )
     }
-
 }
