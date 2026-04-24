@@ -20,7 +20,7 @@ public struct TopicDTO: Codable, Sendable {
         public var time: Date
         public var content: String
         public var userInfo: UserInfoDTO
-        public var replayUserInfoDTO: UserInfoDTO?
+        public var replayUserInfo: UserInfoDTO?
 
         enum CodingKeys: String, CodingKey {
             case topicId = "tid"
@@ -33,7 +33,33 @@ public struct TopicDTO: Codable, Sendable {
             case time = "time"
             case content = "content"
             case userInfo = "user_info"
-            case replayUserInfoDTO = "r_user_info"
+            case replayUserInfo = "r_user_info"
+        }
+
+        public init(
+            topicId: UInt,
+            replyId: UInt,
+            articleId: UInt,
+            parentReplyId: UInt,
+            repliedUserId: UInt,
+            userId: UInt,
+            likeCount: UInt,
+            time: Date,
+            content: String,
+            userInfo: UserInfoDTO,
+            replayUserInfo: UserInfoDTO? = nil
+        ) {
+            self.topicId = topicId
+            self.replyId = replyId
+            self.articleId = articleId
+            self.parentReplyId = parentReplyId
+            self.repliedUserId = repliedUserId
+            self.userId = userId
+            self.likeCount = likeCount
+            self.time = time
+            self.content = content
+            self.userInfo = userInfo
+            self.replayUserInfo = replayUserInfo
         }
     }
 
@@ -61,6 +87,32 @@ public struct TopicDTO: Codable, Sendable {
         case userInfo = "user_info"
         case replyList = "reply_list"
         case alreadyLike = "liked"
+    }
+
+    public init(
+        topicId: UInt,
+        articleId: UInt,
+        userId: UInt,
+        createTime: Date,
+        updateTime: Date,
+        content: String,
+        likeCount: UInt,
+        replyCount: UInt,
+        userInfo: UserInfoDTO,
+        replyList: [ReplyDTO],
+        alreadyLike: Bool? = nil
+    ) {
+        self.topicId = topicId
+        self.articleId = articleId
+        self.userId = userId
+        self.createTime = createTime
+        self.updateTime = updateTime
+        self.content = content
+        self.likeCount = likeCount
+        self.replyCount = replyCount
+        self.userInfo = userInfo
+        self.replyList = replyList
+        self.alreadyLike = alreadyLike
     }
 }
 

@@ -76,6 +76,40 @@ public struct MedalDTO: Codable, Hashable, Sendable {
         case endTime = "end_time"
         case levelLimit = "level_limit"
     }
+
+    public init(
+        medalId: UInt,
+        name: String,
+        desc: String,
+        medalsType: UInt,
+        equip: Bool? = nil,
+        expiration: Date? = nil,
+        imgURL: String? = nil,
+        parentId: UInt? = nil,
+        status: MedalStatus? = nil,
+        priceType: UInt8? = nil,
+        rechargeNum: Int? = nil,
+        price: UInt? = nil,
+        stock: Int? = nil,
+        endTime: Date? = nil,
+        levelLimit: UserGrade? = nil
+    ) {
+        self.medalId = medalId
+        self.name = name
+        self.desc = desc
+        self.medalsType = medalsType
+        self.equip = equip
+        self.expiration = expiration
+        self.imgURL = imgURL
+        self.parentId = parentId
+        self.status = status
+        self.priceType = priceType
+        self.rechargeNum = rechargeNum
+        self.price = price
+        self.stock = stock
+        self.endTime = endTime
+        self.levelLimit = levelLimit
+    }
 }
 
 struct FetchMedalListRequest: Encodable {

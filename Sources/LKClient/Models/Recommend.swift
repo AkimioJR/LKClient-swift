@@ -242,6 +242,46 @@ public struct FollowingArticleDTO: Codable, Hashable, Sendable {
         case author = "author"
         case seriesName = "series_name"
     }
+
+    public init(
+        acticleId: UInt,
+        seriesId: UInt,
+        title: String,
+        bannerURL: String,
+        userId: UInt,
+        hitCount: UInt,
+        commentCount: UInt,
+        createTime: Date,
+        updateTime: Date,
+        shareCount: UInt,
+        favoriteCount: UInt,
+        coinCount: UInt,
+        likeCount: UInt,
+        coverURL: String,
+        coverType: CoverType,
+        groupId: GroupId,
+        author: UserInfoDTO,
+        seriesName: String? = nil
+    ) {
+        self.acticleId = acticleId
+        self.seriesId = seriesId
+        self.title = title
+        self.bannerURL = bannerURL
+        self.userId = userId
+        self.hitCount = hitCount
+        self.commentCount = commentCount
+        self.createTime = createTime
+        self.updateTime = updateTime
+        self.shareCount = shareCount
+        self.favoriteCount = favoriteCount
+        self.coinCount = coinCount
+        self.likeCount = likeCount
+        self.coverURL = coverURL
+        self.coverType = coverType
+        self.groupId = groupId
+        self.author = author
+        self.seriesName = seriesName
+    }
 }
 
 struct FetchFollowingArticlesRequest: Codable, Sendable {

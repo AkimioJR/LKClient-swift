@@ -86,6 +86,36 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
         // case commentCount = "comments"
         // case favoriteCount = "favorites"
     }
+
+    public init(
+        userId: UInt,
+        nickName: String,
+        avatarURL: String,
+        passer: Bool,
+        gender: GenderType,
+        sign: String,
+        status: Bool,
+        banEndDate: Date,
+        level: UserProgress,
+        followingCount: UInt? = nil,
+        followerCount: UInt? = nil,
+        articleCount: UInt? = nil,
+        medals: [MedalDTO]
+    ) {
+        self.userId = userId
+        self.nickName = nickName
+        self.avatarURL = avatarURL
+        self.passer = passer
+        self.gender = gender
+        self.sign = sign
+        self.status = status
+        self.banEndDate = banEndDate
+        self.level = level
+        self.followingCount = followingCount
+        self.followerCount = followerCount
+        self.articleCount = articleCount
+        self.medals = medals
+    }
 }
 
 /// 用户信息接口返回的完整用户信息结构体

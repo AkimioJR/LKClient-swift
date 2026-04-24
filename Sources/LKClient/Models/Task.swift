@@ -130,6 +130,11 @@ public struct TaskListDTO: Codable, Sendable {
             case type = "id"
             case state = "status"
         }
+
+        public init(type: TaskType, state: TaskState) {
+            self.type = type
+            self.state = state
+        }
     }
 
     enum CodingKeys: String, CodingKey {
