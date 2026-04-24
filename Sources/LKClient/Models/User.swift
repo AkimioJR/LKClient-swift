@@ -254,7 +254,7 @@ extension LKClient {
     }
 
     /// 获取用户信息
-    public func fetchUserProfile(userId: UInt) async throws(LKError) -> UserProfileDTO {
+    public func fetchUserProfile(_ userId: UInt) async throws(LKError) -> UserProfileDTO {
         let req = FetchUserProfileDTORequest(
             userId: userId,
             securityKey: await self.securityKey,
@@ -267,7 +267,7 @@ extension LKClient {
     }
 
     /// 关注/取消关注用户
-    public func updateFollowStatus(userId: UInt, shouldFollow: Bool) async throws {
+    public func updateFollowStatus(_ userId: UInt, shouldFollow: Bool) async throws {
         self.logger.debug(
             "\(shouldFollow ? "关注" : "取消关注")用户(userId: \(userId))"
         )
@@ -281,7 +281,10 @@ extension LKClient {
 
     /// 获取用户的文章
     public func fetchUserArticles(
-        userId: UInt, articleType: ArticleType, page: UInt, pageSize: UInt = 20
+        _ userId: UInt,
+        articleType: ArticleType,
+        page: UInt,
+        pageSize: UInt = 20
     ) async throws(LKError) -> Page<UserArticleInfo> {
         self.logger.debug(
             "正在获取用户(userId: \(userId))文章: articleType: \(articleType), page: \(page), pageSize: \(pageSize) "
