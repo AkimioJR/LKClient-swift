@@ -56,47 +56,7 @@ struct FetchSearchRequest: Codable, Sendable {
     }
 }
 
-public struct UserSearchData: Codable, Sendable {
-    public var userId: UInt
-    @FlexibleString public var nickName: String
-    public var avatarURL: String
-    @LKBool public var passer: Bool
-    public var gender: GenderType
-    @FlexibleString public var sign: String
-    @LKBool public var status: Bool
-    public var bannerURL: String
-    public var banEndDate: Date
-    public var followingCount: UInt
-    public var commentCount: UInt
-    public var favoriteCount: UInt
-    public var articleCount: UInt
-    public var followerCount: UInt
-    public var medals: [MedalDTO]
-    public var levelInfo: LevelInfo
-    public var highlightedNickname: String
-
-    enum CodingKeys: String, CodingKey {
-        case userId = "uid"
-        case nickName = "nickname"
-        case avatarURL = "avatar"
-        case passer = "passer"
-        case gender = "gender"
-        case sign = "sign"
-        case status = "status"
-        case bannerURL = "banner"
-        case banEndDate = "ban_end_date"
-        case followingCount = "following"
-        case commentCount = "comments"
-        case favoriteCount = "favorites"
-        case articleCount = "articles"
-        case followerCount = "followers"
-        case medals = "medals"
-        case levelInfo = "level"
-        case highlightedNickname = "highlighted_nickname"
-    }
-}
-
-public struct SeriesSearchData: Codable, Sendable {
+public struct SeriesSearchDTO: Codable, Sendable {
     public var author: String  // 作者（并非发布集合的作者）
     public var bannerURL: String
     public var coverURL: String
@@ -129,7 +89,7 @@ public struct SeriesSearchData: Codable, Sendable {
         case seriesId = "sid"
     }
 }
-public struct ArticleSearchData: Codable, Sendable {
+public struct ArticleSearchDTO: Codable, Sendable {
     public var articleId: UInt
     @FlexibleString public var author: String
     public var avatarURL: String
@@ -168,7 +128,7 @@ public struct ArticleSearchData: Codable, Sendable {
     }
 }
 
-public struct HotSearchTag: Codable, Sendable {
+public struct HotSearchTagDTO: Codable, Sendable {
     public var id: UInt
     public var word: String
 
@@ -181,7 +141,7 @@ public struct HotSearchTag: Codable, Sendable {
 /// MARK: - 搜索相关
 extension LKClient {
     /// 获取热门搜索词条
-    public func fetchHotSearchTags() async throws(LKError) -> [HotSearchTag] {
+    public func fetchHotSearchTags() async throws(LKError) -> [HotSearchTagDTO] {
         self.logger.debug("正在获取热门搜索词条...")
         return try await self.sendRequest(
             path: "/api/search/get-search-tags"
@@ -208,38 +168,37 @@ extension LKClient {
     }
 
     /// 搜索用户
-    public func searchUser(for query: String, page: UInt) async throws(LKError) -> Page<
-        UserSearchData
-    > {
+    public func searchUser(for query: String, page: UInt) async throws(LKError) -> Page<UserInfoDTO>
+    {
         return try await self.search(for: query, type: .user, page: page)
     }
     /// 搜索集合
-    public func searchSeries(for query: String, page: UInt) async throws(LKError) -> Page<
-        SeriesSearchData
-    > {
+    public func searchSeries(for query: String, page: UInt) async throws(LKError)
+        -> Page<SeriesSearchDTO>
+    {
         return try await self.search(for: query, type: .series, page: page)
     }
     /// 搜索资讯
-    public func searchNews(for query: String, page: UInt) async throws(LKError) -> Page<
-        ArticleSearchData
-    > {
+    public func searchNews(for query: String, page: UInt) async throws(LKError)
+        -> Page<ArticleSearchDTO>
+    {
         return try await self.search(for: query, type: .news, page: page)
     }
     /// 搜索动画
-    public func searchAnime(for query: String, page: UInt) async throws(LKError) -> Page<
-        ArticleSearchData
-    > {
+    public func searchAnime(for query: String, page: UInt) async throws(LKError)
+        -> Page<ArticleSearchDTO>
+    {
         return try await self.search(for: query, type: .anime, page: page)
     }
     /// 搜索漫画
-    public func searchManga(for query: String, page: UInt) async throws(LKError) -> Page<
-        ArticleSearchData
-    > {
+    public func searchManga(for query: String, page: UInt) async throws(LKError)
+        -> Page<ArticleSearchDTO>
+    {
         return try await self.search(for: query, type: .manga, page: page)
     }
     /// 搜索轻小说
     public func searchLightnovel(for query: String, page: UInt) async throws(LKError)
-        -> Page<ArticleSearchData>
+        -> Page<ArticleSearchDTO>
     {
         return try await self.search(for: query, type: .lightnovel, page: page)
     }
