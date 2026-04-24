@@ -20,7 +20,9 @@ struct RecordRequest: Codable, Sendable {
     }
 }
 
-public struct ArticleRecordDTO: Codable, Sendable {
+public protocol RecordDTO: Codable, Sendable {}
+
+public struct ArticleRecordDTO: RecordDTO {
     public var articleId: UInt
     public var title: String
     public var bannerURL: String
@@ -52,7 +54,7 @@ public struct ArticleRecordDTO: Codable, Sendable {
     }
 }
 
-public struct SeriesRecordDTO: Codable, Sendable {
+public struct SeriesRecordDTO: RecordDTO {
     public var seriesId: UInt
     public var name: String
     public var author: String
@@ -150,7 +152,7 @@ extension LKClient {
     }
 
     /// 查询历史记录
-    public func fetchHistoryRecords<T: Decodable>(
+    public func fetchHistoryRecords<T: RecordDTO>(
         type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
     ) async throws(LKError) -> Page<T> {
         self.logger.debug(
@@ -171,7 +173,7 @@ extension LKClient {
     }
 
     // 查询收藏列表
-    public func fetchFavoriteRecords<T: Decodable>(
+    public func fetchFavoriteRecords<T: RecordDTO>(
         type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
     ) async throws(LKError) -> Page<T> {
         self.logger.debug(
