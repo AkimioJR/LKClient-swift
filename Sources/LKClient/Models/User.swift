@@ -1,47 +1,4 @@
-//
-//  User.swift
-//  SwiftLK
-//
-//  Created by 秋澪 on 2025/11/9.
-//
-
 import Foundation
-
-public enum GenderType: UInt8, Codable, Hashable, Sendable {
-    case unknown = 0
-    case male = 1
-    case female = 2
-
-    public var name: String {
-        switch self {
-        case .unknown: return "未知"
-        case .male: return "男"
-        case .female: return "女"
-        }
-    }
-}
-
-public struct LevelInfo: Codable, Hashable, Sendable {
-    static let `default` = LevelInfo(experience: 0, level: .commoner)
-
-    public init(experience: UInt, level: Level) {
-        self.experience = experience
-        self.level = level
-    }
-
-    public var experience: UInt
-    public var level: Level
-    // var name: String
-
-    // var nextExperience: UInt?
-
-    enum CodingKeys: String, CodingKey {
-        case experience = "exp"
-        case level = "level"
-        // case name = "name"
-        // case nextExperience = "next_exp"
-    }
-}
 
 public struct UserBalance: Codable, Hashable, Sendable {
     public var coin: UInt
@@ -96,7 +53,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
     @LKBool public var status: Bool
     // public var bannerURL: String
     public var banEndDate: Date
-    public var levelInfo: LevelInfo
+    public var level: UserProgress
 
     @NoMeaningOptional public var followingCount: UInt?
     @NoMeaningOptional public var followerCount: UInt?
@@ -118,7 +75,7 @@ public struct UserInfoDTO: Codable, Sendable, Hashable {
         case status = "status"
         // case bannerURL = "banner"
         case banEndDate = "ban_end_date"
-        case levelInfo = "level"
+        case level = "level"
 
         case followingCount = "following"
         case followerCount = "followers"
@@ -148,7 +105,7 @@ public struct UserProfileDTO: Codable, Hashable, Sendable {
     public var followingCount: UInt  // 该用户关注其他用户的数量
     public var followerCount: UInt  // 粉丝数
     public var articleCount: UInt
-    public var levelInfo: LevelInfo
+    public var level: UserProgress
 
     // @NoMeaningOptional public var commentCount: UInt? 似乎始终为 0
     // @NoMeaningOptional public var favoriteCount: UInt? 似乎始终为 0
@@ -175,7 +132,7 @@ public struct UserProfileDTO: Codable, Hashable, Sendable {
         case followingCount = "following"
         case followerCount = "followers"
         case articleCount = "articles"
-        case levelInfo = "level"
+        case level = "level"
 
         // case commentCount = "comments"
         // case favoriteCount = "favorites"

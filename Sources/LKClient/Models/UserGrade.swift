@@ -1,11 +1,4 @@
-//
-//  Level.swift
-//  SwiftLK
-//
-//  Created by 秋澪 on 2025/12/19.
-//
-
-public enum Level: UInt8, CaseIterable, Equatable, Codable, Comparable, Sendable {
+public enum UserGrade: UInt8, CaseIterable, Equatable, Codable, Comparable, Sendable {
     case commoner = 1  // 平民
     case knight = 2  // 骑士
     case lord = 3  // 勋爵
@@ -55,28 +48,28 @@ public enum Level: UInt8, CaseIterable, Equatable, Codable, Comparable, Sendable
     }
 
     // 升到下一个等级所需的经验值
-    public var nextLevelExp: UInt {
-        return nextLevel?.requiredExp ?? Self.emperor.requiredExp  // 皇帝等级没有下一级，返回最高经验值
+    public var nextGradeExp: UInt {
+        return nextGrade?.requiredExp ?? Self.emperor.requiredExp  // 皇帝等级没有下一级，返回最高经验值
     }
 
     // 下一个等级
-    public var nextLevel: Level? {
+    public var nextGrade: Self? {
         if self == .emperor {
             return nil
         }
-        return Level(rawValue: self.rawValue + 1)
+        return Self(rawValue: self.rawValue + 1)
     }
 
     // 上一个等级
-    public var previousLevel: Level? {
+    public var previousGrade: Self? {
         if self == .commoner {
             return nil
         }
-        return Level(rawValue: self.rawValue - 1)
+        return Self(rawValue: self.rawValue - 1)
     }
 
     // MARK: - Comparable
-    static public func < (lhs: Level, rhs: Level) -> Bool {
+    static public func < (lhs: Self, rhs: Self) -> Bool {
         return lhs.rawValue < rhs.rawValue
     }
 }

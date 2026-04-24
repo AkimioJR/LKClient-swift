@@ -56,7 +56,7 @@ public struct MedalDTO: Codable, Hashable, Sendable {
     public var price: UInt?  // 轻币数量
     public var stock: Int?  // 库存数量 -1 表示不限量
     public var endTime: Date?  // 有效期截止时间，"0000-00-00 00:00:00" 为永久有效
-    public var levelLimit: Level?  // 兑换勋章的等级限制
+    public var levelLimit: UserGrade?  // 兑换勋章的等级限制
     // public var levelLimitName: String?
 
     enum CodingKeys: String, CodingKey {
