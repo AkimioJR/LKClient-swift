@@ -22,11 +22,12 @@ public struct ParentGroupRecommendDTO: Codable, Sendable {
         public var seriesId: UInt
         public var seriesName: String?  // 非集合文章值为nil
         public var hitCount: UInt
+        public var likeCount: UInt
         public var commentCount: UInt
         public var rank: UInt
-        public var likeCount: UInt
-        public var coinCount: UInt
-        public var shareCount: UInt
+        // public var coinCount: UInt
+        // public var shareCount: UInt
+        // public var favoriteCount: UInt
 
         enum CodingKeys: String, CodingKey {
             case articleId = "aid"
@@ -37,10 +38,12 @@ public struct ParentGroupRecommendDTO: Codable, Sendable {
             case seriesName = "series_name"
             case hitCount = "hits"
             case likeCount = "likes"
-            case coinCount = "coins"
             case commentCount = "comments"
-            case shareCount = "shares"
             case rank = "rank"
+
+            // case coinCount = "coins"
+            // case shareCount = "shares"
+            // case favoriteCount = "favorites"
         }
     }
 
