@@ -66,6 +66,14 @@ public struct SeriesDTO: Codable, Sendable {
     @LKBool public var alreadyLike: Bool?  // 是否已点赞
     public var userRead: UserRead?  // 用户阅读进度
 
+    public var lastArticleId: UInt? {
+        if let userRead = self.userRead {
+            return userRead.lastArticleId > 0 ? UInt(userRead.lastArticleId) : nil
+        } else {
+            return nil
+        }
+    }
+
     enum CodingKeys: String, CodingKey {
         case seriesId = "sid"
         case seriesName = "name"
