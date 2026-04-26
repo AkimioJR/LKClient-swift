@@ -346,7 +346,7 @@ extension LKClient {
         pageSize: UInt = 20
     ) async throws(LKError) -> Page<UserArticleInfo> {
         self.logger.debug(
-            "正在获取用户(userId: \(userId))文章: articleType: \(articleType), page: \(page), pageSize: \(pageSize) "
+            "正在获取用户(userId: \(userId))文章: articleType: \(String(describing: articleType)),  page: \(page), pageSize: \(pageSize) "
         )
 
         let req = FecthUserArticleRequest(

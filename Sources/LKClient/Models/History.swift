@@ -111,7 +111,8 @@ extension LKClient {
 
     /// 添加历史记录
     public func addHistory(_ favoriteId: UInt, classType: ClassType) async throws {
-        self.logger.debug("正在添加历史记录，favoriteId: \(favoriteId), classType: \(classType)")
+        self.logger.debug(
+            "正在添加历史记录，favoriteId: \(favoriteId), classType: \(String(describing: classType))")
         let req = RecordRequest(
             favoriteId: favoriteId,
             classType: classType,
@@ -125,7 +126,9 @@ extension LKClient {
 
     /// 添加收藏
     public func addFavorite(_ favoriteId: UInt, classType: ClassType) async throws {
-        self.logger.debug("正在添加收藏，favoriteId: \(favoriteId), classType: \(classType)")
+        self.logger.debug(
+            "正在添加收藏，favoriteId: \(favoriteId), classType: \(String(describing: classType))"
+        )
         let req = RecordRequest(
             favoriteId: favoriteId,
             classType: classType,
@@ -139,7 +142,9 @@ extension LKClient {
 
     /// 删除收藏
     public func deleteFavorite(_ favoriteId: UInt, classType: ClassType) async throws {
-        self.logger.debug("正在删除收藏，favoriteId: \(favoriteId), classType: \(classType)")
+        self.logger.debug(
+            "正在删除收藏，favoriteId: \(favoriteId), classType: \(String(describing: classType))"
+        )
         let req = RecordRequest(
             favoriteId: favoriteId,
             classType: classType,
@@ -156,7 +161,7 @@ extension LKClient {
         type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
     ) async throws(LKError) -> Page<T> {
         self.logger.debug(
-            "正在查询历史记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
+            "正在查询历史记录，type: \(String(describing: type)), classType: \(String(describing: classType)), page: \(page), pageSize: \(pageSize)"
         )
         let req = FetchRecordRequest(
             type: type,
@@ -177,7 +182,7 @@ extension LKClient {
         type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
     ) async throws(LKError) -> Page<T> {
         self.logger.debug(
-            "正在查询收藏记录，type: \(type), classType: \(classType), page: \(page), pageSize: \(pageSize)"
+            "正在查询收藏记录，type: \(String(describing: type)), classType: \(String(describing: classType)), page: \(page), pageSize: \(pageSize)"
         )
         let req = FetchRecordRequest(
             type: type,
