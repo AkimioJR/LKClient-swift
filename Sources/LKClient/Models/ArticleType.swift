@@ -10,10 +10,8 @@ public enum ArticleType: UInt8, Codable, Sendable, CaseIterable, Identifiable, H
     case book = 1  // 图书
 
     public var id: Self { self }
-}
 
-extension ArticleType: CustomStringConvertible {
-    public var description: String {
+    public var name: String {
         switch self {
         case .other:
             return "其他"
