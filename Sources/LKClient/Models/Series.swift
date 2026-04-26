@@ -35,7 +35,7 @@ public struct SeriesDTO: Codable, Sendable {
     }
 
     public struct UserRead: Codable, Sendable {
-        public var lastArticleId: UInt
+        public var lastArticleId: Int  // 未读可能是 -1 也可能整个 userRead 字段为 null
 
         enum CodingKeys: String, CodingKey {
             case lastArticleId = "last_aid"
