@@ -232,7 +232,7 @@ public enum FollowAction: UInt8, Codable, Sendable {
     /// 取消关注用户
     case unfollow = 1
 
-    var name: String {
+    public var name: String {
         switch self {
         case .unfollow:
             return "取消关注"
