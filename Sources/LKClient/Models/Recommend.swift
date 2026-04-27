@@ -201,7 +201,7 @@ struct GetRecommendRequest: Codable, Sendable {
 }
 
 public struct FollowingArticleDTO: Codable, Hashable, Sendable {
-    public var acticleId: UInt
+    public var articleId: UInt
     public var seriesId: UInt
     public var title: String
     public var bannerURL: String
@@ -222,7 +222,7 @@ public struct FollowingArticleDTO: Codable, Hashable, Sendable {
     public var seriesName: String?
 
     enum CodingKeys: String, CodingKey {
-        case acticleId = "aid"
+        case articleId = "aid"
         case seriesId = "sid"
         case title = "title"
         case bannerURL = "banner"
@@ -244,7 +244,7 @@ public struct FollowingArticleDTO: Codable, Hashable, Sendable {
     }
 
     public init(
-        acticleId: UInt,
+        articleId: UInt,
         seriesId: UInt,
         title: String,
         bannerURL: String,
@@ -263,7 +263,7 @@ public struct FollowingArticleDTO: Codable, Hashable, Sendable {
         author: UserInfoDTO,
         seriesName: String? = nil
     ) {
-        self.acticleId = acticleId
+        self.articleId = articleId
         self.seriesId = seriesId
         self.title = title
         self.bannerURL = bannerURL
