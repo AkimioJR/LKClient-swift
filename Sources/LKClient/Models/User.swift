@@ -226,14 +226,30 @@ struct FetchUserProfileDTORequest: Codable, Sendable {
     }
 }
 
+public enum FollowAction: UInt8, Codable, Sendable {
+    /// 关注用户
+    case follow = 0
+    /// 取消关注用户
+    case unfollow = 1
+
+    var name: String {
+        switch self {
+        case .unfollow:
+            return "取消关注"
+        case .follow:
+            return "关注"
+        }
+    }
+}
+
 struct FollowRequest: Codable, Sendable {
     var userId: UInt
-    @LKBool var unFollow: Bool  // false表示关注，true表示取关
+    var action: FollowAction
     var securityKey: String
 
     enum CodingKeys: String, CodingKey {
         case userId = "uid"
-        case unFollow = "act"
+        case action = "act"
         case securityKey = "security_key"
     }
 }
@@ -326,12 +342,10 @@ extension LKClient {
     }
 
     /// 关注/取消关注用户
-    public func updateFollowStatus(_ userId: UInt, shouldFollow: Bool) async throws {
-        self.logger.debug(
-            "\(shouldFollow ? "关注" : "取消关注")用户(userId: \(userId))"
-        )
+    public func updateFollowStatus(_ userId: UInt, _ action: FollowAction) async throws {
+        self.logger.debug("\(action.name)用户(userId: \(userId))")
         let req = FollowRequest(
-            userId: userId, unFollow: !shouldFollow, securityKey: await self.securityKey)
+            userId: userId, action: action, securityKey: await self.securityKey)
         try await self.sendRequest(
             path: "/api/user/follow",
             requestData: req
