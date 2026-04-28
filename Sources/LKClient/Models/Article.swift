@@ -27,7 +27,7 @@ public struct ArticleDetailDTO: Codable, Sendable {
         }
     }
     public struct Resource: Codable, Sendable {
-        public struct Info: Codable, Sendable, Equatable {
+        public struct Info: Codable, Sendable, Equatable, Hashable {
             public var resourceId: UInt
             public var width: UInt
             public var height: UInt
