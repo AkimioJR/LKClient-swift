@@ -114,6 +114,7 @@ public struct ArticleDetailDTO: Codable, Sendable {
     public var content: String?  // 需要simple为false
     public var resource: Resource?  // 漫画文章可能没有这一项
     public var payInfo: PayInfo?  // 支付信息，未支付文章才有
+    public var mainTpoicId: UInt?  // 主要话题id，仅有 themereply 文章才有
 
     enum CodingKeys: String, CodingKey {
         case articleId = "aid"
@@ -145,6 +146,7 @@ public struct ArticleDetailDTO: Codable, Sendable {
         case alreadyFavavorite = "already_fav"
         case alreadyFollow = "already_follow"
         case payInfo = "pay_info"
+        case mainTpoicId = "main_tid"
     }
 }
 
