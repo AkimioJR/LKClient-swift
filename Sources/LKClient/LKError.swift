@@ -23,6 +23,19 @@ public enum LKError: Error, Sendable {
     case unkownError(Error)
 }
 
+extension LKError {
+    public var isCancelled: Bool {
+        switch self {
+        case .networkError(let err):
+            return err is CancellationError || (err as? URLError)?.code == .cancelled
+        case .unkownError(let err):
+            return err is CancellationError
+        default:
+            return false
+        }
+    }
+}
+
 // MARK: - LocalizedError
 extension LKError: LocalizedError {
     public var errorDescription: String? {
@@ -30,11 +43,13 @@ extension LKError: LocalizedError {
         case .apiError(let code):
             switch code {
             // case 1: retunrn "" // 提交 aid 为0 导致的错误，不确定具体含义
+            // case 2: retunrn "" // 登陆时密码错误
             case 3:
                 return "缺少请求参数"
             case 5:
                 return "未登录"
             // case 6: retunrn "未完成" // 可能是，不确定，从task api猜测
+            // case 5001: // 文章不存在
             case 5002:
                 return "已达到最大投币数"
             default:
