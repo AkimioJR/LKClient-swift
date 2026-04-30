@@ -209,8 +209,8 @@ public struct UploadImageResponse: Codable, Sendable {
 extension LKClient {
 
     /// 获取文章评论话题讨论
-    public func fetchArticleTopics(_ articleId: UInt, page: UInt, pageSize: UInt = 20) async throws
-        -> Page<TopicDTO>
+    public func fetchArticleTopics(_ articleId: UInt, page: UInt, pageSize: UInt = 20)
+        async throws(LKError) -> Page<TopicDTO>
     {
         self.logger.debug(
             "正在获取文章评论话题讨论，articleId: \(articleId), page: \(page), pageSize: \(pageSize)")
@@ -242,7 +242,7 @@ extension LKClient {
     }
 
     /// 点赞评论话题
-    public func likeArticleTopic(_ topicId: UInt) async throws {
+    public func likeArticleTopic(_ topicId: UInt) async throws(LKError) {
         self.logger.debug("正在点赞评论话题，topicId: \(topicId)")
         let req = await LikeTopicRequest(
             topicId: topicId,
@@ -260,7 +260,7 @@ extension LKClient {
         topicId: UInt,
         content: String,
         parentReplyId: UInt? = nil, parentUserId: UInt? = nil
-    ) async throws {
+    ) async throws(LKError) {
         self.logger.debug("正在发布评论回复，topicId: \(topicId), content: \(content)")
         let req = await PostArticleReplyRequest(
             articleId: articleId,

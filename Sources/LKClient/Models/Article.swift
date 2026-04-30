@@ -191,7 +191,7 @@ struct ArticleRequest: Codable, Sendable {
 /// MARK: - 文章相关
 extension LKClient {
     /// 获取文章详情
-    public func fetchArticleDetail(_ articleId: UInt, includeContent: Bool) async throws
+    public func fetchArticleDetail(_ articleId: UInt, includeContent: Bool) async throws(LKError)
         -> ArticleDetailDTO
     {
         self.logger.debug(
@@ -220,7 +220,7 @@ extension LKClient {
     }
 
     /// 点赞文章
-    public func likeArticle(_ articleId: UInt) async throws {
+    public func likeArticle(_ articleId: UInt) async throws(LKError) {
         self.logger.debug("正在点赞文章，articleId: \(articleId)")
         let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
         try await self.sendRequest(

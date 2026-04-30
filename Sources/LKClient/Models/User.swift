@@ -342,7 +342,7 @@ extension LKClient {
     }
 
     /// 关注/取消关注用户
-    public func updateFollowStatus(_ userId: UInt, _ action: FollowAction) async throws {
+    public func updateFollowStatus(_ userId: UInt, _ action: FollowAction) async throws(LKError) {
         self.logger.debug("\(action.name)用户(userId: \(userId))")
         let req = FollowRequest(
             userId: userId, action: action, securityKey: await self.securityKey)

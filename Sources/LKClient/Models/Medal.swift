@@ -140,7 +140,8 @@ struct FetchTaskMedalListResponse: Decodable {
 /// MARK: - 勋章中心 API
 extension LKClient {
     /// 获取勋章列表
-    private func fetchTaskMedalList<T: Decodable & Sendable>(for type: MedalType) async throws -> T
+    private func fetchTaskMedalList<T: Decodable & Sendable>(for type: MedalType)
+        async throws(LKError) -> T
     {
         self.logger.debug("正在获取 \(type.name) 勋章列表...")
         let request = await FetchMedalListRequest(type: .task, securityKey: self.securityKey)
@@ -148,12 +149,12 @@ extension LKClient {
     }
 
     /// 获取任务勋章列表
-    public func fetchTaskMedalList() async throws -> [MedalGroupDTO] {
+    public func fetchTaskMedalList() async throws(LKError) -> [MedalGroupDTO] {
         let resp: FetchTaskMedalListResponse = try await self.fetchTaskMedalList(for: .task)
         return resp.list
     }
     /// 获取兑换勋章列表
-    public func fetchExchangeMedalList() async throws -> Page<MedalGroupDTO> {
+    public func fetchExchangeMedalList() async throws(LKError) -> Page<MedalGroupDTO> {
         return try await self.fetchTaskMedalList(for: .exchange)
     }
 }

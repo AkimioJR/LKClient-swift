@@ -308,7 +308,7 @@ extension LKClient {
         )
     }
     /// 获取用户关注动态
-    public func fetchFollowingArticles(page: UInt, pageSize: UInt = 20) async throws
+    public func fetchFollowingArticles(page: UInt, pageSize: UInt = 20) async throws(LKError)
         -> [FollowingArticleDTO]
     {
         self.logger.debug("正在获取用户关注动态，page: \(page), pageSize: \(pageSize)")

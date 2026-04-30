@@ -102,7 +102,7 @@ struct FetchRecordRequest: Codable, Sendable {
 
 /// MARK: - 历史记录和收藏记录相关
 extension LKClient {
-    private func applyRecordChange(req: RecordRequest, path: String) async throws {
+    private func applyRecordChange(req: RecordRequest, path: String) async throws(LKError) {
         try await self.sendRequest(
             path: path,
             requestData: req,
@@ -110,7 +110,7 @@ extension LKClient {
     }
 
     /// 添加历史记录
-    public func addHistory(_ favoriteId: UInt, classType: ClassType) async throws {
+    public func addHistory(_ favoriteId: UInt, classType: ClassType) async throws(LKError) {
         self.logger.debug(
             "正在添加历史记录，favoriteId: \(favoriteId), classType: \(String(describing: classType))")
         let req = RecordRequest(
@@ -125,7 +125,7 @@ extension LKClient {
     }
 
     /// 添加收藏
-    public func addFavorite(_ favoriteId: UInt, classType: ClassType) async throws {
+    public func addFavorite(_ favoriteId: UInt, classType: ClassType) async throws(LKError) {
         self.logger.debug(
             "正在添加收藏，favoriteId: \(favoriteId), classType: \(String(describing: classType))"
         )
@@ -141,7 +141,7 @@ extension LKClient {
     }
 
     /// 删除收藏
-    public func deleteFavorite(_ favoriteId: UInt, classType: ClassType) async throws {
+    public func deleteFavorite(_ favoriteId: UInt, classType: ClassType) async throws(LKError) {
         self.logger.debug(
             "正在删除收藏，favoriteId: \(favoriteId), classType: \(String(describing: classType))"
         )
