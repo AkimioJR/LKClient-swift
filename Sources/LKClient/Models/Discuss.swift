@@ -271,7 +271,7 @@ extension LKClient {
 
     /// 获取评论话题回复
     public func featchArticleReply(_ articleId: UInt, topicId: UInt) async throws(LKError)
-        -> ReplyDTO
+        -> TopicDTO
     {
         self.logger.debug(
             "正在获取评论话题回复，articleId: \(articleId), topicId: \(topicId)"
