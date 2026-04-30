@@ -7,62 +7,77 @@
 
 import Foundation
 
-public struct TopicDTO: Codable, Sendable {
+public struct ReplyDTO: Codable, Sendable {
+    public var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
+    public var replyId: UInt  // 话题下面的第几个回复
+    public var articleId: UInt  // 文章ID
+    public var parentReplyId: UInt  // 这条评论是回复那一条评论的，0代表回复主评论
+    public var repliedUserId: UInt  // 被回复的用户ID
+    public var userId: UInt  // 回复者的用户ID
+    public var likeCount: UInt
+    public var time: Date
+    public var content: String
+    public var userInfo: UserInfoDTO
+    public var replayUserInfo: UserInfoDTO?
 
-    public struct ReplyDTO: Codable, Sendable {
-        public var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
-        public var replyId: UInt  // 话题下面的第几个回复
-        public var articleId: UInt  // 文章ID
-        public var parentReplyId: UInt  // 这条评论是回复那一条评论的，0代表回复主评论
-        public var repliedUserId: UInt  // 被回复的用户ID
-        public var userId: UInt  // 回复者的用户ID
-        public var likeCount: UInt
-        public var time: Date
-        public var content: String
-        public var userInfo: UserInfoDTO
-        public var replayUserInfo: UserInfoDTO?
-
-        enum CodingKeys: String, CodingKey {
-            case topicId = "tid"
-            case replyId = "rid"
-            case articleId = "pid"
-            case parentReplyId = "r_rid"
-            case repliedUserId = "r_uid"
-            case userId = "uid"
-            case likeCount = "likes"
-            case time = "time"
-            case content = "content"
-            case userInfo = "user_info"
-            case replayUserInfo = "r_user_info"
-        }
-
-        public init(
-            topicId: UInt,
-            replyId: UInt,
-            articleId: UInt,
-            parentReplyId: UInt,
-            repliedUserId: UInt,
-            userId: UInt,
-            likeCount: UInt,
-            time: Date,
-            content: String,
-            userInfo: UserInfoDTO,
-            replayUserInfo: UserInfoDTO? = nil
-        ) {
-            self.topicId = topicId
-            self.replyId = replyId
-            self.articleId = articleId
-            self.parentReplyId = parentReplyId
-            self.repliedUserId = repliedUserId
-            self.userId = userId
-            self.likeCount = likeCount
-            self.time = time
-            self.content = content
-            self.userInfo = userInfo
-            self.replayUserInfo = replayUserInfo
-        }
+    enum CodingKeys: String, CodingKey {
+        case topicId = "tid"
+        case replyId = "rid"
+        case articleId = "pid"
+        case parentReplyId = "r_rid"
+        case repliedUserId = "r_uid"
+        case userId = "uid"
+        case likeCount = "likes"
+        case time = "time"
+        case content = "content"
+        case userInfo = "user_info"
+        case replayUserInfo = "r_user_info"
     }
 
+    public init(
+        topicId: UInt,
+        replyId: UInt,
+        articleId: UInt,
+        parentReplyId: UInt,
+        repliedUserId: UInt,
+        userId: UInt,
+        likeCount: UInt,
+        time: Date,
+        content: String,
+        userInfo: UserInfoDTO,
+        replayUserInfo: UserInfoDTO? = nil
+    ) {
+        self.topicId = topicId
+        self.replyId = replyId
+        self.articleId = articleId
+        self.parentReplyId = parentReplyId
+        self.repliedUserId = repliedUserId
+        self.userId = userId
+        self.likeCount = likeCount
+        self.time = time
+        self.content = content
+        self.userInfo = userInfo
+        self.replayUserInfo = replayUserInfo
+    }
+}
+
+struct FetchArticleTopicReplyRequest: Codable, Sendable {
+    var topicId: UInt
+    var articleId: UInt
+    let page: UInt = 1
+    let pageSize: UInt = 20
+    var securityKey: String
+
+    enum CodingKeys: String, CodingKey {
+        case topicId = "tid"
+        case articleId = "aid"
+        case page = "page"
+        case pageSize = "page_size"
+        case securityKey = "security_key"
+    }
+}
+
+public struct TopicDTO: Codable, Sendable {
     public var topicId: UInt
     public var articleId: UInt
     public var userId: UInt
@@ -250,6 +265,24 @@ extension LKClient {
         )
         try await self.sendRequest(
             path: "/api/discuss/like",
+            requestData: req,
+        )
+    }
+
+    /// 获取评论话题回复
+    public func featchArticleReply(_ articleId: UInt, topicId: UInt) async throws(LKError)
+        -> ReplyDTO
+    {
+        self.logger.debug(
+            "正在获取评论话题回复，articleId: \(articleId), topicId: \(topicId)"
+        )
+        let req = await FetchArticleTopicReplyRequest(
+            topicId: topicId,
+            articleId: articleId,
+            securityKey: self.securityKey
+        )
+        return try await self.sendRequest(
+            path: "/api/discuss/get-reply",
             requestData: req,
         )
     }
