@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ReplyDTO: Codable, Sendable {
+public struct ReplyDTO: Codable, Sendable, Hashable {
     public var topicId: UInt  // 话题ID（是哪条主评论下的回复评论）
     public var replyId: UInt  // 话题下面的第几个回复
     public var articleId: UInt  // 文章ID
@@ -77,7 +77,7 @@ struct FetchArticleTopicReplyRequest: Codable, Sendable {
     }
 }
 
-public struct TopicDTO: Codable, Sendable {
+public struct TopicDTO: Codable, Sendable, Hashable {
     public var topicId: UInt
     public var articleId: UInt
     public var userId: UInt
