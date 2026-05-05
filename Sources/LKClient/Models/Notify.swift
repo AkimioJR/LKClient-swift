@@ -32,7 +32,32 @@ struct FetchUnReadNotifyRequest: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case securityKey = "security_key"
     }
+}
 
+public struct SystemMessageDTO: Codable, Sendable {
+    public var id: UInt
+    public var title: String
+    public var message: String
+    public var timestamp: UInt
+
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case title = "title"
+        case message = "msg"
+        case timestamp = "timestamp"
+    }
+}
+
+struct FetchSystemMessagesRequest: Codable, Sendable {
+    var securityKey: String
+    var page: UInt
+    var pageSize: UInt
+
+    enum CodingKeys: String, CodingKey {
+        case securityKey = "security_key"
+        case page = "page"
+        case pageSize = "page_size"
+    }
 }
 
 /// MARK: - 通知相关
@@ -41,5 +66,17 @@ extension LKClient {
     public func fetchUnReadNotify() async throws(LKError) -> UnReadNotifyDTO {
         let req = await FetchUnReadNotifyRequest(securityKey: self.securityKey)
         return try await self.sendRequest(path: "/api/notify/unread", requestData: req)
+    }
+
+    /// 获取系统消息列表
+    public func fetchSystemMessages(page: UInt, pageSize: UInt) async throws(LKError)
+        -> [SystemMessageDTO]
+    {
+        let req = await FetchSystemMessagesRequest(
+            securityKey: self.securityKey,
+            page: page,
+            pageSize: pageSize,
+        )
+        return try await self.sendRequest(path: "/api/sys-msg/get-sys-msg", requestData: req)
     }
 }
