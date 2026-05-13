@@ -9,12 +9,12 @@ import Foundation
 
 // 添加/删除收藏请求
 struct RecordRequest: Codable, Sendable {
-    var favoriteId: UInt
+    var id: UInt
     var classType: ClassType
     var securityKey: String
 
     enum CodingKeys: String, CodingKey {
-        case favoriteId = "fid"
+        case id = "fid"
         case classType = "class"
         case securityKey = "security_key"
     }
@@ -110,14 +110,9 @@ extension LKClient {
     }
 
     /// 添加历史记录
-    public func addHistory(_ favoriteId: UInt, classType: ClassType) async throws(LKError) {
-        self.logger.debug(
-            "正在添加历史记录，favoriteId: \(favoriteId), classType: \(String(describing: classType))")
-        let req = RecordRequest(
-            favoriteId: favoriteId,
-            classType: classType,
-            securityKey: await self.securityKey,
-        )
+    public func addHistory(_ id: UInt, classType: ClassType) async throws(LKError) {
+        self.logger.debug("正在添加历史记录，id: \(id), classType: \(String(describing: classType))")
+        let req = RecordRequest(id: id, classType: classType, securityKey: await self.securityKey, )
         try await self.applyRecordChange(
             req: req,
             path: "/api/history/add-history"
@@ -125,15 +120,9 @@ extension LKClient {
     }
 
     /// 添加收藏
-    public func addFavorite(_ favoriteId: UInt, classType: ClassType) async throws(LKError) {
-        self.logger.debug(
-            "正在添加收藏，favoriteId: \(favoriteId), classType: \(String(describing: classType))"
-        )
-        let req = RecordRequest(
-            favoriteId: favoriteId,
-            classType: classType,
-            securityKey: await self.securityKey,
-        )
+    public func addFavorite(_ id: UInt, classType: ClassType) async throws(LKError) {
+        self.logger.debug("正在添加收藏，id: \(id), classType: \(String(describing: classType))")
+        let req = await RecordRequest(id: id, classType: classType, securityKey: self.securityKey)
         try await self.applyRecordChange(
             req: req,
             path: "/api/history/add-collection"
@@ -141,15 +130,9 @@ extension LKClient {
     }
 
     /// 删除收藏
-    public func deleteFavorite(_ favoriteId: UInt, classType: ClassType) async throws(LKError) {
-        self.logger.debug(
-            "正在删除收藏，favoriteId: \(favoriteId), classType: \(String(describing: classType))"
-        )
-        let req = RecordRequest(
-            favoriteId: favoriteId,
-            classType: classType,
-            securityKey: await self.securityKey,
-        )
+    public func deleteFavorite(_ id: UInt, classType: ClassType) async throws(LKError) {
+        self.logger.debug("正在删除收藏，id: \(id), classType: \(String(describing: classType))")
+        let req = await RecordRequest(id: id, classType: classType, securityKey: self.securityKey)
         try await self.applyRecordChange(
             req: req,
             path: "/api/history/del-collection",
