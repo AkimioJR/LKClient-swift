@@ -128,7 +128,15 @@ extension LKClient {
             path: "/api/history/add-collection"
         )
     }
-
+    /// 删除历史记录
+    public func deleteHistory(_ id: UInt, classType: ClassType) async throws(LKError) {
+        self.logger.debug("正在删除历史记录，id: \(id), classType: \(String(describing: classType))")
+        let req = await RecordRequest(id: id, classType: classType, securityKey: self.securityKey)
+        try await self.applyRecordChange(
+            req: req,
+            path: "/api/history/del-history",
+        )
+    }
     /// 删除收藏
     public func deleteFavorite(_ id: UInt, classType: ClassType) async throws(LKError) {
         self.logger.debug("正在删除收藏，id: \(id), classType: \(String(describing: classType))")
