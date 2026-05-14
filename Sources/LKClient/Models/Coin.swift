@@ -45,7 +45,7 @@ extension LKClient {
         )
 
         try await self.sendRequest(
-            path: "/api/coin/use",
+            path: "/coin/use",
             requestData: req,
         )
     }

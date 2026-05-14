@@ -113,7 +113,7 @@ extension LKClient {
         let req = await RecordRequest(id: id, classType: classType, securityKey: self.securityKey)
         try await self.applyRecordChange(
             req: req,
-            path: "/api/history/add-history"
+            path: "/history/add-history"
         )
     }
 
@@ -123,7 +123,7 @@ extension LKClient {
         let req = await RecordRequest(id: id, classType: classType, securityKey: self.securityKey)
         try await self.applyRecordChange(
             req: req,
-            path: "/api/history/add-collection"
+            path: "/history/add-collection"
         )
     }
     /// 删除历史记录
@@ -132,7 +132,7 @@ extension LKClient {
         let req = await RecordRequest(id: id, classType: classType, securityKey: self.securityKey)
         try await self.applyRecordChange(
             req: req,
-            path: "/api/history/del-history",
+            path: "/history/del-history",
         )
     }
     /// 删除收藏
@@ -141,7 +141,7 @@ extension LKClient {
         let req = await RecordRequest(id: id, classType: classType, securityKey: self.securityKey)
         try await self.applyRecordChange(
             req: req,
-            path: "/api/history/del-collection",
+            path: "/history/del-collection",
         )
     }
 
@@ -160,7 +160,7 @@ extension LKClient {
             securityKey: self.securityKey,
         )
         return try await self.sendRequest(
-            path: "/api/history/get-history",
+            path: "/history/get-history",
             requestData: req,
         )
     }
@@ -180,7 +180,7 @@ extension LKClient {
             securityKey: self.securityKey,
         )
         return try await self.sendRequest(
-            path: "/api/history/get-collections",
+            path: "/history/get-collections",
             requestData: req,
         )
     }

@@ -145,7 +145,7 @@ extension LKClient {
     {
         self.logger.debug("正在获取 \(type.name) 勋章列表...")
         let request = await FetchMedalListRequest(type: .task, securityKey: self.securityKey)
-        return try await self.sendRequest(path: "/api/medal/list", requestData: request)
+        return try await self.sendRequest(path: "/medal/list", requestData: request)
     }
 
     /// 获取任务勋章列表

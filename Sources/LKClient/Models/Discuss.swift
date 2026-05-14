@@ -236,7 +236,7 @@ extension LKClient {
             securityKey: await self.securityKey
         )
         return try await self.sendRequest(
-            path: "/api/discuss/get-topic",
+            path: "/discuss/get-topic",
             requestData: req,
         )
     }
@@ -251,7 +251,7 @@ extension LKClient {
             securityKey: await self.securityKey
         )
         return try await self.sendRequest(
-            path: "/api/discuss/post-topic",
+            path: "/discuss/post-topic",
             requestData: req,
         )
     }
@@ -264,7 +264,7 @@ extension LKClient {
             securityKey: self.securityKey
         )
         try await self.sendRequest(
-            path: "/api/discuss/like",
+            path: "/discuss/like",
             requestData: req,
         )
     }
@@ -282,7 +282,7 @@ extension LKClient {
             securityKey: self.securityKey
         )
         return try await self.sendRequest(
-            path: "/api/discuss/get-reply",
+            path: "/discuss/get-reply",
             requestData: req,
         )
     }
@@ -304,7 +304,7 @@ extension LKClient {
             securityKey: self.securityKey
         )
         try await self.sendRequest(
-            path: "/api/discuss/post-reply",
+            path: "/discuss/post-reply",
             requestData: req,
         )
     }

@@ -65,7 +65,7 @@ extension LKClient {
     /// 获取未读消息数量
     public func fetchUnReadNotify() async throws(LKError) -> UnReadNotifyDTO {
         let req = await FetchUnReadNotifyRequest(securityKey: self.securityKey)
-        return try await self.sendRequest(path: "/api/notify/unread", requestData: req)
+        return try await self.sendRequest(path: "/notify/unread", requestData: req)
     }
 
     /// 获取系统消息列表
@@ -77,6 +77,6 @@ extension LKClient {
             page: page,
             pageSize: pageSize,
         )
-        return try await self.sendRequest(path: "/api/sys-msg/get-sys-msg", requestData: req)
+        return try await self.sendRequest(path: "/sys-msg/get-sys-msg", requestData: req)
     }
 }

@@ -303,7 +303,7 @@ extension LKClient {
         let req = GetRecommendRequest(securityKey: await self.securityKey, classId: classId)
 
         return try await self.sendRequest(
-            path: "/api/recom/get-recommends",
+            path: "/recom/get-recommends",
             requestData: req,
         )
     }
@@ -319,7 +319,7 @@ extension LKClient {
         )
 
         return try await self.sendRequest(
-            path: "/api/recom/get-follows",
+            path: "/recom/get-follows",
             requestData: req,
         )
     }

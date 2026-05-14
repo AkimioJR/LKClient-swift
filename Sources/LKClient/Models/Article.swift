@@ -204,7 +204,7 @@ extension LKClient {
         )
 
         return try await self.sendRequest(
-            path: "/api/article/get-detail",
+            path: "/article/get-detail",
             requestData: req,
         )
     }
@@ -214,7 +214,7 @@ extension LKClient {
         self.logger.debug("正在获取文章标签，articleId: \(articleId)")
         let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
         return try await self.sendRequest(
-            path: "/api/tag/get-article-tags",
+            path: "/tag/get-article-tags",
             requestData: req,
         )
     }
@@ -224,7 +224,7 @@ extension LKClient {
         self.logger.debug("正在点赞文章，articleId: \(articleId)")
         let req = ArticleRequest(securityKey: await self.securityKey, articleId: articleId)
         try await self.sendRequest(
-            path: "/api/article/like",
+            path: "/article/like",
             requestData: req,
         )
     }

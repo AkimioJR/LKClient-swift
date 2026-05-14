@@ -173,7 +173,7 @@ extension LKClient {
         self.logger.debug("正在获取任务列表...")
         let req = await TaskListRequest(securityKey: self.securityKey)
         return try await self.sendRequest(
-            path: "/api/task/list",
+            path: "/task/list",
             requestData: req,
         )
     }
@@ -182,7 +182,7 @@ extension LKClient {
         self.logger.debug("正在完成任务，type: \(type)")
         let req = await TaskCompleteRequest(type: type, securityKey: self.securityKey)
         return try await self.sendRequest(
-            path: "/api/task/complete",
+            path: "/task/complete",
             requestData: req,
         )
     }

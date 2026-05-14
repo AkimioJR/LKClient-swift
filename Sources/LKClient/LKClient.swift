@@ -54,7 +54,7 @@ public actor LKClient {
     }()
 
     // Configuration
-    public var apiEndpoint: String
+    public var baseURL: String
     public var userAgent: String
     public var gzip: Bool
     public var encrypted: Bool
@@ -66,7 +66,7 @@ public actor LKClient {
 
     public init(
         securityKey: String = "",
-        apiEndpoint: String = "https://api.lightnovel.fun",
+        baseURL: String = "https://api.lightnovel.fun/api",
         userAgent: String = "Dart/2.10 (dart:io)",
         gzip: Bool = true,
         // encrypted: Bool = false,
@@ -81,7 +81,7 @@ public actor LKClient {
     ) {
         self.securityKey = securityKey
 
-        self.apiEndpoint = apiEndpoint
+        self.baseURL = baseURL
         self.userAgent = userAgent
         self.gzip = gzip
         self.encrypted = false
@@ -119,8 +119,8 @@ public actor LKClient {
         client: ClientType? = nil,
         platform: PlatformType? = nil
     ) async throws(LKError) -> R {
-        guard let url = await URL(string: self.apiEndpoint + path) else {
-            throw await LKError.apiEndpointError("Invalid URL: \(self.apiEndpoint + path)")
+        guard let url = await URL(string: self.baseURL + path) else {
+            throw await LKError.apiEndpointError("Invalid URL: \(self.baseURL + path)")
         }
 
         var request = LKRequest(data: requestData)
@@ -225,7 +225,7 @@ public actor LKClient {
     public func fetchServerVersion() async throws(LKError) -> UInt {
         self.logger.debug("获取服务器版本...")
         return try await self.sendRequest(
-            path: "/api/smiley/get-ver"
+            path: "/smiley/get-ver"
         )
     }
 }

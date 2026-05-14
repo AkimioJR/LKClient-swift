@@ -144,7 +144,7 @@ extension LKClient {
     public func fetchHotSearchTags() async throws(LKError) -> [HotSearchTagDTO] {
         self.logger.debug("正在获取热门搜索词条...")
         return try await self.sendRequest(
-            path: "/api/search/get-search-tags"
+            path: "/search/get-search-tags"
         )
     }
 
@@ -162,7 +162,7 @@ extension LKClient {
             securityKey: self.securityKey,
         )
         return try await self.sendRequest(
-            path: "/api/search/search-result",
+            path: "/search/search-result",
             requestData: req
         )
     }

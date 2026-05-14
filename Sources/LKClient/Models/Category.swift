@@ -79,7 +79,7 @@ extension LKClient {
         )
 
         return try await self.sendRequest(
-            path: "/api/category/get-article-by-cate",
+            path: "/category/get-article-by-cate",
             requestData: req,
         )
     }

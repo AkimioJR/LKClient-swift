@@ -313,7 +313,7 @@ extension LKClient {
         self.logger.debug("正在登录用户: \(username)")
 
         let loginResponse: UserProfileDTO = try await self.sendRequest(
-            path: "/api/user/login",
+            path: "/user/login",
             requestData: loginRequest,
         )
 
@@ -336,7 +336,7 @@ extension LKClient {
         )
         self.logger.debug("正在获取用户信息，userId: \(userId)")
         return try await self.sendRequest(
-            path: "/api/user/info",
+            path: "/user/info",
             requestData: req,
         )
     }
@@ -347,7 +347,7 @@ extension LKClient {
         let req = FollowRequest(
             userId: userId, action: action, securityKey: await self.securityKey)
         try await self.sendRequest(
-            path: "/api/user/follow",
+            path: "/user/follow",
             requestData: req
         )
     }
@@ -371,7 +371,7 @@ extension LKClient {
             securityKey: await self.securityKey
         )
         return try await self.sendRequest(
-            path: "/api/user/get-articles",
+            path: "/user/get-articles",
             requestData: req,
         )
     }

@@ -70,7 +70,7 @@ extension LKClient {
         self.logger.debug("正在获取分区信息")
         let req = FetchParentGroupRecommendItemsRequest(securityKey: await self.securityKey)
         return try await self.sendRequest(
-            path: "/api/group/main",
+            path: "/group/main",
             requestData: req,
         )
     }

@@ -150,7 +150,7 @@ extension LKClient {
         self.logger.debug("正在查询集合信息，seriesId: \(seriesId)")
         let req = await FetchSeriesRequest(seriesId: seriesId, securityKey: self.securityKey)
         return try await self.sendRequest(
-            path: "/api/series/get-info",
+            path: "/series/get-info",
             requestData: req,
         )
     }
@@ -163,7 +163,7 @@ extension LKClient {
         let req = await FetchSeriesRateRequest(
             seriesId: seriesId, page: page, securityKey: self.securityKey)
         return try await self.sendRequest(
-            path: "/api/series/get-rate-list",
+            path: "/series/get-rate-list",
             requestData: req,
         )
     }
