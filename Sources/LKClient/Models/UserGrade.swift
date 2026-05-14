@@ -1,4 +1,4 @@
-public enum UserGrade: UInt8, CaseIterable, Equatable, Codable, Comparable, Sendable , Identifiable {
+public enum UserGrade: UInt8, CaseIterable, Equatable, Codable, Comparable, Sendable, Identifiable {
     case commoner = 1  // 平民
     case knight = 2  // 骑士
     case lord = 3  // 勋爵
@@ -8,7 +8,7 @@ public enum UserGrade: UInt8, CaseIterable, Equatable, Codable, Comparable, Send
     case duke = 7  // 公爵
     case prince = 8  // 王爵
     case emperor = 9  // 皇帝
-    
+
     public var id: Self { self }
 
     /// 等级名称
@@ -31,7 +31,7 @@ public enum UserGrade: UInt8, CaseIterable, Equatable, Codable, Comparable, Send
     }
 
     public var description: String {
-        return "LKLevel{LV: \(self.rawValue)}"
+        return "<LKLevel LV: \(self.rawValue)>"
     }
 
     /// 达到该等级所需的经验值

@@ -88,7 +88,7 @@ public enum TaskType: UInt8, CaseIterable, Codable, Sendable {
 
 extension TaskType: CustomStringConvertible {
     public var description: String {
-        return self.name
+        return "<TaskType value: \(self.rawValue), name: \(self.name)>"
     }
 }
 

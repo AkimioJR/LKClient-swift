@@ -38,7 +38,7 @@ public enum SearchType: UInt8, CaseIterable, Codable, Sendable {
 
 extension SearchType: CustomStringConvertible {
     public var description: String {
-        return "SearchType.\(self.rawValue) (\(self.name))"
+        return "<SearchType value: \(self.rawValue), name: \(self.name)>"
     }
 }
 

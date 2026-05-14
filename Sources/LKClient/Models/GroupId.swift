@@ -118,7 +118,7 @@ extension ParentGroupId: RawRepresentable {
 
 extension ParentGroupId: CustomStringConvertible {
     public var description: String {
-        return "LKParentGroupId{value: \(self.rawValue), name: (\(self.name))}"
+        return "<LKParentGroupId value: \(self.rawValue), name: (\(self.name))>"
     }
 }
 
@@ -372,6 +372,6 @@ extension GroupId: RawRepresentable {
 
 extension GroupId: CustomStringConvertible {
     public var description: String {
-        return "LKGroupId{value: \(self.rawValue), name: \(self.name)}"
+        return "<LKGroupId value: \(self.rawValue), name: \(self.name)>"
     }
 }
