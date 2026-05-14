@@ -30,7 +30,7 @@ public struct ArticleRecordDTO: RecordDTO {
     public var hitCount: UInt
     public var commentCount: UInt
     public var createTime: Date
-    public var updateTime: Date
+    public var lastTime: Date  // 历史记录: 最后一次访问时间；收藏记录: 最后一次修改时间
     public var coverURL: String
     public var coverType: CoverType
     public var groupId: GroupId
@@ -45,7 +45,7 @@ public struct ArticleRecordDTO: RecordDTO {
         case hitCount = "hits"
         case commentCount = "comments"
         case createTime = "time"
-        case updateTime = "last_time"
+        case lastTime = "last_time"
         case coverURL = "cover"
         case coverType = "cover_type"
         case groupId = "gid"
@@ -62,7 +62,7 @@ public struct SeriesRecordDTO: RecordDTO {
     public var coverURL: String
     public var coverType: CoverType
     public var rateCount: UInt
-    public var updateTime: Date
+    public var lastTime: Date  // 历史记录: 最后一次访问时间；收藏记录: 最后一次修改时间
     public var groupId: GroupId
     public var parentGroupId: ParentGroupId
     public var editors: [UserInfoDTO]
@@ -75,7 +75,7 @@ public struct SeriesRecordDTO: RecordDTO {
         case coverURL = "cover"
         case coverType = "cover_type"
         case rateCount = "rates"
-        case updateTime = "last_time"
+        case lastTime = "last_time"
         case groupId = "gid"
         case parentGroupId = "parent_gid"
         case editors = "editors"
@@ -112,7 +112,7 @@ extension LKClient {
     /// 添加历史记录
     public func addHistory(_ id: UInt, classType: ClassType) async throws(LKError) {
         self.logger.debug("正在添加历史记录，id: \(id), classType: \(String(describing: classType))")
-        let req = RecordRequest(id: id, classType: classType, securityKey: await self.securityKey, )
+        let req = await RecordRequest(id: id, classType: classType, securityKey: self.securityKey)
         try await self.applyRecordChange(
             req: req,
             path: "/api/history/add-history"
