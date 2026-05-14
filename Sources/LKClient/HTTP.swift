@@ -60,7 +60,7 @@ struct LKResponse<T: Decodable & Sendable>: Decodable, Sendable {
         case data = "data"
     }
 
-    init(from decoder: Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         // 首先解析 code 和 timeStamp
@@ -71,7 +71,11 @@ struct LKResponse<T: Decodable & Sendable>: Decodable, Sendable {
         case 0:  // 成功
             let timestamp = try container.decode(UInt64.self, forKey: .timeStamp)
             self.time = Date(timeIntervalSince1970: TimeInterval(timestamp))
-            self.data = try container.decodeIfPresent(T.self, forKey: .data)
+            if T.self == EmptyResponse.self {
+                self.data = EmptyResponse() as! T
+            } else {
+                self.data = try container.decodeIfPresent(T.self, forKey: .data)
+            }
 
         default:  // 错误
             self.data = nil
