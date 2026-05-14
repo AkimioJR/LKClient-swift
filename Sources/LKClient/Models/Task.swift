@@ -97,7 +97,7 @@ public enum TaskState: UInt8, CaseIterable, Codable, Sendable {
     case waitingForReward = 1  // 等待领取奖励
     case rewarded = 2  // 已经领取奖励
 
-    public var description: String {
+    public var name: String {
         switch self {
         case .uncomplete:
             return "未完成"

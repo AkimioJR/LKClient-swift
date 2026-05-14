@@ -16,7 +16,7 @@ public struct RecommendGroupDTO: Codable, Sendable {
     public var moreParams: UInt
     public var items: [Item]
 
-    public enum GroupType: UInt8, Codable, CustomStringConvertible, Sendable {
+    public enum GroupType: UInt8, Codable, Sendable {
         case banner = 1  // 推荐置顶横幅
         case hot = 2  // 热门
         case news = 3  // 资讯
@@ -25,7 +25,7 @@ public struct RecommendGroupDTO: Codable, Sendable {
         case other = 8  // 其他
         case lightnovel = 9  // 轻小说
 
-        public var description: String {
+        public var name: String {
             switch self {
             case .banner:
                 return "推荐置顶横幅"
