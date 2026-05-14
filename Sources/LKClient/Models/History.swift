@@ -86,7 +86,6 @@ struct FetchRecordRequest: Codable, Sendable {
     var type: ArticleType
     var classType: ClassType
     var page: UInt
-    var pageSize: UInt
     var userId: UInt
     var securityKey: String
 
@@ -94,7 +93,6 @@ struct FetchRecordRequest: Codable, Sendable {
         case type = "type"
         case classType = "class"
         case page = "page"
-        case pageSize = "page_size"
         case userId = "uid"
         case securityKey = "security_key"
     }
@@ -149,18 +147,17 @@ extension LKClient {
 
     /// 查询历史记录
     public func fetchHistoryRecords<T: RecordDTO>(
-        type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
+        type: ArticleType, classType: ClassType, page: UInt
     ) async throws(LKError) -> Page<T> {
         self.logger.debug(
-            "正在查询历史记录，type: \(String(describing: type)), classType: \(String(describing: classType)), page: \(page), pageSize: \(pageSize)"
+            "正在查询历史记录，type: \(String(describing: type)), classType: \(String(describing: classType)), page: \(page)"
         )
-        let req = FetchRecordRequest(
+        let req = await FetchRecordRequest(
             type: type,
             classType: classType,
             page: page,
-            pageSize: pageSize,
-            userId: await self.userId,
-            securityKey: await self.securityKey,
+            userId: self.userId,
+            securityKey: self.securityKey,
         )
         return try await self.sendRequest(
             path: "/api/history/get-history",
@@ -170,18 +167,17 @@ extension LKClient {
 
     // 查询收藏列表
     public func fetchFavoriteRecords<T: RecordDTO>(
-        type: ArticleType, classType: ClassType, page: UInt, pageSize: UInt = 40
+        type: ArticleType, classType: ClassType, page: UInt
     ) async throws(LKError) -> Page<T> {
         self.logger.debug(
-            "正在查询收藏记录，type: \(String(describing: type)), classType: \(String(describing: classType)), page: \(page), pageSize: \(pageSize)"
+            "正在查询收藏记录，type: \(String(describing: type)), classType: \(String(describing: classType)), page: \(page)"
         )
-        let req = FetchRecordRequest(
+        let req = await FetchRecordRequest(
             type: type,
             classType: classType,
             page: page,
-            pageSize: pageSize,
-            userId: await self.userId,
-            securityKey: await self.securityKey,
+            userId: self.userId,
+            securityKey: self.securityKey,
         )
         return try await self.sendRequest(
             path: "/api/history/get-collections",
